@@ -1,0 +1,28 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>
+      New Game
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-list>
+    <ion-item-group reorder="true" (ionItemReorder)="reorderPlayers($event)">
+      <ion-item-sliding #item *ngFor="let player of players">
+        <ion-item (click)="renamePlayer(player)">
+          {{ player }}
+        </ion-item>
+        <ion-item-options side="left">
+          <button ion-button color="danger" (click)="deletePlayer(player)">
+            <ion-icon name="archive"></ion-icon>
+          </button>
+        </ion-item-options>
+      </ion-item-sliding>
+    </ion-item-group>
+    <ion-item>
+      <ion-input type="text" placeholder="New player.." [(ngModel)]="newPlayer" (keyup.enter)="addPlayer()"></ion-input>
+    </ion-item>
+  </ion-list>
+  <button ion-button full (click)="startGame()">Start Game</button>
+</ion-content>

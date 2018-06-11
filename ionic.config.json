@@ -1,0 +1,8 @@
+{
+  "name": "oh-hell-score",
+  "app_id": "",
+  "type": "ionic-angular",
+  "integrations": {
+    "cordova": {}
+  }
+}
