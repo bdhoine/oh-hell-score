@@ -5,7 +5,6 @@
     </ion-title>
   </ion-navbar>
 </ion-header>
-
 <ion-content padding>
   <ion-list>
     <ion-list-header>
@@ -27,14 +26,13 @@
       <ion-input type="text" placeholder="New player.." [(ngModel)]="newPlayer" (keyup.enter)="addPlayer()"></ion-input>
     </ion-item>
   </ion-list>
-
-  <ion-list>
+  <ion-list class="outer-content">
     <ion-list-header>
       Configuration
     </ion-list-header>
     <ion-item>
       <ion-label>Rounds</ion-label>
-      <ion-select [(ngModel)]="maxRounds" >
+      <ion-select [(ngModel)]="maxRounds">
         <ion-option *ngFor="let round of rounds" value="{{round}}">{{round}}</ion-option>
       </ion-select>
     </ion-item>
