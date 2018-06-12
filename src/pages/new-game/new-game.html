@@ -8,13 +8,16 @@
 
 <ion-content padding>
   <ion-list>
+    <ion-list-header>
+      Players
+    </ion-list-header>
     <ion-item-group reorder="true" (ionItemReorder)="reorderPlayers($event)">
       <ion-item-sliding #item *ngFor="let player of players">
         <ion-item (click)="renamePlayer(player)">
           {{ player }}
         </ion-item>
-        <ion-item-options side="left">
-          <button ion-button color="danger" (click)="deletePlayer(player)">
+        <ion-item-options side="left" (ionSwipe)="deletePlayer(player)">
+          <button ion-button expandable color="danger" (click)="deletePlayer(player)">
             <ion-icon name="archive"></ion-icon>
           </button>
         </ion-item-options>
@@ -22,6 +25,18 @@
     </ion-item-group>
     <ion-item>
       <ion-input type="text" placeholder="New player.." [(ngModel)]="newPlayer" (keyup.enter)="addPlayer()"></ion-input>
+    </ion-item>
+  </ion-list>
+
+  <ion-list>
+    <ion-list-header>
+      Configuration
+    </ion-list-header>
+    <ion-item>
+      <ion-label>Rounds</ion-label>
+      <ion-select [(ngModel)]="maxRounds" >
+        <ion-option *ngFor="let round of rounds" value="{{round}}">{{round}}</ion-option>
+      </ion-select>
     </ion-item>
   </ion-list>
   <button ion-button full (click)="startGame()">Start Game</button>

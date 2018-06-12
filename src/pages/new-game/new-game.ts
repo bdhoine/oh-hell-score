@@ -10,30 +10,33 @@ import { Storage } from '@ionic/storage';
 export class NewGamePage {
 
   players:string[];
-  newPlayer:string;
+  newPlayer:string = '';
+  maxRounds:number = 7;
+  rounds:number[];
 
   constructor(public navCtrl: NavController, public alertCtrl: AlertController, private storage: Storage) {
-    this.players = ['Barry', 'Roy', 'Nik'];
-    this.newPlayer = '';
-    // this.savePlayers();
+    this.rounds = Array(17).fill(1).map((x,i) => i+1);
     this.loadPlayers();
   }
 
   loadPlayers() {
     this.storage.get('players').then((val) => {
-      console.log('Player is', val);
+      if (val !== null) {
+        this.players = JSON.parse(val);
+      }
+      else {
+        this.players = [];
+      }
     });
   }
 
   savePlayers() {
-    this.storage.set('players', 'Maxim');
+    this.storage.set('players', JSON.stringify(this.players));
   }
 
   renamePlayer(item) {
-    console.debug('renamePlayer(): ' + item);
-
     const prompt = this.alertCtrl.create({
-      message: "Enter new name for player: " + item,
+      message: "Enter new name for player: <b>" + item + "</b>",
       inputs: [
         {
           name: 'name',
@@ -43,21 +46,17 @@ export class NewGamePage {
       buttons: [
         {
           text: 'Cancel',
-          handler: data => {
-            console.debug('Cancel clicked');
-          }
         },
         {
           text: 'Rename',
           handler: data => {
-            console.debug('Rename clicked');
-            console.debug(data.name);
             if (data.name.length > 0) {
               var index = this.players.indexOf(item, 0);
               if (index > -1) {
                 this.players[index] = data.name;
               }
             }
+            this.savePlayers();
           }
         }
       ]
@@ -66,31 +65,31 @@ export class NewGamePage {
   }
 
   deletePlayer(item) {
-    console.debug('deletePlayer(): ' + item);
     var index = this.players.indexOf(item, 0);
     if (index > -1) {
       this.players.splice(index, 1);
     }
+    this.savePlayers();
   }
 
   reorderPlayers(event) {
-    console.debug('reorderPlayers():')
-    console.debug(event);
     let player = this.players[event.from];
     this.players.splice(event.from, 1);
     this.players.splice(event.to, 0, player);
+    this.savePlayers();
   }
 
   addPlayer() {
-    console.debug('addPlayer(): ' + this.newPlayer);
     if (this.newPlayer.length > 0) {
       this.players.push(this.newPlayer);
       this.newPlayer = '';
+      this.savePlayers();
     }
   }
 
   startGame() {
-    console.debug('startGame()');
+    console.log(this.maxRounds);
+    console.log(this.players);
   }
 
 }
