@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
 import { NavController, AlertController } from 'ionic-angular';
-import { Storage } from '@ionic/storage';
+
+import { RoundPage } from '../round/round';
+
+import { PlayersProvider } from '../../providers/players/players';
 
 
 @Component({
@@ -9,39 +12,58 @@ import { Storage } from '@ionic/storage';
 })
 export class NewGamePage {
 
-  players:string[];
+  players:any = [];
   newPlayer:string = '';
-  maxRounds:number = 7;
+  maxCards:number = 7;
   rounds:number[];
 
-  constructor(public navCtrl: NavController, public alertCtrl: AlertController, private storage: Storage) {
+  constructor(public navCtrl: NavController, public alertCtrl: AlertController, public playersProvider: PlayersProvider) {
     this.rounds = Array(17).fill(1).map((x,i) => i+1);
-    this.loadPlayers();
-  }
-
-  loadPlayers() {
-    this.storage.get('players').then((val) => {
-      if (val !== null) {
-        this.players = JSON.parse(val);
-      }
-      else {
-        this.players = [];
-      }
+    this.playersProvider.loadPlayers().then((data) => {
+      this.players = data;
     });
   }
 
-  savePlayers() {
-    this.storage.set('players', JSON.stringify(this.players));
+  ionViewWillLeave() {
+    this.playersProvider.savePlayers(this.players);
+  }
+
+  setDealer() {
+    let alert = this.alertCtrl.create({
+      title: "Set dealer",
+      buttons: [
+        {
+          text: 'Cancel'
+        },
+        {
+          text: 'Start',
+          handler: data => {
+            console.log(data);
+            this.navCtrl.push(RoundPage);
+          }
+        }
+      ]
+    });
+
+    this.players.forEach(function(player) {
+      alert.addInput({
+        type: 'radio',
+        label: player,
+        value: player
+      });
+    });
+
+    alert.present();
   }
 
   renamePlayer(item) {
-    const prompt = this.alertCtrl.create({
+    let prompt = this.alertCtrl.create({
       message: "Enter new name for player: <b>" + item + "</b>",
       inputs: [
         {
           name: 'name',
           placeholder: 'New name..'
-        },
+        }
       ],
       buttons: [
         {
@@ -56,7 +78,6 @@ export class NewGamePage {
                 this.players[index] = data.name;
               }
             }
-            this.savePlayers();
           }
         }
       ]
@@ -69,26 +90,25 @@ export class NewGamePage {
     if (index > -1) {
       this.players.splice(index, 1);
     }
-    this.savePlayers();
   }
 
   reorderPlayers(event) {
     let player = this.players[event.from];
     this.players.splice(event.from, 1);
     this.players.splice(event.to, 0, player);
-    this.savePlayers();
   }
 
   addPlayer() {
     if (this.newPlayer.length > 0) {
       this.players.push(this.newPlayer);
       this.newPlayer = '';
-      this.savePlayers();
     }
   }
 
   startGame() {
-    console.log(this.maxRounds);
+    this.playersProvider.savePlayers(this.players);
+    this.setDealer();
+    console.log(this.maxCards);
     console.log(this.players);
   }
 

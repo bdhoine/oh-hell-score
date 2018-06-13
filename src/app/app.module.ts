@@ -9,13 +9,17 @@ import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
 import { SettingsPage } from '../pages/settings/settings';
 import { NewGamePage } from '../pages/new-game/new-game';
+import { RoundPage } from '../pages/round/round';
+
+import { PlayersProvider } from '../providers/players/players';
 
 @NgModule({
   declarations: [
     MyApp,
     HomePage,
     SettingsPage,
-    NewGamePage
+    NewGamePage,
+    RoundPage
   ],
   imports: [
     BrowserModule,
@@ -27,12 +31,14 @@ import { NewGamePage } from '../pages/new-game/new-game';
     MyApp,
     HomePage,
     SettingsPage,
-    NewGamePage
+    NewGamePage,
+    RoundPage
   ],
   providers: [
     StatusBar,
     SplashScreen,
-    {provide: ErrorHandler, useClass: IonicErrorHandler}
+    {provide: ErrorHandler, useClass: IonicErrorHandler},
+    PlayersProvider
   ]
 })
 export class AppModule {}

@@ -31,8 +31,8 @@
       Configuration
     </ion-list-header>
     <ion-item>
-      <ion-label>Rounds</ion-label>
-      <ion-select [(ngModel)]="maxRounds">
+      <ion-label>Maximum cards</ion-label>
+      <ion-select [(ngModel)]="maxCards">
         <ion-option *ngFor="let round of rounds" value="{{round}}">{{round}}</ion-option>
       </ion-select>
     </ion-item>
