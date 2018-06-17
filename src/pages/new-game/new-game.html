@@ -11,7 +11,7 @@
       Players
     </ion-list-header>
     <ion-item-group reorder="true" (ionItemReorder)="reorderPlayers($event)">
-      <ion-item-sliding #item *ngFor="let player of players">
+      <ion-item-sliding *ngFor="let player of players">
         <ion-item (click)="renamePlayer(player)">
           {{ player }}
         </ion-item>

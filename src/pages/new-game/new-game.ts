@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { NavController, AlertController } from 'ionic-angular';
 
 import { RoundPage } from '../round/round';
-
 import { PlayersProvider } from '../../providers/players/players';
 
 
@@ -26,34 +25,6 @@ export class NewGamePage {
 
   ionViewWillLeave() {
     this.playersProvider.savePlayers(this.players);
-  }
-
-  setDealer() {
-    let alert = this.alertCtrl.create({
-      title: "Set dealer",
-      buttons: [
-        {
-          text: 'Cancel'
-        },
-        {
-          text: 'Start',
-          handler: data => {
-            console.log(data);
-            this.navCtrl.push(RoundPage);
-          }
-        }
-      ]
-    });
-
-    this.players.forEach(function(player) {
-      alert.addInput({
-        type: 'radio',
-        label: player,
-        value: player
-      });
-    });
-
-    alert.present();
   }
 
   renamePlayer(item) {
@@ -108,8 +79,37 @@ export class NewGamePage {
   startGame() {
     this.playersProvider.savePlayers(this.players);
     this.setDealer();
-    console.log(this.maxCards);
-    console.log(this.players);
+  }
+
+  setDealer() {
+    let alert = this.alertCtrl.create({
+      title: "Set dealer",
+      buttons: [
+        {
+          text: 'Cancel'
+        },
+        {
+          text: 'Start',
+          handler: data => {
+            this.navCtrl.push(RoundPage, {
+              round: 0,
+              maxCards: this.maxCards,
+              dealer: data
+            });
+          }
+        }
+      ]
+    });
+
+    this.players.forEach(function(player) {
+      alert.addInput({
+        type: 'radio',
+        label: player,
+        value: player
+      });
+    });
+
+    alert.present();
   }
 
 }
