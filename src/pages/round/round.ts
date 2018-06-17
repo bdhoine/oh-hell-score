@@ -17,6 +17,7 @@ export class RoundPage {
   };
   roundEntries:any = [];
   roundId:number;
+  inProgress:boolean = false;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public alertCtrl: AlertController, public playersProvider: PlayersProvider, public roundsProvider: RoundsProvider) {
     this.roundId = navParams.get('round');
@@ -66,8 +67,21 @@ export class RoundPage {
     return totalTrick;
   }
 
+  numberFromAlert(input):number {
+    let number = Number(input);
+    if (isNaN(number)){
+      return 0;
+    }
+    else {
+      return number;
+    }
+  }
 
   setBid(roundEntry) {
+    if (this.inProgress === true) {
+      return;
+    }
+
     let alert = this.alertCtrl.create({
       title: "Set bid",
       buttons: [
@@ -77,7 +91,7 @@ export class RoundPage {
         {
           text: 'Save',
           handler: data => {
-            roundEntry.bid = Number(data);
+            roundEntry.bid = this.numberFromAlert(data);
           }
         }
       ]
@@ -97,6 +111,10 @@ export class RoundPage {
   }
 
   setTrick(roundEntry) {
+    if (this.inProgress === false) {
+      return;
+    }
+
     let alert = this.alertCtrl.create({
       title: "Set trick",
       buttons: [
@@ -106,7 +124,7 @@ export class RoundPage {
         {
           text: 'Save',
           handler: data => {
-            roundEntry.trick = Number(data);
+            roundEntry.trick = this.numberFromAlert(data);
           }
         }
       ]
@@ -123,7 +141,21 @@ export class RoundPage {
     alert.present();
   }
 
-  nextRound() {
+  validateBids() {
+    if (this.round.cards == this.totalBid()) {
+      const alert = this.alertCtrl.create({
+        title: 'Error',
+        subTitle: "Total bid can't be equal to the total number of cards",
+        buttons: ['Close']
+      });
+      alert.present();
+    }
+    else {
+      this.inProgress = true;
+    }
+  }
+
+  validateTricks() {
     if (this.round.cards == this.totalTrick()) {
       this.navCtrl.push(RoundPage, {
         round: this.roundId+1,
@@ -134,9 +166,18 @@ export class RoundPage {
       const alert = this.alertCtrl.create({
         title: 'Error',
         subTitle: 'Total tricks is ' + this.totalTrick() + ' but it should be ' + this.round.cards,
-        buttons: ['OK']
+        buttons: ['Close']
       });
       alert.present();
+    }
+  }
+
+  validateRound() {
+    if (this.inProgress === false) {
+      this.validateBids();
+    }
+    else {
+      this.validateTricks();
     }
   }
 

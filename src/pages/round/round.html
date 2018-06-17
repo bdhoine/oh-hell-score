@@ -24,5 +24,5 @@
       </ion-grid>
     </ion-item>
   </ion-list>
-  <button ion-button full (click)="nextRound()">Next Round</button>
+  <button ion-button full (click)="validateRound()">{{inProgress ? 'Next Round' : 'Start Round'}}</button>
 </ion-content>
