@@ -13,6 +13,7 @@ import { RoundPage } from '../pages/round/round';
 
 import { PlayersProvider } from '../providers/players/players';
 import { RoundsProvider } from '../providers/rounds/rounds';
+import { SettingsProvider } from '../providers/settings/settings';
 
 @NgModule({
   declarations: [
@@ -40,7 +41,8 @@ import { RoundsProvider } from '../providers/rounds/rounds';
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     PlayersProvider,
-    RoundsProvider
+    RoundsProvider,
+    SettingsProvider
   ]
 })
 export class AppModule {}

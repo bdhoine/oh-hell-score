@@ -1,19 +1,52 @@
 import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage';
 
-
 @Injectable()
 export class RoundsProvider {
 
   constructor(private storage: Storage) {
   }
 
-  getRound(index:number):any {
+  orderPlayers(players:string[], dealer:string) {
+    let index = players.indexOf(dealer);
+    let orderedPlayers = players.slice(index);
+    return orderedPlayers.concat(players.slice(0, index));
+  }
+
+  nextDealer(players:string[], dealer:string):string {
+    let index = players.indexOf(dealer);
+    if (index+1 == players.length) {
+      return players[0];
+    }
+    return players[index];
+  }
+
+  generateRound(cards:number, players:string[], dealer:string):any {
+    let round = {
+      cards: cards,
+      state: []
+    }
+
+    let orderedPlayers = this.orderPlayers(players, dealer);
+
+    orderedPlayers.forEach(function(player) {
+      round.state.push({
+        player: player,
+        bid: 0,
+        trick: 0,
+        score: 0
+      });
+    });
+
+    return round;
+  }
+
+  getRounds():any {
     return new Promise((resolve, reject) => {
       this.storage.get('rounds').then((data) => {
         if (data != null) {
           let rounds = JSON.parse(data);
-          resolve(rounds[index]);
+          resolve(rounds);
         }
         else {
           reject();
@@ -22,21 +55,35 @@ export class RoundsProvider {
     });
   }
 
-  generateRounds(maxCards:number, players:string[]):any {
-    let rounds = [];
-    for (let x = 0; x < maxCards; x++) {
-      rounds.push({
-        cards: x+1,
-        bids: Array(players.length).fill(0),
-        tricks: Array(players.length).fill(0),
-      });
+  saveRounds(rounds:any) {
+    this.storage.set('rounds', JSON.stringify(rounds));
+  }
+
+  updateScore(rounds:any, roundIndex:number) {
+    for(let index = 1; index <= roundIndex; index++) {
+      for(let stateIndex = 0; stateIndex < rounds[index].state.length; stateIndex++) {
+        let state = rounds[index].state[stateIndex];
+        let previousState = rounds[index-1].state[stateIndex];
+        if (previousState.bid == previousState.trick) {
+          state.score = previousState.score + 10 + previousState.trick;
+        }
+        else {
+          state.score = previousState.score - Math.abs(previousState.bid - previousState.trick);
+        }
+      }
     }
-    for (let x = 0; x < maxCards; x++) {
-      rounds.push({
-        cards: maxCards-x,
-        bids: Array(players.length).fill(0),
-        tricks: Array(players.length).fill(0),
-      });
+    this.storage.set('rounds', JSON.stringify(rounds));
+  }
+
+  generateRounds(maxCards:number, players:string[], dealer:string):any {
+    let rounds = [];
+    for (let cards = 1; cards <= maxCards; cards++) {
+      rounds.push(this.generateRound(cards, players, dealer));
+      dealer = this.nextDealer(players, dealer);
+    }
+    for (let cards = maxCards; cards >= 1; cards--) {
+      rounds.push(this.generateRound(cards, players, dealer));
+      dealer = this.nextDealer(players, dealer);
     }
     this.storage.set('rounds', JSON.stringify(rounds));
   }

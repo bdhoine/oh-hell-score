@@ -3,7 +3,7 @@ import { NavController, NavParams, AlertController } from 'ionic-angular';
 
 import { PlayersProvider } from '../../providers/players/players';
 import { RoundsProvider } from '../../providers/rounds/rounds';
-
+import { SettingsProvider } from '../../providers/settings/settings';
 
 @Component({
   selector: 'page-round',
@@ -11,60 +11,31 @@ import { RoundsProvider } from '../../providers/rounds/rounds';
 })
 export class RoundPage {
 
-  players:any;
-  round:any = {
-    cards: 0
-  };
-  roundEntries:any = [];
-  roundId:number;
-  inProgress:boolean = false;
+  inProgress:boolean;
+  round:any;
+  rounds:any;
+  roundIndex:number;
+  settings:any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public alertCtrl: AlertController, public playersProvider: PlayersProvider, public roundsProvider: RoundsProvider) {
-    this.roundId = navParams.get('round');
-    this.playersProvider.loadPlayers().then((data) => {
-      this.players = data;
-      if (this.roundId == 0) {
-        this.roundsProvider.generateRounds(navParams.get('maxCards'), this.players);
-      }
-      this.round = this.roundsProvider.getRound(this.roundId).then((data) => {
-        this.round = data;
-      });
-      this.reorderPlayers(navParams.get('dealer'));
+  constructor(public navCtrl: NavController, public navParams: NavParams, public alertCtrl: AlertController, public playersProvider: PlayersProvider, public roundsProvider: RoundsProvider, public settingsProvider: SettingsProvider) {
+    this.roundIndex = this.navParams.get('round');
+    this.round = {
+      cards: 0,
+      state: []
+    }
+  }
+
+  ionViewWillEnter() {
+    this.inProgress = false;
+
+    this.roundsProvider.getRounds().then((rounds) => {
+      this.rounds = rounds;
+      this.round = rounds[this.roundIndex];
     });
   }
 
-  reorderPlayers(dealer) {
-    let index = this.players.indexOf(dealer, 0);
-    let players = this.players.slice(index);
-    players = players.concat(this.players.slice(0, index));
-    players.forEach(function(player) {
-      this.roundEntries.push({
-        player: player,
-        bid: 0,
-        trick: 0,
-        score: 0
-      });
-    }, this);
-  }
-
-  isLastPlayer(player):boolean {
-    return player == this.roundEntries[this.roundEntries.length-1].player;
-  }
-
-  totalBid():number {
-    let totalBid = 0;
-    this.roundEntries.forEach(function(entry) {
-      totalBid += entry.bid;
-    })
-    return totalBid;
-  }
-
-  totalTrick():number {
-    let totalTrick = 0;
-    this.roundEntries.forEach(function(entry) {
-      totalTrick += entry.trick;
-    })
-    return totalTrick;
+  ionViewWillLeave() {
+    this.roundsProvider.saveRounds(this.rounds);
   }
 
   numberFromAlert(input):number {
@@ -77,13 +48,33 @@ export class RoundPage {
     }
   }
 
-  setBid(roundEntry) {
+  getTotal(key:string) {
+    let total = 0;
+    this.round.state.forEach(function(state) {
+      total += state[key];
+    });
+    return total;
+  }
+
+  totalTrick():number {
+    return this.getTotal('trick');
+  }
+
+  totalBid():number {
+    return this.getTotal('bid');
+  }
+
+  isLastPlayer(player:string) {
+    return this.round.state[this.round.state.length-1].player == player;
+  }
+
+  setBid(state) {
     if (this.inProgress === true) {
       return;
     }
 
     let alert = this.alertCtrl.create({
-      title: "Set bid",
+      title: 'Set bid',
       buttons: [
         {
           text: 'Cancel'
@@ -91,14 +82,15 @@ export class RoundPage {
         {
           text: 'Save',
           handler: data => {
-            roundEntry.bid = this.numberFromAlert(data);
+            let bid = this.numberFromAlert(data);
+            state.bid = bid;
           }
         }
       ]
     });
 
     for (var x = 0; x <= this.round.cards; x++) {
-      if (!this.isLastPlayer(roundEntry.player) || (this.round.cards != this.totalBid() + x)) {
+      if ((!this.isLastPlayer(state.player)) || (this.round.cards != this.totalBid() + x)) {
         alert.addInput({
           type: 'radio',
           label: x.toString(),
@@ -110,13 +102,13 @@ export class RoundPage {
     alert.present();
   }
 
-  setTrick(roundEntry) {
+  setTrick(state) {
     if (this.inProgress === false) {
       return;
     }
 
     let alert = this.alertCtrl.create({
-      title: "Set trick",
+      title: 'Set trick',
       buttons: [
         {
           text: 'Cancel'
@@ -124,7 +116,8 @@ export class RoundPage {
         {
           text: 'Save',
           handler: data => {
-            roundEntry.trick = this.numberFromAlert(data);
+            let trick = this.numberFromAlert(data);
+            state.trick = trick;
           }
         }
       ]
@@ -145,7 +138,7 @@ export class RoundPage {
     if (this.round.cards == this.totalBid()) {
       const alert = this.alertCtrl.create({
         title: 'Error',
-        subTitle: "Total bid can't be equal to the total number of cards",
+        subTitle: 'Total bid can\'t be equal to the total number of cards',
         buttons: ['Close']
       });
       alert.present();
@@ -157,9 +150,9 @@ export class RoundPage {
 
   validateTricks() {
     if (this.round.cards == this.totalTrick()) {
+      this.roundsProvider.updateScore(this.rounds, this.roundIndex+1);
       this.navCtrl.push(RoundPage, {
-        round: this.roundId+1,
-        dealer: this.roundEntries[1].player
+        round: this.roundIndex+1,
       });
     }
     else {
@@ -173,6 +166,7 @@ export class RoundPage {
   }
 
   validateRound() {
+    this.roundsProvider.saveRounds(this.rounds);
     if (this.inProgress === false) {
       this.validateBids();
     }

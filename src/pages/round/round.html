@@ -5,20 +5,30 @@
 </ion-header>
 <ion-content padding>
   <ion-list>
-    <ion-item *ngFor="let roundEntry of roundEntries">
+    <ion-item class="header">
+      <ion-grid>
+        <ion-row>
+          <ion-col col-6>Player</ion-col>
+          <ion-col text-center col-2>Bid</ion-col>
+          <ion-col text-center col-2>Trick</ion-col>
+          <ion-col text-center col-2>Score</ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-item>
+    <ion-item *ngFor="let state of round.state">
       <ion-grid>
         <ion-row>
           <ion-col col-6>
-            {{roundEntry.player}}
+            {{state.player}}
           </ion-col>
-          <ion-col text-center col-2 (click)="setBid(roundEntry)">
-            {{roundEntry.bid}}
+          <ion-col text-center col-2 (click)="setBid(state)">
+            {{state.bid}}
           </ion-col>
-          <ion-col text-center col-2 (click)="setTrick(roundEntry)">
-            {{roundEntry.trick}}
+          <ion-col text-center col-2 (click)="setTrick(state)">
+            {{state.trick}}
           </ion-col>
           <ion-col text-center col-2>
-            {{roundEntry.score}}
+            {{state.score}}
           </ion-col>
         </ion-row>
       </ion-grid>
