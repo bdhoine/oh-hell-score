@@ -85,10 +85,15 @@ export class TrickPage {
 
   validateTricks() {
     if (this.round.cards == this.totalTrick()) {
-      this.roundsProvider.updateScore(this.rounds, this.roundIndex+1);
-      this.navCtrl.push(BidPage, {
-        round: this.roundIndex+1,
-      });
+      if (this.roundIndex != this.rounds.length-1) {
+        this.roundsProvider.updateScore(this.rounds, this.roundIndex+1);
+        this.navCtrl.push(BidPage, {
+          round: this.roundIndex+1,
+        });
+      }
+      else {
+        // TODO: Show final score
+      }
     }
     else {
       const alert = this.alertCtrl.create({
