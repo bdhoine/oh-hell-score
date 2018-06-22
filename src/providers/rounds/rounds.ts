@@ -9,8 +9,11 @@ export class RoundsProvider {
 
   orderPlayers(players:string[], dealer:string) {
     let index = players.indexOf(dealer);
-    let orderedPlayers = players.slice(index);
-    return orderedPlayers.concat(players.slice(0, index));
+    if (index == players.length-1) {
+      return players;
+    }
+    let orderedPlayers = players.slice(index+1);
+    return orderedPlayers.concat(players.slice(0, index+1));
   }
 
   nextDealer(players:string[], dealer:string):string {
@@ -18,7 +21,7 @@ export class RoundsProvider {
     if (index+1 == players.length) {
       return players[0];
     }
-    return players[index];
+    return players[index+1];
   }
 
   generateRound(cards:number, players:string[], dealer:string):any {
