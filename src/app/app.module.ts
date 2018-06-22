@@ -16,6 +16,7 @@ import { PlayersProvider } from '../providers/players/players';
 import { RoundsProvider } from '../providers/rounds/rounds';
 import { SettingsProvider } from '../providers/settings/settings';
 
+
 @NgModule({
   declarations: [
     MyApp,

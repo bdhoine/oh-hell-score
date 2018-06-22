@@ -2,9 +2,11 @@ import { Component } from '@angular/core';
 import { NavController, AlertController } from 'ionic-angular';
 
 import { BidPage } from '../bid/bid';
+
 import { PlayersProvider } from '../../providers/players/players';
 import { SettingsProvider } from '../../providers/settings/settings';
 import { RoundsProvider } from '../../providers/rounds/rounds';
+
 
 @Component({
   selector: 'page-new-game',
@@ -17,7 +19,13 @@ export class NewGamePage {
   settings:any;
   cards:number[];
 
-  constructor(public navCtrl: NavController, public alertCtrl: AlertController, public playersProvider: PlayersProvider, public settingsProvider: SettingsProvider, public roundsProvider: RoundsProvider) {
+  constructor(
+      public navCtrl: NavController,
+      public alertCtrl: AlertController,
+      public playersProvider: PlayersProvider,
+      public settingsProvider: SettingsProvider,
+      public roundsProvider: RoundsProvider
+  ) {
     this.cards = Array(17).fill(1).map((x,i) => i+1);
     this.newPlayer = '';
     this.players = [];

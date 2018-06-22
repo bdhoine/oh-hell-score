@@ -5,6 +5,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 
 import { NewGamePage } from '../pages/new-game/new-game';
 
+
 @Component({
   templateUrl: 'app.html'
 })

@@ -1,11 +1,10 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, AlertController } from 'ionic-angular';
+import { NavParams, NavController, AlertController } from 'ionic-angular';
 
 import { TrickPage } from '../trick/trick';
 
 import { PlayersProvider } from '../../providers/players/players';
 import { RoundsProvider } from '../../providers/rounds/rounds';
-import { SettingsProvider } from '../../providers/settings/settings';
 
 @Component({
   selector: 'page-bid',
@@ -16,9 +15,14 @@ export class BidPage {
   round:any;
   rounds:any;
   roundIndex:number;
-  settings:any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public alertCtrl: AlertController, public playersProvider: PlayersProvider, public roundsProvider: RoundsProvider, public settingsProvider: SettingsProvider) {
+  constructor(
+      public navParams: NavParams,
+      public navCtrl: NavController, 
+      public alertCtrl: AlertController, 
+      public playersProvider: PlayersProvider, 
+      public roundsProvider: RoundsProvider
+  ) {
     this.roundIndex = this.navParams.get('round');
     this.round = {
       cards: 0,
