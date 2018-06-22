@@ -1,6 +1,6 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>Cards {{round.cards}}</ion-title>
+    <ion-title>Bid: {{round.cards}}</ion-title>
   </ion-navbar>
 </ion-header>
 <ion-content padding>
@@ -24,7 +24,7 @@
           <ion-col text-center col-2 (click)="setBid(state)">
             {{state.bid}}
           </ion-col>
-          <ion-col text-center col-2 (click)="setTrick(state)">
+          <ion-col text-center col-2>
             {{state.trick}}
           </ion-col>
           <ion-col text-center col-2>
@@ -34,5 +34,5 @@
       </ion-grid>
     </ion-item>
   </ion-list>
-  <button ion-button full (click)="validateRound()">{{inProgress ? 'Next Round' : 'Start Round'}}</button>
+  <button ion-button full (click)="validateBids()">Start Round</button>
 </ion-content>

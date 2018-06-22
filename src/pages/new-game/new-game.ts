@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController, AlertController } from 'ionic-angular';
 
-import { RoundPage } from '../round/round';
+import { BidPage } from '../bid/bid';
 import { PlayersProvider } from '../../providers/players/players';
 import { SettingsProvider } from '../../providers/settings/settings';
 import { RoundsProvider } from '../../providers/rounds/rounds';
@@ -101,7 +101,7 @@ export class NewGamePage {
           handler: dealer => {
             if (typeof dealer != 'undefined') {
               this.roundsProvider.generateRounds(this.settings.maxCards, this.players, dealer);
-              this.navCtrl.push(RoundPage, {
+              this.navCtrl.push(BidPage, {
                 round: 0
               });
             }

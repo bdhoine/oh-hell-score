@@ -1,17 +1,18 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams, AlertController } from 'ionic-angular';
 
+import { TrickPage } from '../trick/trick';
+
 import { PlayersProvider } from '../../providers/players/players';
 import { RoundsProvider } from '../../providers/rounds/rounds';
 import { SettingsProvider } from '../../providers/settings/settings';
 
 @Component({
-  selector: 'page-round',
-  templateUrl: 'round.html',
+  selector: 'page-bid',
+  templateUrl: 'bid.html',
 })
-export class RoundPage {
+export class BidPage {
 
-  inProgress:boolean;
   round:any;
   rounds:any;
   roundIndex:number;
@@ -26,8 +27,6 @@ export class RoundPage {
   }
 
   ionViewWillEnter() {
-    this.inProgress = false;
-
     this.roundsProvider.getRounds().then((rounds) => {
       this.rounds = rounds;
       this.round = rounds[this.roundIndex];
@@ -48,31 +47,18 @@ export class RoundPage {
     }
   }
 
-  getTotal(key:string) {
+  totalBid():number {
     let total = 0;
     this.round.state.forEach(function(state) {
-      total += state[key];
+      total += state.bid;
     });
-    return total;
-  }
-
-  totalTrick():number {
-    return this.getTotal('trick');
-  }
-
-  totalBid():number {
-    return this.getTotal('bid');
-  }
+    return total;  }
 
   isLastPlayer(player:string) {
     return this.round.state[this.round.state.length-1].player == player;
   }
 
   setBid(state) {
-    if (this.inProgress === true) {
-      return;
-    }
-
     let alert = this.alertCtrl.create({
       title: 'Set bid',
       buttons: [
@@ -102,38 +88,6 @@ export class RoundPage {
     alert.present();
   }
 
-  setTrick(state) {
-    if (this.inProgress === false) {
-      return;
-    }
-
-    let alert = this.alertCtrl.create({
-      title: 'Set trick',
-      buttons: [
-        {
-          text: 'Cancel'
-        },
-        {
-          text: 'Save',
-          handler: data => {
-            let trick = this.numberFromAlert(data);
-            state.trick = trick;
-          }
-        }
-      ]
-    });
-
-    Array(this.round.cards+1).fill(1).map((x, i) => i).forEach(function(trick) {
-      alert.addInput({
-        type: 'radio',
-        label: trick.toString(),
-        value: trick.toString()
-      })
-    });
-
-    alert.present();
-  }
-
   validateBids() {
     if (this.round.cards == this.totalBid()) {
       const alert = this.alertCtrl.create({
@@ -144,34 +98,9 @@ export class RoundPage {
       alert.present();
     }
     else {
-      this.inProgress = true;
-    }
-  }
-
-  validateTricks() {
-    if (this.round.cards == this.totalTrick()) {
-      this.roundsProvider.updateScore(this.rounds, this.roundIndex+1);
-      this.navCtrl.push(RoundPage, {
-        round: this.roundIndex+1,
+      this.navCtrl.push(TrickPage, {
+        round: this.roundIndex,
       });
-    }
-    else {
-      const alert = this.alertCtrl.create({
-        title: 'Error',
-        subTitle: 'Total tricks is ' + this.totalTrick() + ' but it should be ' + this.round.cards,
-        buttons: ['Close']
-      });
-      alert.present();
-    }
-  }
-
-  validateRound() {
-    this.roundsProvider.saveRounds(this.rounds);
-    if (this.inProgress === false) {
-      this.validateBids();
-    }
-    else {
-      this.validateTricks();
     }
   }
 

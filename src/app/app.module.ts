@@ -9,7 +9,8 @@ import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
 import { SettingsPage } from '../pages/settings/settings';
 import { NewGamePage } from '../pages/new-game/new-game';
-import { RoundPage } from '../pages/round/round';
+import { BidPage } from '../pages/bid/bid';
+import { TrickPage } from '../pages/trick/trick';
 
 import { PlayersProvider } from '../providers/players/players';
 import { RoundsProvider } from '../providers/rounds/rounds';
@@ -21,7 +22,8 @@ import { SettingsProvider } from '../providers/settings/settings';
     HomePage,
     SettingsPage,
     NewGamePage,
-    RoundPage
+    BidPage,
+    TrickPage
   ],
   imports: [
     BrowserModule,
@@ -34,7 +36,8 @@ import { SettingsProvider } from '../providers/settings/settings';
     HomePage,
     SettingsPage,
     NewGamePage,
-    RoundPage
+    BidPage,
+    TrickPage
   ],
   providers: [
     StatusBar,
