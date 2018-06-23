@@ -46,14 +46,16 @@ export class RoundsProvider {
 
   getRounds():any {
     return new Promise((resolve, reject) => {
-      this.storage.get('rounds').then((data) => {
-        if (data != null) {
-          let rounds = JSON.parse(data);
-          resolve(rounds);
-        }
-        else {
-          reject();
-        }
+      this.storage.ready().then(() => {
+        this.storage.get('rounds').then((data) => {
+          if (data != null) {
+            let rounds = JSON.parse(data);
+            resolve(rounds);
+          }
+          else {
+            reject();
+          }
+        });
       });
     });
   }

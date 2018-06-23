@@ -9,13 +9,15 @@ export class PlayersProvider {
 
   loadPlayers() {
     return new Promise((resolve, reject) => {
-      this.storage.get('players').then((data) => {
-        if (data != null) {
-          resolve(JSON.parse(data))
-        }
-        else {
-          resolve([]);
-        }
+      this.storage.ready().then(() => {
+        this.storage.get('players').then((data) => {
+          if (data != null) {
+            resolve(JSON.parse(data));
+          }
+          else {
+            resolve([]);
+          }
+        });
       });
     });
   }
