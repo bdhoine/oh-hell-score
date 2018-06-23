@@ -16,7 +16,7 @@ export class RoundsProvider {
     return orderedPlayers.concat(players.slice(0, index+1));
   }
 
-  nextDealer(players:string[], dealer:string):string {
+  nextPlayer(players:string[], dealer:string):string {
     let index = players.indexOf(dealer);
     if (index+1 == players.length) {
       return players[0];
@@ -62,17 +62,25 @@ export class RoundsProvider {
     this.storage.set('rounds', JSON.stringify(rounds));
   }
 
+  getNextState(rounds:any, roundIndex:number, stateIndex:number) {
+    if (roundIndex < rounds.length-1) {
+      let round = rounds[roundIndex+1];
+      if (stateIndex == 0) {
+        return round.state[round.state.length-1];
+      }
+      return round.state[stateIndex-1];
+    }
+  }
+
   updateScore(rounds:any, roundIndex:number) {
-    for(let index = 1; index <= roundIndex; index++) {
-      for(let stateIndex = 0; stateIndex < rounds[index].state.length; stateIndex++) {
-        let state = rounds[index].state[stateIndex];
-        let previousState = rounds[index-1].state[stateIndex];
-        if (previousState.bid == previousState.trick) {
-          state.score = previousState.score + 10 + previousState.trick;
-        }
-        else {
-          state.score = previousState.score - Math.abs(previousState.bid - previousState.trick);
-        }
+    for(let stateIndex = 0; stateIndex < rounds[roundIndex].state.length; stateIndex++) {
+      let state = rounds[roundIndex].state[stateIndex];
+      let nextState = this.getNextState(rounds, roundIndex, stateIndex);
+      if (state.bid == state.trick) {
+        nextState.score = state.score + 10 + state.trick;
+      }
+      else {
+        nextState.score = state.score - Math.abs(state.bid - state.trick);
       }
     }
     this.storage.set('rounds', JSON.stringify(rounds));
@@ -82,11 +90,11 @@ export class RoundsProvider {
     let rounds = [];
     for (let cards = 1; cards <= maxCards; cards++) {
       rounds.push(this.generateRound(cards, players, dealer));
-      dealer = this.nextDealer(players, dealer);
+      dealer = this.nextPlayer(players, dealer);
     }
     for (let cards = maxCards; cards >= 1; cards--) {
       rounds.push(this.generateRound(cards, players, dealer));
-      dealer = this.nextDealer(players, dealer);
+      dealer = this.nextPlayer(players, dealer);
     }
     this.storage.set('rounds', JSON.stringify(rounds));
   }

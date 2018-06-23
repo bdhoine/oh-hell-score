@@ -91,7 +91,7 @@ export class TrickPage {
   validateTricks() {
     if (this.round.cards == this.totalTrick()) {
       if (this.roundIndex != this.rounds.length-1) {
-        this.roundsProvider.updateScore(this.rounds, this.roundIndex+1);
+        this.roundsProvider.updateScore(this.rounds, this.roundIndex);
         this.navCtrl.push(BidPage, {
           round: this.roundIndex+1,
         });
