@@ -15,6 +15,7 @@ export class BidPage {
   round:any;
   rounds:any;
   roundIndex:number;
+  totalBid:number;
 
   constructor(
       public navParams: NavParams,
@@ -27,7 +28,8 @@ export class BidPage {
     this.round = {
       cards: 0,
       state: []
-    }
+    };
+    this.totalBid = 0;
   }
 
   ionViewWillEnter() {
@@ -51,7 +53,7 @@ export class BidPage {
     }
   }
 
-  totalBid():number {
+  calculateTotalBid():number {
     let total = 0;
     this.round.state.forEach(function(state) {
       total += state.bid;
@@ -74,13 +76,14 @@ export class BidPage {
           handler: data => {
             let bid = this.numberFromAlert(data);
             state.bid = bid;
+            this.totalBid = this.calculateTotalBid();
           }
         }
       ]
     });
 
     for (var x = 0; x <= this.round.cards; x++) {
-      if ((!this.isLastPlayer(state.player)) || (this.round.cards != this.totalBid() + x)) {
+      if ((!this.isLastPlayer(state.player)) || (this.round.cards != this.totalBid + x)) {
         alert.addInput({
           type: 'radio',
           label: x.toString(),
@@ -93,7 +96,7 @@ export class BidPage {
   }
 
   validateBids() {
-    if (this.round.cards == this.totalBid()) {
+    if (this.round.cards == this.totalBid) {
       const alert = this.alertCtrl.create({
         title: 'Error',
         subTitle: 'Total bid can\'t be equal to the total number of cards',

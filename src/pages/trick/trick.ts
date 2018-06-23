@@ -16,6 +16,7 @@ export class TrickPage {
   round:any;
   rounds:any;
   roundIndex:number;
+  totalTrick:number;
 
   constructor(
       public navParams: NavParams,
@@ -28,7 +29,8 @@ export class TrickPage {
     this.round = {
       cards: 0,
       state: []
-    }
+    };
+    this.totalTrick = 0;
   }
 
   ionViewWillEnter() {
@@ -52,7 +54,7 @@ export class TrickPage {
     }
   }
 
-  totalTrick():number {
+  calculateTotalTrick():number {
     let total = 0;
     this.round.state.forEach(function(state) {
       total += state.trick;
@@ -72,6 +74,7 @@ export class TrickPage {
           handler: data => {
             let trick = this.numberFromAlert(data);
             state.trick = trick;
+            this.totalTrick = this.calculateTotalTrick();
           }
         }
       ]
@@ -89,7 +92,7 @@ export class TrickPage {
   }
 
   validateTricks() {
-    if (this.round.cards == this.totalTrick()) {
+    if (this.round.cards == this.totalTrick) {
       if (this.roundIndex != this.rounds.length-1) {
         this.roundsProvider.updateScore(this.rounds, this.roundIndex);
         this.navCtrl.push(BidPage, {
@@ -103,7 +106,7 @@ export class TrickPage {
     else {
       const alert = this.alertCtrl.create({
         title: 'Error',
-        subTitle: 'Total tricks is ' + this.totalTrick() + ' but it should be ' + this.round.cards,
+        subTitle: 'Total tricks is ' + this.totalTrick + ' but it should be ' + this.round.cards,
         buttons: ['Close']
       });
       alert.present();

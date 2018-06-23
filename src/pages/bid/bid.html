@@ -33,6 +33,18 @@
         </ion-row>
       </ion-grid>
     </ion-item>
+    <ion-item>
+      <ion-grid>
+        <ion-row>
+          <ion-col col-6></ion-col>
+          <ion-col text-center col-2>
+            {{totalBid}}
+          </ion-col>
+          <ion-col text-center col-2></ion-col>
+          <ion-col text-center col-2></ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-item>
   </ion-list>
   <button ion-button full (click)="validateBids()">Start Round</button>
 </ion-content>
