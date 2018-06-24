@@ -11,6 +11,8 @@ import { SettingsPage } from '../pages/settings/settings';
 import { NewGamePage } from '../pages/new-game/new-game';
 import { BidPage } from '../pages/bid/bid';
 import { TrickPage } from '../pages/trick/trick';
+import { ScorePage } from '../pages/score/score';
+
 
 import { PlayersProvider } from '../providers/players/players';
 import { RoundsProvider } from '../providers/rounds/rounds';
@@ -24,7 +26,8 @@ import { SettingsProvider } from '../providers/settings/settings';
     SettingsPage,
     NewGamePage,
     BidPage,
-    TrickPage
+    TrickPage,
+    ScorePage
   ],
   imports: [
     BrowserModule,
@@ -38,7 +41,8 @@ import { SettingsProvider } from '../providers/settings/settings';
     SettingsPage,
     NewGamePage,
     BidPage,
-    TrickPage
+    TrickPage,
+    ScorePage
   ],
   providers: [
     StatusBar,

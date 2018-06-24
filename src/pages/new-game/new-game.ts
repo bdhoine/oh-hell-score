@@ -118,7 +118,7 @@ export class NewGamePage {
       ]
     });
 
-    this.players.forEach(function(player) {
+    this.players.forEach((player) => {
       alert.addInput({
         type: 'radio',
         label: player,

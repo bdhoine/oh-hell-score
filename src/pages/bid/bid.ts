@@ -55,7 +55,7 @@ export class BidPage {
 
   calculateTotalBid():number {
     let total = 0;
-    this.round.state.forEach(function(state) {
+    this.round.state.forEach((state) => {
       total += state.bid;
     });
     return total;  }

@@ -32,7 +32,7 @@ export class RoundsProvider {
 
     let orderedPlayers = this.orderPlayers(players, dealer);
 
-    orderedPlayers.forEach(function(player) {
+    orderedPlayers.forEach((player) => {
       round.state.push({
         player: player,
         bid: 0,

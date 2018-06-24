@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { NavParams, NavController, AlertController } from 'ionic-angular';
 
 import { BidPage } from '../bid/bid';
+import { ScorePage } from '../score/score';
 
 import { PlayersProvider } from '../../providers/players/players';
 import { RoundsProvider } from '../../providers/rounds/rounds';
@@ -56,7 +57,7 @@ export class TrickPage {
 
   calculateTotalTrick():number {
     let total = 0;
-    this.round.state.forEach(function(state) {
+    this.round.state.forEach((state) => {
       total += state.trick;
     });
     return total;
@@ -100,7 +101,7 @@ export class TrickPage {
         });
       }
       else {
-        // TODO: Show final score
+        this.navCtrl.push(ScorePage);
       }
     }
     else {
