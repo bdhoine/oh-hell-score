@@ -4,6 +4,7 @@ import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 import { IonicStorageModule } from '@ionic/storage';
+import { NgxErrorsModule } from '@ultimate/ngxerrors';
 
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
@@ -12,12 +13,17 @@ import { NewGamePage } from '../pages/new-game/new-game';
 import { BidPage } from '../pages/bid/bid';
 import { TrickPage } from '../pages/trick/trick';
 import { ScorePage } from '../pages/score/score';
-
+import { LoginPage } from '../pages/login/login';
+import { SignupPage } from '../pages/signup/signup';
 
 import { PlayersProvider } from '../providers/players/players';
 import { RoundsProvider } from '../providers/rounds/rounds';
 import { SettingsProvider } from '../providers/settings/settings';
+import { AuthService } from '../providers/authentication/auth.service';
 
+import { AngularFireModule } from 'angularfire2';
+import { AngularFireAuth } from 'angularfire2/auth';
+import { firebaseConfig } from '../config/firebase';
 
 @NgModule({
   declarations: [
@@ -27,12 +33,16 @@ import { SettingsProvider } from '../providers/settings/settings';
     NewGamePage,
     BidPage,
     TrickPage,
-    ScorePage
+    ScorePage,
+    LoginPage,
+    SignupPage
   ],
   imports: [
     BrowserModule,
     IonicModule.forRoot(MyApp),
-    IonicStorageModule.forRoot()
+    IonicStorageModule.forRoot(),
+    AngularFireModule.initializeApp(firebaseConfig.fire),
+    NgxErrorsModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -42,7 +52,9 @@ import { SettingsProvider } from '../providers/settings/settings';
     NewGamePage,
     BidPage,
     TrickPage,
-    ScorePage
+    ScorePage,
+    LoginPage,
+    SignupPage
   ],
   providers: [
     StatusBar,
@@ -50,7 +62,9 @@ import { SettingsProvider } from '../providers/settings/settings';
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     PlayersProvider,
     RoundsProvider,
-    SettingsProvider
+    SettingsProvider,
+    AngularFireAuth,
+    AuthService
   ]
 })
 export class AppModule {}
