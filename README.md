@@ -1,9 +1,10 @@
-# Oh Hell Score
+# Oh Hell Score [![Build Status](https://travis-ci.org/bdhoine/oh-hell-score.svg?branch=master)](https://travis-ci.org/bdhoine/oh-hell-score)
 
 ## Build
 
 ```sh
-brew cask install node android-platform-tools android-sdk gradle
+brew install node
+brew cask install android-platform-tools android-sdk gradle
 npm install -g ionic codova
 sdkmanager 'build-tools;28.0.0'
 ```
