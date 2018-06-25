@@ -1,0 +1,22 @@
+matrix:
+  include:
+    - os: osx
+      env: PLATFORM=ios
+    - os: linux
+      language: android
+      env: PLATFORM=android
+      android:
+        components:
+          - build-tools-26.0.2
+      before_install:
+          - yes | sdkmanager tools > /dev/null
+          - yes | sdkmanager --licenses > /dev/null
+          - nvm install 6
+
+install:
+  - npm install -g cordova ionic
+  - npm install
+  - ionic cordova platform add ${PLATFORM}
+
+script:
+  - ionic cordova build ${PLATFORM}
