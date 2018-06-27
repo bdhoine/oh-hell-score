@@ -3,8 +3,8 @@
 ## Build
 
 ```sh
-brew install node
-brew cask install android-platform-tools android-sdk gradle
+brew install node gradle
+brew cask install android-sdk
 npm install -g ionic codova
 sdkmanager 'build-tools;28.0.0'
 ```
