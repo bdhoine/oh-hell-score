@@ -36,11 +36,18 @@ export class TrickPage {
     this.roundsProvider.getRounds().then((rounds) => {
       this.rounds = rounds;
       this.round = rounds[this.roundIndex];
+      this.copyBids();
     });
   }
 
   ionViewWillLeave() {
     this.roundsProvider.saveRounds(this.rounds);
+  }
+
+  copyBids() {
+    this.round.state.forEach((state) => {
+      state.trick = state.bid;
+    });
   }
 
   numberFromAlert(input):number {
