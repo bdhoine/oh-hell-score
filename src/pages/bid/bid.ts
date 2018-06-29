@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
-import { NavParams, NavController, AlertController } from 'ionic-angular';
-
-import { TrickPage } from '../trick/trick';
+import { AlertController, IonicPage, NavController, NavParams } from 'ionic-angular';
 
 import { PlayersProvider } from '../../providers/players/players';
 import { RoundsProvider } from '../../providers/rounds/rounds';
 
+
+@IonicPage()
 @Component({
   selector: 'page-bid',
   templateUrl: 'bid.html',
@@ -105,7 +105,7 @@ export class BidPage {
       alert.present();
     }
     else {
-      this.navCtrl.push(TrickPage, {
+      this.navCtrl.push('TrickPage', {
         round: this.roundIndex,
       });
     }
