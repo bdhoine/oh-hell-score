@@ -1,13 +1,11 @@
 import { Component } from '@angular/core';
-import { NavParams, NavController, AlertController } from 'ionic-angular';
-
-import { BidPage } from '../bid/bid';
-import { ScorePage } from '../score/score';
+import { AlertController, IonicPage, NavController, NavParams } from 'ionic-angular';
 
 import { PlayersProvider } from '../../providers/players/players';
 import { RoundsProvider } from '../../providers/rounds/rounds';
 
 
+@IonicPage()
 @Component({
   selector: 'page-trick',
   templateUrl: 'trick.html',
@@ -96,12 +94,12 @@ export class TrickPage {
     if (this.round.cards == this.totalTrick) {
       if (this.roundIndex != this.rounds.length-1) {
         this.roundsProvider.updateScore(this.rounds, this.roundIndex);
-        this.navCtrl.push(BidPage, {
+        this.navCtrl.push('BidPage', {
           round: this.roundIndex+1,
         });
       }
       else {
-        this.navCtrl.push(ScorePage);
+        this.navCtrl.push('ScorePage');
       }
     }
     else {

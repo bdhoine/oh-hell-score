@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
 import { RoundsProvider } from '../../providers/rounds/rounds';
-import { NewGamePage } from '../new-game/new-game';
 
+
+@IonicPage()
 @Component({
   selector: 'page-score',
   templateUrl: 'score.html',
@@ -51,7 +52,7 @@ export class ScorePage {
   }
 
   newGame() {
-    this.navCtrl.push(NewGamePage);
+    this.navCtrl.push('NewGamePage');
   }
 
 }
