@@ -36,6 +36,14 @@
         <ion-option *ngFor="let card of cards" value="{{card}}">{{card}}</ion-option>
       </ion-select>
     </ion-item>
+    <ion-item>
+      <ion-label>Cards to play</ion-label>
+      <ion-select [(ngModel)]="settings.cardsToPlay">
+        <ion-option value="all">All</ion-option>
+        <ion-option value="odd">Odd</ion-option>
+        <ion-option value="even">Even</ion-option>
+      </ion-select>
+    </ion-item>
   </ion-list>
   <button ion-button full (click)="startGame()">Start Game</button>
 </ion-content>

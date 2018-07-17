@@ -89,16 +89,40 @@ export class RoundsProvider {
     this.storage.set('rounds', JSON.stringify(rounds));
   }
 
-  generateRounds(maxCards:number, players:string[], dealer:string):any {
+  determineRoundConfig(settings: any): any {
+    let config = {
+      start: 1,
+      step: 1,
+      maxCards: Number(settings.maxCards)
+    }
+
+    if (settings.cardsToPlay == "even") {
+      config.start = 2;
+    }
+    if (settings.cardsToPlay !== "all") {
+      config.step = 2;
+    }
+    if ((config.maxCards % 2 == 0 && settings.cardsToPlay == "odd") ||
+        (config.maxCards % 2 != 0 && settings.cardsToPlay == "even")) {
+          config.maxCards -= 1;
+    }
+
+    return config
+  }
+
+  generateRounds(settings:any, players:string[], dealer:string):any {
     let rounds = [];
-    for (let cards = 1; cards <= maxCards; cards++) {
+    let config = this.determineRoundConfig(settings);
+
+    for (let cards = config.start; cards <= config.maxCards; cards += config.step) {
       rounds.push(this.generateRound(cards, players, dealer));
       dealer = this.nextPlayer(players, dealer);
     }
-    for (let cards = maxCards; cards >= 1; cards--) {
+    for (let cards = config.maxCards; cards >= 1; cards -= config.step) {
       rounds.push(this.generateRound(cards, players, dealer));
       dealer = this.nextPlayer(players, dealer);
     }
+
     this.storage.set('rounds', JSON.stringify(rounds));
   }
 
