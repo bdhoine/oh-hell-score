@@ -25,11 +25,12 @@ export class NewGamePage {
       public settingsProvider: SettingsProvider,
       public roundsProvider: RoundsProvider
   ) {
-    this.cards = Array(17).fill(1).map((x,i) => i+1);
+    this.cards = Array(16).fill(0).map((x,i) => i+2);
     this.newPlayer = '';
     this.players = [];
     this.settings = {
-      maxCards: 7
+      maxCards: 7,
+      cardsToPlay: "all"
     };
   }
 
@@ -107,7 +108,7 @@ export class NewGamePage {
           text: 'Start',
           handler: dealer => {
             if (typeof dealer != 'undefined') {
-              this.roundsProvider.generateRounds(this.settings.maxCards, this.players, dealer);
+              this.roundsProvider.generateRounds(this.settings, this.players, dealer);
               this.navCtrl.push('BidPage', {
                 round: 0
               });
