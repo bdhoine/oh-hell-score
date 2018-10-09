@@ -119,4 +119,8 @@ export class TrickPage {
     }
   }
 
+  restart() {
+    this.roundsProvider.restart(this.alertCtrl, this.navCtrl);
+  }
+
 }

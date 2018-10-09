@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage';
+import { AlertController, NavController } from 'ionic-angular';
 
 
 @Injectable()
@@ -124,6 +125,25 @@ export class RoundsProvider {
     }
 
     this.storage.set('rounds', JSON.stringify(rounds));
+  }
+
+  restart(alertCtrl:AlertController, navCtrl: NavController) {
+    let alert = alertCtrl.create({
+      title: 'Restart game?',
+      buttons: [
+        {
+          text: 'No'
+        },
+        {
+          text: 'Yes',
+          handler: data => {
+            navCtrl.goToRoot({});
+          }
+        }
+      ]
+    });
+
+    alert.present();
   }
 
 }
