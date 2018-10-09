@@ -1,6 +1,11 @@
 <ion-header>
   <ion-navbar>
     <ion-title>Bid: {{round.cards}}</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="restart()">
+        <ion-icon name="refresh"></ion-icon>
+      </button>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
 <ion-content padding>

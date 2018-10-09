@@ -19,9 +19,9 @@ export class BidPage {
 
   constructor(
       public navParams: NavParams,
-      public navCtrl: NavController, 
-      public alertCtrl: AlertController, 
-      public playersProvider: PlayersProvider, 
+      public navCtrl: NavController,
+      public alertCtrl: AlertController,
+      public playersProvider: PlayersProvider,
       public roundsProvider: RoundsProvider
   ) {
     this.roundIndex = this.navParams.get('round');
@@ -109,6 +109,10 @@ export class BidPage {
         round: this.roundIndex,
       });
     }
+  }
+
+  restart() {
+    this.roundsProvider.restart(this.alertCtrl, this.navCtrl);
   }
 
 }
