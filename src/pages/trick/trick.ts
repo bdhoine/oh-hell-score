@@ -33,10 +33,13 @@ export class TrickPage {
   }
 
   ionViewWillEnter() {
+    let totalTrick = this.totalTrick;
     this.roundsProvider.getRounds().then((rounds) => {
       this.rounds = rounds;
       this.round = rounds[this.roundIndex];
-      this.copyBids();
+      if (totalTrick === 0) {
+        this.copyBids();
+      }
     });
   }
 
