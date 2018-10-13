@@ -38,7 +38,7 @@
     </ion-item>
     <ion-item>
       <ion-label>Cards to play</ion-label>
-      <ion-select [(ngModel)]="settings.cardsToPlay">
+      <ion-select [(ngModel)]="settings.cardsToPlay" (ionChange)="updateCardsSelect()">
         <ion-option value="all">All</ion-option>
         <ion-option value="odd">Odd</ion-option>
         <ion-option value="even">Even</ion-option>
