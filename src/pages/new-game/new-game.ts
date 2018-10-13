@@ -55,9 +55,9 @@ export class NewGamePage {
     }
   }
 
-  renamePlayer(item) {
+  renamePlayer(player: string, index: number) {
     let prompt = this.alertCtrl.create({
-      message: 'Enter new name for player: <b>' + item + '</b>',
+      message: 'Enter new name for player: <b>' + player + '</b>',
       inputs: [
         {
           name: 'name',
@@ -72,7 +72,6 @@ export class NewGamePage {
           text: 'Rename',
           handler: data => {
             if (data.name.length > 0) {
-              var index = this.players.indexOf(item, 0);
               if (index > -1) {
                 this.players[index] = data.name;
               }
