@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage';
+import { GameSettings } from '../../models/gamesettings.model';
 
 
 @Injectable()
@@ -8,7 +9,7 @@ export class SettingsProvider {
   constructor(private storage: Storage) {
   }
 
-  mergeSettings(settings:any, loaded:any):any {
+  mergeSettings(settings: GameSettings, loaded: any): GameSettings {
     let mergedSettings = {};
 
     for(var key in settings) {
@@ -18,11 +19,10 @@ export class SettingsProvider {
     for(let key in loaded) {
       mergedSettings[key] = loaded[key];
     }
-
-    return mergedSettings;
+    return mergedSettings as GameSettings;
   }
 
-  loadSettings(settings:any) {
+  loadSettings(settings: GameSettings): Promise<GameSettings> {
     return new Promise((resolve, reject) => {
       this.storage.get('settings').then((data) => {
         if (data != null) {

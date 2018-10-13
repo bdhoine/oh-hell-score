@@ -1,10 +1,12 @@
 import { Component } from '@angular/core';
-import { AlertController, IonicPage, NavController  } from 'ionic-angular';
+import { AlertController, IonicPage, NavController } from 'ionic-angular';
 
 import { PlayersProvider } from '../../providers/players/players';
 import { SettingsProvider } from '../../providers/settings/settings';
 import { RoundsProvider } from '../../providers/rounds/rounds';
-
+import { isOdd } from '../../utils/number-utils';
+import { GameSettings } from '../../models/gamesettings.model';
+import { GameType } from '../../models/gametype.model';
 
 @IonicPage()
 @Component({
@@ -13,24 +15,24 @@ import { RoundsProvider } from '../../providers/rounds/rounds';
 })
 export class NewGamePage {
 
-  players:any;
-  newPlayer:string;
-  settings:any;
-  cards:number[];
+  players: any;
+  newPlayer: string;
+  settings: GameSettings;
+  cards: number[];
 
   constructor(
-      public navCtrl: NavController,
-      public alertCtrl: AlertController,
-      public playersProvider: PlayersProvider,
-      public settingsProvider: SettingsProvider,
-      public roundsProvider: RoundsProvider
+    public navCtrl: NavController,
+    public alertCtrl: AlertController,
+    public playersProvider: PlayersProvider,
+    public settingsProvider: SettingsProvider,
+    public roundsProvider: RoundsProvider
   ) {
-    this.cards = Array(16).fill(0).map((x,i) => i+2);
+    this.cards = Array(16).fill(0).map((x, i) => i + 2);
     this.newPlayer = '';
     this.players = [];
     this.settings = {
       maxCards: 7,
-      cardsToPlay: "all"
+      cardsToPlay: GameType.ALL
     };
   }
 
@@ -38,7 +40,7 @@ export class NewGamePage {
     this.playersProvider.loadPlayers().then((players) => {
       this.players = players;
     });
-    this.settingsProvider.loadSettings(this.settings).then((settings) => {
+    this.settingsProvider.loadSettings(this.settings).then((settings: GameSettings) => {
       this.settings = settings;
     });
   }
@@ -53,6 +55,59 @@ export class NewGamePage {
       this.players.push(this.newPlayer);
       this.newPlayer = '';
     }
+    this.updateCardsSelect();
+  }
+
+  get numberOfPlayers() {
+    return this.players.length;
+  }
+
+  generateCards(amount: number): number[] {
+    return Array(amount - 1).fill(0).map((x, i) => i + 2)
+  }
+
+  private isValidCardsAmount(amountOfCards: number) {
+    return (this.settings.cardsToPlay === GameType.ODD && isOdd(amountOfCards))
+      || (this.settings.cardsToPlay === GameType.EVEN && !isOdd(amountOfCards))
+  }
+
+  private roundCardsToPlay(maxCards: number) {
+    if (!this.isValidCardsAmount(maxCards)) {
+      maxCards--;
+    }
+    return maxCards;
+  }
+
+  updateCardsSelect() {
+    let maxCards = this.numberOfPlayers > 0 ? Math.floor(52 / this.numberOfPlayers) : 52;
+    maxCards = this.roundCardsToPlay(maxCards);
+
+    if (this.settings.cardsToPlay === GameType.ODD) {
+      this.cards = this.generateCards(maxCards).filter((num) => isOdd(num))
+    } else if (this.settings.cardsToPlay === "even") {
+      this.cards = this.generateCards(maxCards - 1).filter((num) => !isOdd(num))
+    } else {
+      this.cards = Array(maxCards).fill(0).map((x, i) => i + 1);
+    }
+    this.settings.maxCards = this.getClosestMaxCards();
+  }
+
+  get lastRoundAmount(): number {
+    return this.cards[this.cards.length - 1]
+  }
+
+  private getClosestMaxCards() {
+    let closest = this.settings.maxCards;
+    if (closest > this.lastRoundAmount) {
+      closest = this.lastRoundAmount;
+    } else if (!this.isValidCardsAmount(this.settings.maxCards)) {
+      if (this.settings.maxCards + 1 <= this.lastRoundAmount) {
+        closest++;
+      } else {
+        closest--;
+      }
+    }
+    return closest;
   }
 
   renamePlayer(player: string, index: number) {
@@ -88,6 +143,7 @@ export class NewGamePage {
     if (index > -1) {
       this.players.splice(index, 1);
     }
+    this.updateCardsSelect();
   }
 
   reorderPlayers(event) {
