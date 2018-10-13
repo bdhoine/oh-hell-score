@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage';
 import { AlertController, NavController } from 'ionic-angular';
+import { GameType } from '../../pages/new-game/new-game';
 
 
 @Injectable()
@@ -103,8 +104,8 @@ export class RoundsProvider {
     if (settings.cardsToPlay !== "all") {
       config.step = 2;
     }
-    if ((config.maxCards % 2 == 0 && settings.cardsToPlay == "odd") ||
-        (config.maxCards % 2 != 0 && settings.cardsToPlay == "even")) {
+    if ((config.maxCards % 2 == 0 && settings.cardsToPlay == GameType.ODD) ||
+        (config.maxCards % 2 != 0 && settings.cardsToPlay == GameType.EVEN)) {
           config.maxCards -= 1;
     }
 
