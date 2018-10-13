@@ -10,7 +10,7 @@
 </ion-header>
 <ion-content padding>
   <ion-list>
-    <ion-item class="header">
+    <ion-item-divider class="header">
       <ion-grid>
         <ion-row>
           <ion-col col-6>Player</ion-col>
@@ -19,8 +19,8 @@
           <ion-col text-center col-2>Score</ion-col>
         </ion-row>
       </ion-grid>
-    </ion-item>
-    <ion-item *ngFor="let state of round.state">
+    </ion-item-divider>
+    <ion-item *ngFor="let state of round.state; let i = index" no-lines [color]="i%2 != 0 ? 'light' : ''" >
       <ion-grid>
         <ion-row>
           <ion-col col-6>

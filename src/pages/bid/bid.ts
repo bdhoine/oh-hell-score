@@ -32,11 +32,15 @@ export class BidPage {
     this.totalBid = 0;
   }
 
-  ionViewWillEnter() {
+  getRounds() {
     this.roundsProvider.getRounds().then((rounds) => {
       this.rounds = rounds;
       this.round = rounds[this.roundIndex];
     });
+  }
+
+  ionViewWillEnter() {
+    this.getRounds()
   }
 
   ionViewWillLeave() {
@@ -109,6 +113,11 @@ export class BidPage {
         round: this.roundIndex,
       });
     }
+  }
+
+  deletePlayer(player: string) {
+    this.roundsProvider.deletePlayer(player, this.rounds, this.roundIndex);
+    this.getRounds();
   }
 
   restart() {

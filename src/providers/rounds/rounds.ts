@@ -26,6 +26,26 @@ export class RoundsProvider {
     return players[index+1];
   }
 
+  deletePlayer(player: string, oldRounds, currentRound: number) {
+    const newRounds = [];
+
+    oldRounds.forEach((round, index) => {
+      if (index < currentRound) {
+        newRounds.push(round);
+      } else {
+        const newState = [...round.state];
+        const index = round.state.findIndex((playerConfig => playerConfig.player === player));
+        newState.splice(index, 1);
+
+        newRounds.push({
+          cards: round.cards,
+          state: newState
+        })
+      }
+    });
+    this.storage.set('rounds', JSON.stringify(newRounds));
+  }
+
   generateRound(cards:number, players:string[], dealer:string):any {
     let round = {
       cards: cards,
