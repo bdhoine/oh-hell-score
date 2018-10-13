@@ -11,8 +11,8 @@
       Players
     </ion-list-header>
     <ion-item-group reorder="true" (ionItemReorder)="reorderPlayers($event)">
-      <ion-item-sliding *ngFor="let player of players">
-        <ion-item (click)="renamePlayer(player)">
+      <ion-item-sliding *ngFor="let player of players; let i = index">
+        <ion-item (click)="renamePlayer(player, i)">
           {{ player }}
         </ion-item>
         <ion-item-options side="left" (ionSwipe)="deletePlayer(player)">
@@ -38,7 +38,7 @@
     </ion-item>
     <ion-item>
       <ion-label>Cards to play</ion-label>
-      <ion-select [(ngModel)]="settings.cardsToPlay">
+      <ion-select [(ngModel)]="settings.cardsToPlay" (ionChange)="updateCardsSelect()">
         <ion-option value="all">All</ion-option>
         <ion-option value="odd">Odd</ion-option>
         <ion-option value="even">Even</ion-option>
