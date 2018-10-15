@@ -14,8 +14,14 @@ export class MyApp {
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
-      statusBar.styleDefault();
-      splashScreen.hide();
+      if (!platform.is('mobileweb')) {
+        let cordovaScript = document.createElement('script');
+        cordovaScript.setAttribute('src', 'cordova.js');
+        document.head.appendChild(cordovaScript);
+
+        statusBar.styleDefault();
+        splashScreen.hide();
+      }
     });
   }
 }
