@@ -1,0 +1,1 @@
+Everyone is free to contribute to the code base. You can contribute by forking this repository and creating a pull request. If you are resolving an issue make sure to add it in the comment of your pull request.
