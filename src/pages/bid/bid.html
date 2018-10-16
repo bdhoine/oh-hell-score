@@ -20,7 +20,7 @@
         </ion-row>
       </ion-grid>
     </ion-item-divider>
-    <ion-item-group>
+    <ion-item-group reorder="true" (ionItemReorder)="reorderPlayers($event)">
       <ion-item-sliding *ngFor="let state of round.state ; let last = last; let i = index">
         <ion-item no-lines [color]="i%2 != 0 ? 'light' : ''">
           <ion-grid>

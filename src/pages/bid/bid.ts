@@ -1,3 +1,4 @@
+import { Round } from './../../models/round';
 import { Component } from '@angular/core';
 import { AlertController, IonicPage, NavController, NavParams } from 'ionic-angular';
 
@@ -12,8 +13,8 @@ import { RoundsProvider } from '../../providers/rounds/rounds';
 })
 export class BidPage {
 
-  round:any;
-  rounds:any;
+  round: Round;
+  rounds: Round[];
   roundIndex:number;
   totalBid:number;
 
@@ -33,7 +34,7 @@ export class BidPage {
   }
 
   getRounds() {
-    this.roundsProvider.getRounds().then((rounds) => {
+    this.roundsProvider.getRounds().then((rounds: Round[]) => {
       this.rounds = rounds;
       this.round = rounds[this.roundIndex];
     });
@@ -45,6 +46,10 @@ export class BidPage {
 
   ionViewWillLeave() {
     this.roundsProvider.saveRounds(this.rounds);
+  }
+  reorderPlayers(event) {
+    this.roundsProvider.reorderPlayers(this.rounds, this.roundIndex, event.from, event.to);
+    this.getRounds();
   }
 
   numberFromAlert(input):number {
