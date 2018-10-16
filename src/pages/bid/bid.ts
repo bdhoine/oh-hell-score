@@ -32,6 +32,10 @@ export class BidPage {
     this.totalBid = 0;
   }
 
+  get bidNotAllowed() {
+    return this.round.cards - this.totalBid;
+  }
+
   getRounds() {
     this.roundsProvider.getRounds().then((rounds) => {
       this.rounds = rounds;
