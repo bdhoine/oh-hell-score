@@ -3,6 +3,7 @@ import { AlertController, IonicPage, NavController, NavParams } from 'ionic-angu
 
 import { PlayersProvider } from '../../providers/players/players';
 import { RoundsProvider } from '../../providers/rounds/rounds';
+import { Round } from '../../models/round';
 
 
 @IonicPage()
@@ -12,8 +13,8 @@ import { RoundsProvider } from '../../providers/rounds/rounds';
 })
 export class TrickPage {
 
-  round:any;
-  rounds:any;
+  round: Round;
+  rounds: Round[];
   roundIndex:number;
   totalTrick:number;
 
@@ -34,7 +35,7 @@ export class TrickPage {
 
   ionViewWillEnter() {
     let totalTrick = this.totalTrick;
-    this.roundsProvider.getRounds().then((rounds) => {
+    this.roundsProvider.getRounds().then((rounds: Round[]) => {
       this.rounds = rounds;
       this.round = rounds[this.roundIndex];
       if (totalTrick === 0) {

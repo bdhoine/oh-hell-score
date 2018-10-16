@@ -1,3 +1,4 @@
+import { Round, PlayerState } from './../../models/round';
 import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage';
 import { AlertController, NavController } from 'ionic-angular';
@@ -7,6 +8,36 @@ import { GameType } from './../../models/gametype.model';
 export class RoundsProvider {
 
   constructor(private storage: Storage) {
+  }
+
+  reorderPlayers(originalRounds: Round[], currentRound: number, from: number, to: number) {
+    const newRounds: Round[] = [];
+    const fromPlayer: string = originalRounds[currentRound].state[from].player;
+    const toPlayer: string = originalRounds[currentRound].state[to].player;
+    originalRounds.forEach((round, index) => {
+      if (index < currentRound) {
+        newRounds.push(round);
+      } else {
+        const newState: PlayerState[] = [];
+        const fromIndex: number = round.state.findIndex(playerConfig => playerConfig.player === fromPlayer)
+        const toIndex: number = round.state.findIndex(playerConfig => playerConfig.player === toPlayer)
+
+        round.state.forEach((playerConfig, i) => {
+          if (playerConfig.player === toPlayer) {
+            newState.push(round.state[fromIndex]);
+          } else if (playerConfig.player === fromPlayer) {
+            newState.push(round.state[toIndex]);
+          } else {
+            newState.push(playerConfig)
+          }
+        });
+        newRounds.push({
+          cards: round.cards,
+          state: newState
+        })
+      }
+    });
+    this.storage.set('rounds', JSON.stringify(newRounds));
   }
 
   orderPlayers(players:string[], dealer:string) {
@@ -82,11 +113,11 @@ export class RoundsProvider {
     });
   }
 
-  saveRounds(rounds:any) {
+  saveRounds(rounds: Round[]) {
     this.storage.set('rounds', JSON.stringify(rounds));
   }
 
-  getNextState(rounds:any, roundIndex:number, stateIndex:number) {
+  getNextState(rounds: Round[], roundIndex: number, stateIndex: number) {
     if (roundIndex < rounds.length-1) {
       let round = rounds[roundIndex+1];
       if (stateIndex == 0) {
@@ -96,7 +127,7 @@ export class RoundsProvider {
     }
   }
 
-  updateScore(rounds:any, roundIndex:number) {
+  updateScore(rounds: Round[], roundIndex: number) {
     for(let stateIndex = 0; stateIndex < rounds[roundIndex].state.length; stateIndex++) {
       let state = rounds[roundIndex].state[stateIndex];
       let nextState = this.getNextState(rounds, roundIndex, stateIndex);
