@@ -1,4 +1,4 @@
-import { GameType } from "./gametype.model";
+import { GameType } from "./gametype";
 
 export interface GameSettings {
     maxCards: number;

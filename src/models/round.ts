@@ -1,4 +1,3 @@
-
 export interface Round {
     cards: number;
     state: PlayerState[];

@@ -5,7 +5,6 @@ import { AlertController, IonicPage, NavController, NavParams } from 'ionic-angu
 import { PlayersProvider } from '../../providers/players/players';
 import { RoundsProvider } from '../../providers/rounds/rounds';
 
-
 @IonicPage()
 @Component({
   selector: 'page-bid',
@@ -50,10 +49,6 @@ export class BidPage {
 
   ionViewWillLeave() {
     this.roundsProvider.saveRounds(this.rounds);
-  }
-  reorderPlayers(event) {
-    this.roundsProvider.reorderPlayers(this.rounds, this.roundIndex, event.from, event.to);
-    this.getRounds();
   }
 
   numberFromAlert(input):number {

@@ -5,8 +5,8 @@ import { PlayersProvider } from '../../providers/players/players';
 import { SettingsProvider } from '../../providers/settings/settings';
 import { RoundsProvider } from '../../providers/rounds/rounds';
 import { isOdd } from '../../utils/number-utils';
-import { GameSettings } from '../../models/gamesettings.model';
-import { GameType } from '../../models/gametype.model';
+import { GameSettings } from '../../models/gamesettings';
+import { GameType } from '../../models/gametype';
 
 @IonicPage()
 @Component({
