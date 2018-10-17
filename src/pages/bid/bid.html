@@ -26,8 +26,8 @@
           <ion-grid>
             <ion-row>
               <ion-col col-6>
-                <ion-icon name="logo-buffer" *ngIf="last"></ion-icon> {{state.player}}
-              </ion-col>
+                  <ion-icon name="logo-buffer" *ngIf="last"></ion-icon> {{state.player}}<ion-badge float-right *ngIf="last && bidNotAllowed >= 0" color="danger">{{bidNotAllowed}}</ion-badge>
+                </ion-col>
               <ion-col text-center col-2 (click)="setBid(state)">
                 {{state.bid}}
               </ion-col>
@@ -52,7 +52,7 @@
         <ion-row>
           <ion-col col-6></ion-col>
           <ion-col text-center col-2>
-            {{totalBid}}
+            <ion-badge [color]="totalBid === round.cards ? 'danger' : 'secondary'">{{totalBid}}</ion-badge>
           </ion-col>
           <ion-col text-center col-2></ion-col>
           <ion-col text-center col-2></ion-col>

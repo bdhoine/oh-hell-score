@@ -49,9 +49,12 @@ export class TrickPage {
   }
 
   copyBids() {
+    let totalTrick = this.totalTrick;
     this.round.state.forEach((state) => {
       state.trick = state.bid;
+      totalTrick += state.bid;
     });
+    this.totalTrick = totalTrick;
   }
 
   numberFromAlert(input):number {
