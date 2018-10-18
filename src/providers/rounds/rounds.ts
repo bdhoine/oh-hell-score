@@ -1,43 +1,13 @@
-import { Round, PlayerState } from './../../models/round';
+import { Round } from './../../models/round';
 import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage';
 import { AlertController, NavController } from 'ionic-angular';
-import { GameType } from './../../models/gametype.model';
+import { GameType } from '../../models/gametype';
 
 @Injectable()
 export class RoundsProvider {
 
   constructor(private storage: Storage) {
-  }
-
-  reorderPlayers(originalRounds: Round[], currentRound: number, from: number, to: number) {
-    const newRounds: Round[] = [];
-    const fromPlayer: string = originalRounds[currentRound].state[from].player;
-    const toPlayer: string = originalRounds[currentRound].state[to].player;
-    originalRounds.forEach((round, index) => {
-      if (index < currentRound) {
-        newRounds.push(round);
-      } else {
-        const newState: PlayerState[] = [];
-        const fromIndex: number = round.state.findIndex(playerConfig => playerConfig.player === fromPlayer)
-        const toIndex: number = round.state.findIndex(playerConfig => playerConfig.player === toPlayer)
-
-        round.state.forEach((playerConfig, i) => {
-          if (playerConfig.player === toPlayer) {
-            newState.push(round.state[fromIndex]);
-          } else if (playerConfig.player === fromPlayer) {
-            newState.push(round.state[toIndex]);
-          } else {
-            newState.push(playerConfig)
-          }
-        });
-        newRounds.push({
-          cards: round.cards,
-          state: newState
-        })
-      }
-    });
-    this.storage.set('rounds', JSON.stringify(newRounds));
   }
 
   orderPlayers(players:string[], dealer:string) {
