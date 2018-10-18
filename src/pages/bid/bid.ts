@@ -120,8 +120,22 @@ export class BidPage {
   }
 
   deletePlayer(player: string) {
-    this.roundsProvider.deletePlayer(player, this.rounds, this.roundIndex);
-    this.getRounds();
+    const alert = this.alertCtrl.create({
+      title: `Delete player ${player}?`,
+      buttons: [
+        {
+          text: 'Cancel'
+        },
+        {
+          text: 'Delete',
+          handler: data => {
+            this.roundsProvider.deletePlayer(player, this.rounds, this.roundIndex);
+            this.getRounds();
+          }
+        }
+      ]
+    });
+    alert.present();
   }
 
   restart() {

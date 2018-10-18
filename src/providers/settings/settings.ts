@@ -3,7 +3,6 @@ import { Storage } from '@ionic/storage';
 
 import { GameSettings } from '../../models/gamesettings';
 
-
 @Injectable()
 export class SettingsProvider {
 
