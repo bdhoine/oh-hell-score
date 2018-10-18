@@ -16,5 +16,17 @@
 // automatically applied to the <body> element in the app.
 
 .header {
-    font-weight: 900;
+    font-weight: bold;
+    background-color: #f4f4f4;
+}
+
+.list-header-md {
+    border-top: 0;
+    border-bottom: 0.55px solid #c8c7cc;
+    font-size: 1.2rem;
+    font-weight: 500;
+    letter-spacing: 0.1rem;
+    text-transform: uppercase;
+    color: #333;
+    background: transparent;
 }

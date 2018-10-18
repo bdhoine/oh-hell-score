@@ -10,35 +10,40 @@
 </ion-header>
 <ion-content padding>
   <ion-list>
-    <ion-item-divider class="header">
-      <ion-grid>
-        <ion-row>
-          <ion-col col-6>Player</ion-col>
-          <ion-col text-center col-2>Bid</ion-col>
-          <ion-col text-center col-2>Trick</ion-col>
-          <ion-col text-center col-2>Score</ion-col>
-        </ion-row>
-      </ion-grid>
-    </ion-item-divider>
-    <ion-item *ngFor="let state of round.state; let i = index" no-lines [color]="i%2 != 0 ? 'light' : ''" >
-      <ion-grid>
-        <ion-row>
-          <ion-col col-6>
-            {{state.player}}
-          </ion-col>
-          <ion-col text-center col-2>
-            {{state.bid}}
-          </ion-col>
-          <ion-col text-center col-2 (click)="setTrick(state)">
-            {{state.trick}}
-          </ion-col>
-          <ion-col text-center col-2>
-            {{state.score}}
-          </ion-col>
-        </ion-row>
-      </ion-grid>
-    </ion-item>
-    <ion-item>
+    <ion-item-group>
+      <ion-item class="header">
+        <ion-grid>
+            <ion-row>
+              <ion-col col-6>Player</ion-col>
+              <ion-col text-center col-2>Bid</ion-col>
+              <ion-col text-center col-2>Trick</ion-col>
+              <ion-col text-center col-2>Score</ion-col>
+            </ion-row>
+          </ion-grid>
+      </ion-item>
+    </ion-item-group>
+    <ion-item-group>
+      <ion-item *ngFor="let state of round.state; let i = index" no-lines [color]="i%2 != 0 ? 'light' : ''" >
+          <ion-grid>
+            <ion-row>
+              <ion-col col-6>
+                {{state.player}}
+              </ion-col>
+              <ion-col text-center col-2>
+                {{state.bid}}
+              </ion-col>
+              <ion-col text-center col-2 (click)="setTrick(state)">
+                {{state.trick}}
+              </ion-col>
+              <ion-col text-center col-2>
+                {{state.score}}
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-item>
+    </ion-item-group>
+    <ion-item-group>
+      <ion-item>
         <ion-grid>
           <ion-row>
             <ion-col col-6></ion-col>
@@ -50,6 +55,7 @@
           </ion-row>
         </ion-grid>
       </ion-item>
+    </ion-item-group>
   </ion-list>
   <button ion-button full (click)="validateTricks()">Next Round</button>
 </ion-content>
