@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="io.ionic.starter" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <name>oh-hell-score</name>
+<widget id="org.byteshark" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>Oh Hell Score</name>
     <description>Oh Hell score keeper</description>
     <author email="barrydhoine@gmail.com" href="http://byteshark.org/">Barry d'Hoine-Bruyndonckx</author>
     <content src="index.html" />
@@ -84,6 +84,7 @@
     <allow-navigation href="http://192.168.0.209:8100" />
     <plugin name="cordova-sqlite-storage" spec="^2.3.2" />
     <plugin name="cordova-plugin-statusbar" spec="~2.4.2" />
-    <engine name="ios" spec="4.5.4" />
-    <engine name="android" spec="7.0.0" />
+    <allow-navigation href="http://192.168.0.108:8100" />
+    <engine name="ios" spec="~4.5.5" />
+    <engine name="android" spec="~7.0.0" />
 </widget>
