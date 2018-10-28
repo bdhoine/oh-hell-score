@@ -68,7 +68,7 @@ export class NewGamePage {
 
   private isValidCardsAmount(amountOfCards: number) {
     return (this.settings.cardsToPlay === GameType.ODD && isOdd(amountOfCards))
-      || (this.settings.cardsToPlay === GameType.EVEN && !isOdd(amountOfCards))
+      || (this.settings.cardsToPlay === GameType.EVEN && !isOdd(amountOfCards) || this.settings.cardsToPlay === GameType.ALL)
   }
 
   private roundCardsToPlay(maxCards: number) {
