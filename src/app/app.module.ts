@@ -10,11 +10,13 @@ import { MyApp } from './app.component';
 import { PlayersProvider } from '../providers/players/players';
 import { RoundsProvider } from '../providers/rounds/rounds';
 import { SettingsProvider } from '../providers/settings/settings';
+import { SettingsComponent } from '../components/settings/settings';
 
 
 @NgModule({
   declarations: [
-    MyApp
+    MyApp,
+    SettingsComponent
   ],
   imports: [
     BrowserModule,
@@ -23,7 +25,8 @@ import { SettingsProvider } from '../providers/settings/settings';
   ],
   bootstrap: [IonicApp],
   entryComponents: [
-    MyApp
+    MyApp,
+    SettingsComponent
   ],
   providers: [
     StatusBar,
