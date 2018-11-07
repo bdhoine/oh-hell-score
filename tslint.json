@@ -3,7 +3,9 @@
     "no-duplicate-variable": true,
     "no-unused-variable": [
       true
-    ]
+    ],
+    "import-spacing": true,
+    "whitespace": [true, "check-module"]
   },
   "rulesDirectory": [
     "node_modules/tslint-eslint-rules/dist/rules"
