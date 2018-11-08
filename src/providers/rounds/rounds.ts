@@ -10,7 +10,7 @@ export class RoundsProvider {
   constructor(private storage: Storage) {
   }
 
-  orderPlayers(players:string[], dealer:string) {
+  orderPlayers(players: string[], dealer: string) {
     let index = players.indexOf(dealer);
     if (index == players.length-1) {
       return players;
@@ -19,7 +19,7 @@ export class RoundsProvider {
     return orderedPlayers.concat(players.slice(0, index+1));
   }
 
-  nextPlayer(players:string[], dealer:string):string {
+  nextPlayer(players: string[], dealer: string): string {
     let index = players.indexOf(dealer);
     if (index+1 == players.length) {
       return players[0];
@@ -47,7 +47,7 @@ export class RoundsProvider {
     this.storage.set('rounds', JSON.stringify(newRounds));
   }
 
-  generateRound(cards:number, players:string[], dealer:string):any {
+  generateRound(cards: number, players: string[], dealer: string): any {
     let round = {
       cards: cards,
       state: []
@@ -67,15 +67,14 @@ export class RoundsProvider {
     return round;
   }
 
-  getRounds():any {
+  getRounds(): any {
     return new Promise((resolve, reject) => {
       this.storage.ready().then(() => {
         this.storage.get('rounds').then((data) => {
           if (data != null) {
             let rounds = JSON.parse(data);
             resolve(rounds);
-          }
-          else {
+          } else {
             reject();
           }
         });
@@ -103,8 +102,7 @@ export class RoundsProvider {
       let nextState = this.getNextState(rounds, roundIndex, stateIndex);
       if (state.bid == state.trick) {
         nextState.score = state.score + 10 + state.trick;
-      }
-      else {
+      } else {
         nextState.score = state.score - Math.abs(state.bid - state.trick);
       }
     }
@@ -132,7 +130,7 @@ export class RoundsProvider {
     return config
   }
 
-  generateRounds(settings:any, players:string[], dealer:string):any {
+  generateRounds(settings: any, players: string[], dealer: string): any {
     let rounds = [];
     let config = this.determineRoundConfig(settings);
 
@@ -148,7 +146,7 @@ export class RoundsProvider {
     this.storage.set('rounds', JSON.stringify(rounds));
   }
 
-  restart(alertCtrl:AlertController, navCtrl: NavController) {
+  restart(alertCtrl: AlertController, navCtrl: NavController) {
     let alert = alertCtrl.create({
       title: 'Restart game?',
       buttons: [

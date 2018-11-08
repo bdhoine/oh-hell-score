@@ -9,33 +9,33 @@ export class SettingsProvider {
   constructor(private storage: Storage) {
   }
 
-  mergeSettings(settings: GameSettings, loaded: any): GameSettings {
+  mergeSettings(settings: GameSettings, data: any): GameSettings {
     let mergedSettings = {};
+    let loadedSettings = {};
+
+    if (data != null) {
+      loadedSettings = JSON.parse(data);
+    }
 
     for(var key in settings) {
       mergedSettings[key] = settings[key];
     }
-
-    for(let key in loaded) {
-      mergedSettings[key] = loaded[key];
+    for(let key in loadedSettings) {
+      mergedSettings[key] = loadedSettings[key];
     }
+
     return mergedSettings as GameSettings;
   }
 
   loadSettings(settings: GameSettings): Promise<GameSettings> {
     return new Promise((resolve, reject) => {
       this.storage.get('settings').then((data) => {
-        if (data != null) {
-          resolve(this.mergeSettings(settings, JSON.parse(data)));
-        }
-        else {
-          resolve(this.mergeSettings(settings, {}));
-        }
+        resolve(this.mergeSettings(settings, data));
       });
     });
   }
 
-  saveSettings(settings:any) {
+  saveSettings(settings: any) {
     this.storage.set('settings', JSON.stringify(settings));
   }
 

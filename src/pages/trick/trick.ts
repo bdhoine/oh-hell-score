@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { AlertController, IonicPage, NavController, NavParams } from 'ionic-angular';
+import { AlertController, IonicPage, NavController, NavParams, Alert } from 'ionic-angular';
 
 import { PlayersProvider } from '../../providers/players/players';
 import { RoundsProvider } from '../../providers/rounds/rounds';
@@ -15,8 +15,8 @@ export class TrickPage {
 
   round: Round;
   rounds: Round[];
-  roundIndex:number;
-  totalTrick:number;
+  roundIndex: number;
+  totalTrick: number;
 
   constructor(
       public navParams: NavParams,
@@ -57,22 +57,31 @@ export class TrickPage {
     this.totalTrick = totalTrick;
   }
 
-  numberFromAlert(input):number {
+  numberFromAlert(input): number {
     let number = Number(input);
-    if (isNaN(number)){
+    if (isNaN(number)) {
       return 0;
-    }
-    else {
+    } else {
       return number;
     }
   }
 
-  calculateTotalTrick():number {
+  calculateTotalTrick(): number {
     let total = 0;
     this.round.state.forEach((state) => {
       total += state.trick;
     });
     return total;
+  }
+
+  addTrickCount(alert: Alert) {
+    for (let x = 0; x <= this.round.cards; x++) {
+      alert.addInput({
+        type: 'radio',
+        label: x.toString(),
+        value: x.toString()
+      })
+    };
   }
 
   setTrick(state) {
@@ -93,13 +102,7 @@ export class TrickPage {
       ]
     });
 
-    for (let x = 0; x <= this.round.cards; x++) {
-      alert.addInput({
-        type: 'radio',
-        label: x.toString(),
-        value: x.toString()
-      })
-    };
+    this.addTrickCount(alert);
 
     alert.present();
   }
@@ -111,12 +114,10 @@ export class TrickPage {
         this.navCtrl.push('BidPage', {
           round: this.roundIndex+1,
         });
-      }
-      else {
+      } else {
         this.navCtrl.push('ScorePage');
       }
-    }
-    else {
+    } else {
       const alert = this.alertCtrl.create({
         title: 'Error',
         subTitle: 'Total tricks is ' + this.totalTrick + ' but it should be ' + this.round.cards,
