@@ -5,7 +5,7 @@
 ```sh
 brew install node gradle
 brew cask install android-sdk
-npm install -g ionic cordova
+npm install -g cordova@8.1.2 ionic@4.12.0
 sdkmanager 'build-tools;28.0.0'
 ```
 
