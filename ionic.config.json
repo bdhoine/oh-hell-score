@@ -1,0 +1,7 @@
+{
+  "name": "Oh Hell Score",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "custom"
+}

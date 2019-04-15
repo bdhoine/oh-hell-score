@@ -1,0 +1,6 @@
+{
+  "appId": "org.byteshark.oh-hell-score",
+  "appName": "Oh Hell Score",
+  "bundledWebRuntime": false,
+  "webDir": "build"
+}
