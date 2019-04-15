@@ -146,6 +146,30 @@ export class NewGamePage {
     this.updateCardsSelect();
   }
 
+  deletePlayers() {
+    this.players = [];
+    this.updateCardsSelect();
+  }
+
+  deletePlayersConfirm() {
+    let alert = this.alertCtrl.create({
+      title: 'Clear player list',
+      buttons: [
+        {
+          text: 'No'
+        },
+        {
+          text: 'Yes',
+          handler: data => {
+            this.deletePlayers();
+          }
+        }
+      ]
+    });
+
+    alert.present();
+  }
+
   reorderPlayers(event) {
     let player = this.players[event.from];
     this.players.splice(event.from, 1);

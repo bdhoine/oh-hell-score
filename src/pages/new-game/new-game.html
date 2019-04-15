@@ -8,7 +8,10 @@
 <ion-content padding>
   <ion-list>
     <ion-list-header>
-      Players
+      Players 
+      <button ion-button expandable item-end color="light" (click)="deletePlayersConfirm()">
+        Clear
+      </button>
     </ion-list-header>
     <ion-item-group reorder="true" (ionItemReorder)="reorderPlayers($event)">
       <ion-item-sliding *ngFor="let player of players; let i = index">
