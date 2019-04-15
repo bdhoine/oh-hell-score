@@ -11,7 +11,7 @@ import { RoundsProvider } from '../../providers/rounds/rounds';
 })
 export class ScorePage {
 
-  scores:any;
+  scores: any;
 
   constructor(
       public navCtrl: NavController,
@@ -27,13 +27,12 @@ export class ScorePage {
     });
   }
 
-  buildScoreArray(round:any) {
+  buildScoreArray(round: any) {
     round.forEach((element) => {
       let score = element.score;
       if (element.bid == element.trick) {
         score += 10 + element.trick;
-      }
-      else {
+      } else {
         score -= Math.abs(element.bid - element.trick);
       }
       this.scores.push({

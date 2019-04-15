@@ -13,8 +13,7 @@ export class PlayersProvider {
         this.storage.get('players').then((data) => {
           if (data != null) {
             resolve(JSON.parse(data));
-          }
-          else {
+          } else {
             resolve([]);
           }
         });
@@ -22,7 +21,7 @@ export class PlayersProvider {
     });
   }
 
-  savePlayers(players:string[]) {
+  savePlayers(players: string[]) {
     this.storage.set('players', JSON.stringify(players));
   }
 

@@ -1,6 +1,6 @@
 import { Round } from './../../models/round';
 import { Component } from '@angular/core';
-import { AlertController, IonicPage, NavController, NavParams } from 'ionic-angular';
+import { AlertController, IonicPage, NavController, NavParams, Alert } from 'ionic-angular';
 
 import { PlayersProvider } from '../../providers/players/players';
 import { RoundsProvider } from '../../providers/rounds/rounds';
@@ -14,8 +14,8 @@ export class BidPage {
 
   round: Round;
   rounds: Round[];
-  roundIndex:number;
-  totalBid:number;
+  roundIndex: number;
+  totalBid: number;
 
   constructor(
       public navParams: NavParams,
@@ -51,25 +51,36 @@ export class BidPage {
     this.roundsProvider.saveRounds(this.rounds);
   }
 
-  numberFromAlert(input):number {
+  numberFromAlert(input): number {
     let number = Number(input);
-    if (isNaN(number)){
+    if (isNaN(number)) {
       return 0;
-    }
-    else {
+    } else {
       return number;
     }
   }
 
-  calculateTotalBid():number {
+  calculateTotalBid(): number {
     let total = 0;
     this.round.state.forEach((state) => {
       total += state.bid;
     });
     return total;  }
 
-  isLastPlayer(player:string) {
+  isLastPlayer(player: string) {
     return this.round.state[this.round.state.length-1].player == player;
+  }
+
+  addBidCount(alert: Alert, player: string) {
+    for (var x = 0; x <= this.round.cards; x++) {
+      if ((!this.isLastPlayer(player)) || (this.round.cards != this.totalBid + x)) {
+        alert.addInput({
+          type: 'radio',
+          label: x.toString(),
+          value: x.toString()
+        });
+      }
+    }
   }
 
   setBid(state) {
@@ -90,15 +101,7 @@ export class BidPage {
       ]
     });
 
-    for (var x = 0; x <= this.round.cards; x++) {
-      if ((!this.isLastPlayer(state.player)) || (this.round.cards != this.totalBid + x)) {
-        alert.addInput({
-          type: 'radio',
-          label: x.toString(),
-          value: x.toString()
-        });
-      }
-    }
+    this.addBidCount(alert, state.player);
 
     alert.present();
   }
@@ -111,8 +114,7 @@ export class BidPage {
         buttons: ['Close']
       });
       alert.present();
-    }
-    else {
+    } else {
       this.navCtrl.push('TrickPage', {
         round: this.roundIndex,
       });
