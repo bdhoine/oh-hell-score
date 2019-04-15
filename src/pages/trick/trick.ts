@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
-import { AlertController, IonicPage, NavController, NavParams } from 'ionic-angular';
+import { AlertController, IonicPage, NavController, NavParams, PopoverController } from 'ionic-angular';
 
 import { PlayersProvider } from '../../providers/players/players';
 import { RoundsProvider } from '../../providers/rounds/rounds';
-import { Round } from '../../models/round';
+import { SettingsComponent } from '../../components/settings/settings';
 
 
 @IonicPage()
@@ -13,8 +13,6 @@ import { Round } from '../../models/round';
 })
 export class TrickPage {
 
-  round: Round;
-  rounds: Round[];
   roundIndex:number;
   totalTrick:number;
 
@@ -23,29 +21,26 @@ export class TrickPage {
       public navCtrl: NavController,
       public alertCtrl: AlertController,
       public playersProvider: PlayersProvider,
-      public roundsProvider: RoundsProvider
+      public roundsProvider: RoundsProvider,
+      public popoverController: PopoverController
   ) {
     this.roundIndex = this.navParams.get('round');
-    this.round = {
-      cards: 0,
-      state: []
-    };
     this.totalTrick = 0;
+  }
+
+  get round() {
+    return this.roundsProvider.rounds[this.roundIndex];
   }
 
   ionViewWillEnter() {
     let totalTrick = this.totalTrick;
-    this.roundsProvider.getRounds().then((rounds: Round[]) => {
-      this.rounds = rounds;
-      this.round = rounds[this.roundIndex];
-      if (totalTrick === 0) {
-        this.copyBids();
-      }
-    });
+    if (totalTrick === 0) {
+      this.copyBids();
+    }
   }
 
   ionViewWillLeave() {
-    this.roundsProvider.saveRounds(this.rounds);
+    this.roundsProvider.storeRounds(this.roundsProvider.rounds);
   }
 
   copyBids() {
@@ -106,8 +101,8 @@ export class TrickPage {
 
   validateTricks() {
     if (this.round.cards == this.totalTrick) {
-      if (this.roundIndex != this.rounds.length-1) {
-        this.roundsProvider.updateScore(this.rounds, this.roundIndex);
+      if (this.roundIndex != this.roundsProvider.rounds.length-1) {
+        this.roundsProvider.updateScore(this.roundsProvider.rounds, this.roundIndex);
         this.navCtrl.push('BidPage', {
           round: this.roundIndex+1,
         });
@@ -126,8 +121,13 @@ export class TrickPage {
     }
   }
 
-  restart() {
-    this.roundsProvider.restart(this.alertCtrl, this.navCtrl);
+  showSettings(event) {
+    let popover = this.popoverController.create(SettingsComponent, {
+      round: this.round,
+      roundIndex: this.roundIndex,
+    });
+    popover.present({
+      ev: event
+    });
   }
-
 }

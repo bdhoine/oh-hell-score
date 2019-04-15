@@ -1,6 +1,6 @@
-import { Round } from './../../models/round';
+import { SettingsComponent } from './../../components/settings/settings';
 import { Component } from '@angular/core';
-import { AlertController, IonicPage, NavController, NavParams } from 'ionic-angular';
+import { AlertController, IonicPage, NavController, NavParams, PopoverController } from 'ionic-angular';
 
 import { PlayersProvider } from '../../providers/players/players';
 import { RoundsProvider } from '../../providers/rounds/rounds';
@@ -12,8 +12,6 @@ import { RoundsProvider } from '../../providers/rounds/rounds';
 })
 export class BidPage {
 
-  round: Round;
-  rounds: Round[];
   roundIndex:number;
   totalBid:number;
 
@@ -22,13 +20,10 @@ export class BidPage {
       public navCtrl: NavController,
       public alertCtrl: AlertController,
       public playersProvider: PlayersProvider,
-      public roundsProvider: RoundsProvider
+      public roundsProvider: RoundsProvider,
+      public popoverController: PopoverController
   ) {
     this.roundIndex = this.navParams.get('round');
-    this.round = {
-      cards: 0,
-      state: []
-    };
     this.totalBid = 0;
   }
 
@@ -36,19 +31,16 @@ export class BidPage {
     return this.round.cards - this.totalBid;
   }
 
-  getRounds() {
-    this.roundsProvider.getRounds().then((rounds: Round[]) => {
-      this.rounds = rounds;
-      this.round = rounds[this.roundIndex];
-    });
-  }
 
   ionViewWillEnter() {
-    this.getRounds()
+  }
+
+  get round() {
+    return this.roundsProvider.rounds[this.roundIndex];
   }
 
   ionViewWillLeave() {
-    this.roundsProvider.saveRounds(this.rounds);
+    this.roundsProvider.storeRounds(this.roundsProvider.rounds);
   }
 
   numberFromAlert(input):number {
@@ -63,10 +55,13 @@ export class BidPage {
 
   calculateTotalBid():number {
     let total = 0;
-    this.round.state.forEach((state) => {
-      total += state.bid;
-    });
-    return total;  }
+    if (this.round) {
+      this.round.state.forEach((state) => {
+        total += state.bid;
+      });
+    }
+    return total;  
+  }
 
   isLastPlayer(player:string) {
     return this.round.state[this.round.state.length-1].player == player;
@@ -129,8 +124,7 @@ export class BidPage {
         {
           text: 'Delete',
           handler: data => {
-            this.roundsProvider.deletePlayer(player, this.rounds, this.roundIndex);
-            this.getRounds();
+            this.roundsProvider.deletePlayer(player, this.roundsProvider.rounds, this.roundIndex);
           }
         }
       ]
@@ -138,8 +132,14 @@ export class BidPage {
     alert.present();
   }
 
-  restart() {
-    this.roundsProvider.restart(this.alertCtrl, this.navCtrl);
+  showSettings(event) {
+    let popover = this.popoverController.create(SettingsComponent, {
+      round: this.round,
+      roundIndex: this.roundIndex,
+    });
+    popover.present({
+      ev: event
+    });
   }
 
 }

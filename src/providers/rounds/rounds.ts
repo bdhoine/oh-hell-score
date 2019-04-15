@@ -1,14 +1,27 @@
-import { Round } from './../../models/round';
+import { Round, PlayerState } from './../../models/round';
 import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage';
 import { AlertController, NavController } from 'ionic-angular';
 import { GameType } from '../../models/gametype';
+import { GameSettings } from '../../models/gamesettings';
 
 @Injectable()
 export class RoundsProvider {
 
+  private _rounds: Round[];
+
   constructor(private storage: Storage) {
   }
+
+  get rounds() {
+    return this._rounds;
+  }
+
+  set rounds(rounds: Round[])  {
+    this._rounds = rounds;
+    this.storeRounds(rounds);
+  }
+
 
   orderPlayers(players:string[], dealer:string) {
     let index = players.indexOf(dealer);
@@ -25,6 +38,19 @@ export class RoundsProvider {
       return players[0];
     }
     return players[index+1];
+  }
+
+  changeCardsToPlay(settings: GameSettings, roundIndex: number) {
+    const firstRound = this.rounds[0];
+    const dealer = firstRound.state[firstRound.state.length - 1].player;
+
+    const newRounds = this.createRounds(settings, firstRound.state.map((playerState: PlayerState) => playerState.player), dealer);
+    const mergedRounds = this.mergeRounds(this.rounds, newRounds, roundIndex);
+    this.rounds = mergedRounds;
+  }
+
+  private mergeRounds(oldRounds: Round[], newRounds: Round[], roundIndex) {
+    return [...oldRounds.slice(0, roundIndex + 1), ...newRounds.slice(roundIndex + 1)]
   }
 
   deletePlayer(player: string, oldRounds, currentRound: number) {
@@ -44,7 +70,7 @@ export class RoundsProvider {
         })
       }
     });
-    this.storage.set('rounds', JSON.stringify(newRounds));
+    this.rounds = newRounds;
   }
 
   generateRound(cards:number, players:string[], dealer:string):any {
@@ -83,10 +109,6 @@ export class RoundsProvider {
     });
   }
 
-  saveRounds(rounds: Round[]) {
-    this.storage.set('rounds', JSON.stringify(rounds));
-  }
-
   getNextState(rounds: Round[], roundIndex: number, stateIndex: number) {
     if (roundIndex < rounds.length-1) {
       let round = rounds[roundIndex+1];
@@ -108,7 +130,7 @@ export class RoundsProvider {
         nextState.score = state.score - Math.abs(state.bid - state.trick);
       }
     }
-    this.storage.set('rounds', JSON.stringify(rounds));
+    this.rounds = rounds;
   }
 
   determineRoundConfig(settings: any): any {
@@ -132,7 +154,7 @@ export class RoundsProvider {
     return config
   }
 
-  generateRounds(settings:any, players:string[], dealer:string):any {
+  createRounds(settings:any, players:string[], dealer:string):any {
     let rounds = [];
     let config = this.determineRoundConfig(settings);
 
@@ -144,7 +166,15 @@ export class RoundsProvider {
       rounds.push(this.generateRound(cards, players, dealer));
       dealer = this.nextPlayer(players, dealer);
     }
+    return rounds;
+  }
 
+  generateRounds(settings:any, players:string[], dealer:string):any {
+    const rounds = this.createRounds(settings, players, dealer);
+    this.rounds = rounds;
+  }
+
+  storeRounds(rounds: Round[]) {
     this.storage.set('rounds', JSON.stringify(rounds));
   }
 

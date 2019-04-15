@@ -21,10 +21,9 @@ export class ScorePage {
     this.scores = [];
   }
   ionViewWillEnter() {
-    this.roundsProvider.getRounds().then((rounds) => {
+      const rounds = this.roundsProvider.rounds;
       this.buildScoreArray(rounds[rounds.length-1].state);
       this.orderScores();
-    });
   }
 
   buildScoreArray(round:any) {

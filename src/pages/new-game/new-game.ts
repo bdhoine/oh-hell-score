@@ -4,9 +4,6 @@ import { AlertController, IonicPage, NavController } from 'ionic-angular';
 import { PlayersProvider } from '../../providers/players/players';
 import { SettingsProvider } from '../../providers/settings/settings';
 import { RoundsProvider } from '../../providers/rounds/rounds';
-import { isOdd } from '../../utils/number-utils';
-import { GameSettings } from '../../models/gamesettings';
-import { GameType } from '../../models/gametype';
 
 @IonicPage()
 @Component({
@@ -17,7 +14,6 @@ export class NewGamePage {
 
   players: any;
   newPlayer: string;
-  settings: GameSettings;
   cards: number[];
 
   constructor(
@@ -30,18 +26,16 @@ export class NewGamePage {
     this.cards = Array(16).fill(0).map((x, i) => i + 2);
     this.newPlayer = '';
     this.players = [];
-    this.settings = {
-      maxCards: 7,
-      cardsToPlay: GameType.ALL
-    };
+  }
+
+  get settings() {
+    return this.settingsProvider.settings;
   }
 
   ionViewWillEnter() {
     this.playersProvider.loadPlayers().then((players) => {
       this.players = players;
-    });
-    this.settingsProvider.loadSettings(this.settings).then((settings: GameSettings) => {
-      this.settings = settings;
+      this.updateCardsSelect();
     });
   }
 
@@ -66,41 +60,23 @@ export class NewGamePage {
     return Array(amount - 1).fill(0).map((x, i) => i + 2)
   }
 
-  private isValidCardsAmount(amountOfCards: number) {
-    return (this.settings.cardsToPlay === GameType.ODD && isOdd(amountOfCards))
-      || (this.settings.cardsToPlay === GameType.EVEN && !isOdd(amountOfCards) || this.settings.cardsToPlay === GameType.ALL)
-  }
-
-  private roundCardsToPlay(maxCards: number) {
-    if (!this.isValidCardsAmount(maxCards)) {
-      maxCards--;
-    }
-    return maxCards;
-  }
-
   updateCardsSelect() {
-    let maxCards = this.numberOfPlayers > 0 ? Math.floor(52 / this.numberOfPlayers) : 52;
-    maxCards = this.roundCardsToPlay(maxCards);
-
-    if (this.settings.cardsToPlay === GameType.ODD) {
-      this.cards = this.generateCards(maxCards).filter((num) => isOdd(num))
-    } else if (this.settings.cardsToPlay === "even") {
-      this.cards = this.generateCards(maxCards - 1).filter((num) => !isOdd(num))
-    } else {
-      this.cards = Array(maxCards).fill(0).map((x, i) => i + 1);
-    }
-    this.settings.maxCards = this.getClosestMaxCards();
+    this.cards = this.settingsProvider.getCardsToPlay(this.players.length)
+    this.settingsProvider.saveSettings({
+      ...this.settings,
+      maxCards: this.getClosestMaxCards()
+    });
   }
 
   get lastRoundAmount(): number {
     return this.cards[this.cards.length - 1]
   }
 
-  private getClosestMaxCards() {
+  public getClosestMaxCards() {
     let closest = this.settings.maxCards;
     if (closest > this.lastRoundAmount) {
       closest = this.lastRoundAmount;
-    } else if (!this.isValidCardsAmount(this.settings.maxCards)) {
+    } else if (!this.settingsProvider.isValidCardsAmount(this.settings)) {
       if (this.settings.maxCards + 1 <= this.lastRoundAmount) {
         closest++;
       } else {
@@ -109,7 +85,6 @@ export class NewGamePage {
     }
     return closest;
   }
-
   renamePlayer(player: string, index: number) {
     let prompt = this.alertCtrl.create({
       message: 'Enter new name for player: <b>' + player + '</b>',
@@ -143,6 +118,7 @@ export class NewGamePage {
     if (index > -1) {
       this.players.splice(index, 1);
     }
+    this.cards = this.settingsProvider.getCardsToPlay(this.players.length)
     this.updateCardsSelect();
   }
 

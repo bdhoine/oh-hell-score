@@ -2,8 +2,8 @@
   <ion-navbar>
     <ion-title>Bid: {{round.cards}}</ion-title>
     <ion-buttons end>
-      <button ion-button icon-only (click)="restart()">
-        <ion-icon name="refresh"></ion-icon>
+      <button ion-button icon-only (click)="showSettings($event)">
+        <ion-icon name="cog"></ion-icon>
       </button>
     </ion-buttons>
   </ion-navbar>
@@ -33,7 +33,7 @@
               <ion-col text-center col-2 (click)="setBid(state)">
                 {{state.bid}}
               </ion-col>
-              <ion-col text-center col-2>
+              <ion-col text-center col-2 ion-text color="translucent">
                 {{state.trick}}
               </ion-col>
               <ion-col text-center col-2>

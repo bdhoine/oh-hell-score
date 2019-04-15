@@ -1,0 +1,13 @@
+<ion-list>
+  <ion-list-header>Game Settings</ion-list-header>
+  <ion-item>
+    <ion-label>Maximum cards</ion-label>
+    <ion-select [disabled]="!goingUp()" [(ngModel)]="settings.maxCards" (ionChange)="changeCardsToPlay($event)">
+      <ion-option *ngFor="let card of cards" value="{{card}}">{{card}}</ion-option>
+    </ion-select>
+  </ion-item>
+  <button ion-item (click)="restart()">
+    Restart Game
+    <ion-icon item-end name="refresh"></ion-icon>
+  </button>
+</ion-list>
