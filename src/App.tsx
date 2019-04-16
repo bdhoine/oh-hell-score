@@ -1,23 +1,12 @@
-import { IonApp, IonContent } from '@ionic/react';
-import React, { Component } from 'react';
-import Header from './components/Header';
-import PlayerList from './components/PlayerList';
+import React, { Component } from "react";
+import NewGame from "./page/NewGame";
 
 class App extends Component {
-  state = {
-    players: ["Barry", "Siel", "Billie"],
-  };
-
-  render() {
-    return (
-      <IonApp>
-        <Header title="New Game"/>
-        <IonContent>
-          <PlayerList players={this.state.players}/>
-        </IonContent>
-      </IonApp>
-    );
-  }
+    public render() {
+        return (
+            <NewGame />
+        );
+    }
 }
 
 export default App;

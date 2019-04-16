@@ -1,31 +1,29 @@
-import React, { Component } from 'react'
-import { IonList, IonItemSliding, IonItem, IonLabel, IonItemOptions, IonItemOption, IonIcon } from '@ionic/react';
+import { IonIcon, IonItem, IonItemOption, IonItemOptions, IonItemSliding, IonLabel, IonList } from "@ionic/react";
+import React, { Component } from "react";
 
-interface Props {
+interface IProps {
     players: string[];
 }
 
-export default class PlayerList extends Component<Props> {
-  render() {
-    return (
-        <IonList>
-        {
-          this.props.players.map((value, index) => {
-            return (
-              <IonItemSliding key={index}>
+export default class PlayerList extends Component<IProps> {
+    private playerList = this.props.players.map((value, index) => {
+        return (
+            <IonItemSliding key={index}>
                 <IonItem>
-                  <IonLabel>{value}</IonLabel>
+                    <IonLabel>{value}</IonLabel>
                 </IonItem>
                 <IonItemOptions side="end">
-                  <IonItemOption color="danger" onClick={() => { console.log(index); }}>
-                    <IonIcon name="trash" slot="icon-only"></IonIcon>
-                  </IonItemOption>
+                    <IonItemOption color="danger" onClick={() => {console.log(index);}}>
+                        <IonIcon name="trash" slot="icon-only"/>
+                    </IonItemOption>
                 </IonItemOptions>
-              </IonItemSliding>
-            );
-          })
-        }
-      </IonList>
-    )
-  }
+            </IonItemSliding>
+        );
+    });
+
+    public render() {
+        return (
+            <IonList>{this.playerList}</IonList>
+        );
+    }
 }
