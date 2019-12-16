@@ -74,14 +74,20 @@ export class TrickPage {
     return total;
   }
 
-  addTrickCount(alert: Alert) {
+  addTrickCount(alert: Alert, state) {
     for (let x = 0; x <= this.round.cards; x++) {
       alert.addInput({
         type: 'radio',
         label: x.toString(),
-        value: x.toString()
+        value: x.toString(),
+        handler: (data) => {
+          let trick = this.numberFromAlert(data.value);
+          state.trick = trick;
+          this.totalTrick = this.calculateTotalTrick();
+          alert.dismiss();
+        }
       })
-    };
+    }
   }
 
   setTrick(state) {
@@ -90,19 +96,11 @@ export class TrickPage {
       buttons: [
         {
           text: 'Cancel'
-        },
-        {
-          text: 'Save',
-          handler: data => {
-            let trick = this.numberFromAlert(data);
-            state.trick = trick;
-            this.totalTrick = this.calculateTotalTrick();
-          }
         }
       ]
     });
 
-    this.addTrickCount(alert);
+    this.addTrickCount(alert, state);
 
     alert.present();
   }

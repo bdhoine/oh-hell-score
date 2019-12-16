@@ -71,13 +71,19 @@ export class BidPage {
     return this.round.state[this.round.state.length-1].player == player;
   }
 
-  addBidCount(alert: Alert, player: string) {
+  addBidCount(alert: Alert, state) {
     for (var x = 0; x <= this.round.cards; x++) {
-      if ((!this.isLastPlayer(player)) || (this.round.cards != this.totalBid + x)) {
+      if ((!this.isLastPlayer(state.player)) || (this.round.cards != this.totalBid + x)) {
         alert.addInput({
           type: 'radio',
           label: x.toString(),
-          value: x.toString()
+          value: x.toString(),
+          handler: (data) => {
+            let bid = this.numberFromAlert(data.value);
+            state.bid = bid;
+            this.totalBid = this.calculateTotalBid();
+            alert.dismiss();
+          }
         });
       }
     }
@@ -89,19 +95,11 @@ export class BidPage {
       buttons: [
         {
           text: 'Cancel'
-        },
-        {
-          text: 'Save',
-          handler: data => {
-            let bid = this.numberFromAlert(data);
-            state.bid = bid;
-            this.totalBid = this.calculateTotalBid();
-          }
         }
       ]
     });
 
-    this.addBidCount(alert, state.player);
+    this.addBidCount(alert, state);
 
     alert.present();
   }
