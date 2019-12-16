@@ -23,7 +23,7 @@
       </ion-item-sliding>
     </ion-item-group>
     <ion-item>
-      <ion-input type="text" placeholder="New player.." [(ngModel)]="newPlayer" (keyup.enter)="addPlayer()"></ion-input>
+      <ion-input type="text" placeholder="New player.." [(ngModel)]="newPlayer" (keydown.enter)="addPlayer()" (focusout)="addPlayer()"></ion-input>
     </ion-item>
   </ion-list>
   <ion-list padding-top class="outer-content">
