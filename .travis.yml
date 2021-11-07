@@ -14,9 +14,8 @@
 #     - nvm install 6
 
 install:
-- npm install -g cordova@8.1.2 ionic@4.12.0
 - npm install
-- npm run lint
+- npm run test
 # - ionic cordova platform add ${PLATFORM}
 
 script:
@@ -31,6 +30,6 @@ before_deploy:
 deploy:
   provider: script
   skip_cleanup: true
-  script: rsync -rv -e 'ssh -i id_rsa -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no' $TRAVIS_BUILD_DIR/www/* byteshark.be@ssh.byteshark.be:/www/chinees-poepen/
+  script: rsync -rv -e 'ssh -i id_rsa -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no' $TRAVIS_BUILD_DIR/www/* byteshark.be@ssh.byteshark.be:/www/chinees-poepen-beta/
   on:
     branch: master
