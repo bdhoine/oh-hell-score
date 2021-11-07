@@ -1,5 +1,5 @@
 export enum GameType {
-    ODD = "odd",
-    EVEN = "even",
-    ALL = "all"
+  ODD = "odd",
+  EVEN = "even",
+  ALL = "all"
 }

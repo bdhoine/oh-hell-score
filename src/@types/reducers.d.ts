@@ -1,4 +1,4 @@
-import { Reducer } from "react";
+import type {Reducer} from "react";
 
 type PlayerReducer = Reducer<PlayerState, GameAction>;
 type RoundReducer = Reducer<Rounds, GameAction>;

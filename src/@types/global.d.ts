@@ -1,4 +1,4 @@
 type Action = {
-    type?: string;
-    [key: string]
+  type?: string;
+  [key: string]
 }

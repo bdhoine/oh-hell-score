@@ -1,13 +1,12 @@
-import { Redirect, Route } from 'react-router-dom';
-import {
-  IonApp,
-  IonRouterOutlet,
-} from '@ionic/react';
-import { IonReactRouter } from '@ionic/react-router';
-import NewGame from './pages/NewGame';
+import {IonApp, IonRouterOutlet,} from '@ionic/react';
+import {IonReactRouter} from '@ionic/react-router';
+import {Redirect, Route} from 'react-router-dom';
+
 import BidPage from './pages/Bid';
+import NewGame from './pages/NewGame';
+import ScorePage from "./pages/Score";
 import TrickPage from './pages/Trick';
-import { AppStateProvider } from './state/providers/AppStateProvider';
+import {AppStateProvider} from './state/providers/AppStateProvider';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -27,7 +26,6 @@ import '@ionic/react/css/display.css';
 
 /* Theme variables */
 import './theme/variables.css';
-import ScorePage from "./pages/Score";
 
 const App: React.FC = () => (
   <AppStateProvider>
@@ -35,19 +33,19 @@ const App: React.FC = () => (
       <IonReactRouter>
         <IonRouterOutlet>
           <Route exact path="/newgame">
-            <NewGame />
+            <NewGame/>
           </Route>
           <Route exact path="/bid">
-            <BidPage />
+            <BidPage/>
           </Route>
           <Route path="/trick">
-            <TrickPage />
+            <TrickPage/>
           </Route>
           <Route path="/score">
-            <ScorePage />
+            <ScorePage/>
           </Route>
           <Route exact path="/">
-            <Redirect to="/newgame" />
+            <Redirect to="/newgame"/>
           </Route>
         </IonRouterOutlet>
       </IonReactRouter>

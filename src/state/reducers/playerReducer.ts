@@ -1,8 +1,8 @@
-import { PlayerReducer } from "../../@types/reducers";
-import { PlayerState, GameAction } from "../../@types/state";
+import type {PlayerReducer} from "../../@types/reducers";
+import type {GameAction, PlayerState} from "../../@types/state";
 
 const playerReducer: PlayerReducer = (state: PlayerState, action: GameAction) => {
-  const { type } = action;
+  const {type} = action;
   switch (type) {
     case 'REMOVE_PLAYER':
       return {
@@ -14,9 +14,9 @@ const playerReducer: PlayerReducer = (state: PlayerState, action: GameAction) =>
         ...state,
         players: [...state.players, action.name]
       }
-    case 'REORDER_PLAYER':
-      let reorderedPlayer = state.players[action.from];
-      let reorderedPlayers = [...state.players];
+    case 'REORDER_PLAYER': {
+      const reorderedPlayer = state.players[action.from];
+      const reorderedPlayers = [...state.players];
       reorderedPlayers.splice(action.from, 1);
       reorderedPlayers.splice(action.to, 0, reorderedPlayer);
 
@@ -24,13 +24,15 @@ const playerReducer: PlayerReducer = (state: PlayerState, action: GameAction) =>
         ...state,
         players: reorderedPlayers,
       }
-      case 'RENAME_PLAYER':
-        let renamedPlayers = [...state.players];
-        renamedPlayers[action.location] = action.name;
-        return {
-          ...state,
-          players: renamedPlayers
-        }
+    }
+    case 'RENAME_PLAYER': {
+      const renamedPlayers = [...state.players];
+      renamedPlayers[action.location] = action.name;
+      return {
+        ...state,
+        players: renamedPlayers
+      }
+    }
     case 'SET_GAME':
       if (action.game) {
         return action.game.playerState;

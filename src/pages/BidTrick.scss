@@ -1,28 +1,28 @@
 .floating-button {
-    margin: 12px;
+  margin: 12px;
 }
 
 .oh-hell__round {
-    .col-center {
-        text-align: center;
+  .col-center {
+    text-align: center;
+  }
+
+  ion-item {
+    --padding-start: 0;
+  }
+
+  .oh-hell__player {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    > div {
+      display: flex;
+      align-items: center;
+
+      > ion-icon {
+        margin-right: 8px;
+      }
     }
-
-    ion-item {
-        --padding-start: 0;
-    }
-
-    .oh-hell__player {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-
-        > div {
-            display: flex;
-            align-items: center;
-
-            > ion-icon {
-                margin-right: 8px;
-            }
-        }
-    }
+  }
 }
