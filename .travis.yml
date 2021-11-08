@@ -32,4 +32,4 @@ deploy:
   skip_cleanup: true
   script: rsync -rv -e 'ssh -i id_rsa -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no' $TRAVIS_BUILD_DIR/build/* byteshark.be@ssh.byteshark.be:/www/chinees-poepen-beta/
   on:
-    branch: master
+    branch: beta
