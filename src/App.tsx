@@ -30,7 +30,7 @@ import './theme/variables.css';
 const App: React.FC = () => (
   <AppStateProvider>
     <IonApp>
-      <IonReactRouter>
+    <IonReactRouter basename={process.env.PUBLIC_URL}>
         <IonRouterOutlet>
           <Route exact path="/newgame">
             <NewGame/>
