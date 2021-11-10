@@ -166,7 +166,7 @@ const NewGame: React.FC = () => {
       type: 'SET_ROUND',
       round: 0
     })
-    navigate(`${process.env.PUBLIC_URL}/bid`);
+    navigate(`/bid`);
   }
 
   const generatePlayerRadios = (): AlertInput[] => {
