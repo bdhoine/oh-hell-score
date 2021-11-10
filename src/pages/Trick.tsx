@@ -151,9 +151,8 @@ const TrickPage: React.FC = () => {
                         <IonCol className="col-center" size="2">
                           <IonText color="medium">{bet.bid}</IonText>
                         </IonCol>
-                        <IonCol className="col-center" size="2">
-                          <IonText
-                            onClick={() => showTrickDialog(bet.player, round.cards, bet.trick)}>{bet.trick}</IonText>
+                        <IonCol className="col-center" size="2" onClick={() => showTrickDialog(bet.player, round.cards, bet.trick)}>
+                          <IonText>{bet.trick}</IonText>
                         </IonCol>
                         <IonCol className="col-center" size="2">
                           <IonBadge text-center

@@ -161,9 +161,8 @@ const BidPage: React.FC = () => {
                           {bet.player === round.dealer && getBidNotOkay() >= 0 ?
                             <IonBadge color="danger">{getBidNotOkay()}</IonBadge> : null}
                         </IonCol>
-                        <IonCol className="col-center" size="2">
-                          <IonText
-                            onClick={() => showBidDialog(bet.player, round.cards, bet.bid)}>{bet.bid}</IonText>
+                        <IonCol className="col-center" size="2" onClick={() => showBidDialog(bet.player, round.cards, bet.bid)}>
+                          <IonText>{bet.bid}</IonText>
                         </IonCol>
                         <IonCol className="col-center" size="2">
                           <IonText text-center color="medium">
