@@ -32,16 +32,16 @@ const App: React.FC = () => (
     <IonApp>
     <IonReactHashRouter>
         <IonRouterOutlet>
-          <Route path="/newgame">
+          <Route exact path="/newgame">
             <NewGame />
           </Route>
-          <Route path="/bid">
+          <Route exact path="/bid">
             <BidPage />
           </Route>
-          <Route path="/trick">
+          <Route exact path="/trick">
             <TrickPage />
           </Route>
-          <Route path="/score">
+          <Route exact path="/score">
             <ScorePage />
           </Route>
           <Route exact path="/">
