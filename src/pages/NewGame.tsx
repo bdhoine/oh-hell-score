@@ -237,7 +237,8 @@ const NewGame: React.FC = () => {
               onIonChange={(e) => e.detail.value != null && setNewPlayer(e.detail.value)}
               onKeyDown={e => onEnter(e)}
               onBlur={() => saveNewPlayer()}
-              autoCapitalize="on"
+              autocapitalize="on"
+              autofocus
               clearInput
             >
             </IonInput>
