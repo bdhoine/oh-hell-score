@@ -1,8 +1,8 @@
 {
-  "name": "oh-hell-score",
-  "app_id": "",
-  "type": "ionic-angular",
+  "name": "oh-hell",
   "integrations": {
-    "cordova": {}
-  }
+    "capacitor": {}
+  },
+  "type": "react",
+  "root": "/Users/sanderlenaerts/Development/Other/oh-hell-score/build"
 }
