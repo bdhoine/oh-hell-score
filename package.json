@@ -1,6 +1,6 @@
 {
   "name": "oh-hell",
-  "version": "0.0.1",
+  "version": "2.0.0",
   "private": true,
   "dependencies": {
     "@capacitor/app": "1.0.5",
