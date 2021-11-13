@@ -8,6 +8,20 @@ http://ionicframework.com/docs/theming/ */
   font-display: swap;
 }
 
+@font-face {
+  font-family: 'Source Sans Pro';
+  src: url('../assets/fonts/SourceSansPro-Bold.ttf');
+  font-weight: 700;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Source Sans Pro';
+  src: url('../assets/fonts/SourceSansPro-Light.ttf');
+  font-weight: 300;
+  font-display: swap;
+}
+
 :root {
   --ion-font-family: 'Source Sans Pro';
 }
@@ -92,6 +106,8 @@ http://ionicframework.com/docs/theming/ */
   --ion-color-silver: #c0c0c0;
   --ion-color-bronze: #cd7f32;
 
+  --ion-color-see-through-black: rgba(0, 0, 0, 0.05);
+
 }
 
 .ion-color-gold {
@@ -104,6 +120,10 @@ http://ionicframework.com/docs/theming/ */
 
 .ion-color-bronze {
   --ion-color-base: var(--ion-color-bronze);
+}
+
+.ion-color-see-through-black {
+  --ion-color-base: var(--ion-color-see-through-black);
 }
 
 @media (prefers-color-scheme: dark) {

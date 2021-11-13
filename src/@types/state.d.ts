@@ -16,6 +16,7 @@ type PlayerBet = {
   trick: number;
   player: string;
   score: number;
+  penalty: number;
 }
 
 type BidTrickData = {
@@ -25,6 +26,10 @@ type BidTrickData = {
 
 type TrickAction = {
   type: 'SET_TRICK'
+} & BidTrickData
+
+type PenaltyAction = {
+  type: 'SET_PENALTY'
 } & BidTrickData
 
 type BidAction = {
@@ -45,7 +50,8 @@ type RoundAction =
   { type: 'PREVIOUS_ROUND', round: number } |
   { type: 'CALCULATE_ROUND_SCORE' } |
   BidAction |
-  TrickAction
+  TrickAction |
+  PenaltyAction
 
 type SetGameAction = { type: 'SET_GAME', game: Game }
 type PlayerAction = { type: 'ADD_PLAYER', name: string } |

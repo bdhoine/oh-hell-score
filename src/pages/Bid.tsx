@@ -29,6 +29,7 @@ import {arrowForwardOutline, chevronBack, handLeft, remove, trash} from 'ionicon
 import {useContext} from 'react';
 
 import type {PlayerBet, Round} from '../@types/state';
+import { PenaltyItemOption } from '../components/PenalytButton';
 import {RestartButton} from "../components/RestartButton";
 import {useGameState} from '../state/providers/AppStateProvider';
 import storage from '../storage';
@@ -111,6 +112,14 @@ const BidPage: React.FC = () => {
     }
   }
 
+  const penalise = (amount: number, player: string) => {
+    dispatch({
+      type: 'SET_PENALTY',
+      player,
+      amount,
+    })
+  }
+
   useIonViewWillLeave(() => {
     storage.set('gameState', game);
   }, [game]);
@@ -165,13 +174,13 @@ const BidPage: React.FC = () => {
                           <IonText>{bet.bid}</IonText>
                         </IonCol>
                         <IonCol className="col-center" size="2">
-                          <IonText text-center color="medium">
-                            <IonIcon icon={remove}/>
-                          </IonText>
+                          <IonIcon color="medium" icon={remove}/>
                         </IonCol>
                         <IonCol className="col-center" size="2">
                           <IonBadge text-center
-                                    color="light">{calculatePlayerScore(game.roundState.rounds, bet.player, game.roundState.activeRound - 1)}</IonBadge>
+                                    color="see-through-black">
+                              {calculatePlayerScore(game.roundState.rounds, bet.player, game.roundState.activeRound - 1)}
+                          </IonBadge>
                         </IonCol>
                       </IonRow>
                     </IonGrid>
@@ -180,6 +189,9 @@ const BidPage: React.FC = () => {
                     <IonItemOption color="danger">
                       <IonIcon icon={trash}/>
                     </IonItemOption>
+                  </IonItemOptions>
+                  <IonItemOptions side="end">
+                    <PenaltyItemOption player={bet.player} onPenalise={(amount: number) => penalise(amount, bet.player)}/>
                   </IonItemOptions>
                 </IonItemSliding>
               );

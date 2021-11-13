@@ -1,16 +1,13 @@
-import type {AppReducer} from "../../@types/reducers";
-import type {Game, GameAction} from "../../@types/state";
+import combineReducers from 'react-combine-reducers';
 
 import playerReducer from "./playerReducer";
 import roundReducer from "./roundReducer";
 import settingsReducer from "./settingsReducer";
 
-const appReducer: AppReducer = (game: Game, action: GameAction): Game => {
-  return {
-    playerState: playerReducer(game.playerState, action),
-    roundState: roundReducer(game.roundState, action),
-    settings: settingsReducer(game.settings, action)
-  };
-};
+const [appReducer] = combineReducers({
+  playerState: [playerReducer, {}],
+  roundState: [roundReducer, {}],
+  settings: [settingsReducer, {}],
+});
 
 export default appReducer

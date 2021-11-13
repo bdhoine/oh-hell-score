@@ -1,5 +1,5 @@
 import type {ItemReorderEventDetail, SelectChangeEventDetail} from '@ionic/core';
-import type {AlertInput} from '@ionic/react';
+import type { AlertInput  } from '@ionic/react';
 import {
   IonButton,
   IonContent,
@@ -211,7 +211,7 @@ const NewGame: React.FC = () => {
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
-        <IonList>
+        <IonList className="oh-hell__players">
           <IonListHeader>Players</IonListHeader>
           <IonReorderGroup disabled={false} onIonItemReorder={doReorder}>
             {players.map((player, position) => {

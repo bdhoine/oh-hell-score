@@ -25,10 +25,11 @@ import {
   useIonAlert,
   useIonViewWillLeave
 } from '@ionic/react';
-import {arrowForwardOutline, chevronBack, handLeft, trash} from 'ionicons/icons';
+import {arrowForwardOutline, chevronBack, handLeft, thumbsDown, trash} from 'ionicons/icons';
 import {useContext} from "react";
 
 import type {PlayerBet, Round} from '../@types/state';
+import { PenaltyItemOption } from '../components/PenalytButton';
 import {RestartButton} from "../components/RestartButton";
 import {useGameState} from '../state/providers/AppStateProvider';
 import './BidTrick.scss';
@@ -100,6 +101,14 @@ const TrickPage: React.FC = () => {
     }
   }
 
+  const penaliseTrick = (amount: number, player: string) => {
+    dispatch({
+      type: 'SET_PENALTY',
+      player,
+      amount,
+    })
+  }
+
   useIonViewWillLeave(() => {
     storage.set('gameState', game);
   }, [game]);
@@ -156,7 +165,10 @@ const TrickPage: React.FC = () => {
                         </IonCol>
                         <IonCol className="col-center" size="2">
                           <IonBadge text-center
-                                    color="light">{calculatePlayerScore(game.roundState.rounds, bet.player, game.roundState.activeRound - 1)}</IonBadge>
+                                    color="see-through-black"
+                          >
+                              {calculatePlayerScore(game.roundState.rounds, bet.player, game.roundState.activeRound - 1)}
+                          </IonBadge>
                         </IonCol>
                       </IonRow>
                     </IonGrid>
@@ -165,6 +177,9 @@ const TrickPage: React.FC = () => {
                     <IonItemOption color="danger">
                       <IonIcon icon={trash}/>
                     </IonItemOption>
+                  </IonItemOptions>
+                  <IonItemOptions side="end">
+                    <PenaltyItemOption player={bet.player} onPenalise={(amount: number) => penaliseTrick(amount, bet.player)}/>
                   </IonItemOptions>
                 </IonItemSliding>
               );
