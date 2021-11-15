@@ -1,9 +1,9 @@
-import {IonButton, IonIcon, NavContext, useIonAlert} from "@ionic/react";
-import {refresh} from "ionicons/icons";
-import {useContext} from "react";
+import { IonButton, IonIcon, NavContext, useIonAlert } from "@ionic/react";
+import { refresh } from "ionicons/icons";
+import { useContext } from "react";
 
 export const RestartButton: React.FC = () => {
-  const {navigate} = useContext(NavContext)
+  const { navigate } = useContext(NavContext)
   const [showRestartAlert] = useIonAlert();
 
   const showRestartDialog = () => {
@@ -24,7 +24,7 @@ export const RestartButton: React.FC = () => {
   }
   return (
     <IonButton onClick={() => showRestartDialog()}>
-      <IonIcon title="Refresh" icon={refresh}/>
+      <IonIcon title="Refresh" icon={refresh} />
     </IonButton>
   )
 }

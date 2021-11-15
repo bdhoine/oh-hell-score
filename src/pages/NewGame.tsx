@@ -1,5 +1,5 @@
-import type {ItemReorderEventDetail, SelectChangeEventDetail} from '@ionic/core';
-import type { AlertInput  } from '@ionic/react';
+import type { ItemReorderEventDetail, SelectChangeEventDetail } from '@ionic/core';
+import type { AlertInput } from '@ionic/react';
 import {
   IonButton,
   IonContent,
@@ -24,23 +24,23 @@ import {
   useIonAlert,
   useIonViewWillLeave
 } from '@ionic/react';
-import {trash} from 'ionicons/icons';
-import {useCallback, useContext, useEffect, useState} from 'react';
+import { trash } from 'ionicons/icons';
+import { useCallback, useContext, useEffect, useState } from 'react';
 
 import './NewGame.scss'
-import {ReloadGameToast} from "../components/ReloadGameToast";
-import {GameType} from '../models/GameType';
-import {useGameState} from '../state/providers/AppStateProvider';
+import { ReloadGameToast } from "../components/ReloadGameToast";
+import { GameType } from '../models/GameType';
+import { useGameState } from '../state/providers/AppStateProvider';
 import storage from '../storage';
 
 const NewGame: React.FC = () => {
-  const {game, dispatch} = useGameState();
+  const { game, dispatch } = useGameState();
   const [newPlayer, setNewPlayer] = useState<string>();
   const [showRenameAlert] = useIonAlert();
   const [showPickDealerAlert] = useIonAlert();
 
   const players: string[] = game.playerState.players;
-  const {navigate} = useContext(NavContext)
+  const { navigate } = useContext(NavContext)
 
 
   useIonViewWillLeave(() => {
@@ -99,7 +99,7 @@ const NewGame: React.FC = () => {
   }
 
   const doReorder = (event: CustomEvent<ItemReorderEventDetail>) => {
-    const {from, to} = event.detail;
+    const { from, to } = event.detail;
 
     dispatch({
       type: 'REORDER_PLAYER',
@@ -219,11 +219,11 @@ const NewGame: React.FC = () => {
                 <IonItemSliding key={player}>
                   <IonItem onClick={() => openRenameDialog(player, position)}>
                     <IonLabel>{player}</IonLabel>
-                    <IonReorder slot="end"/>
+                    <IonReorder slot="end" />
                   </IonItem>
                   <IonItemOptions side="start" onIonSwipe={() => deletePlayer(player)}>
                     <IonButton color="danger" onClick={() => deletePlayer(player)}>
-                      <IonIcon icon={trash}/>
+                      <IonIcon icon={trash} />
                     </IonButton>
                   </IonItemOptions>
                 </IonItemSliding>
@@ -249,15 +249,15 @@ const NewGame: React.FC = () => {
           <IonItem>
             <IonLabel>Maximum Cards</IonLabel>
             <IonSelect value={game.settings.maxCards}
-                       onIonChange={(e: CustomEvent<SelectChangeEventDetail>) => setMaxCards(e.detail.value)}>
+              onIonChange={(e: CustomEvent<SelectChangeEventDetail>) => setMaxCards(e.detail.value)}>
               {game.settings.possibleCardsToPlay.map((num: number) => <IonSelectOption key={num}
-                                                                                       value={num}>{num}</IonSelectOption>)}
+                value={num}>{num}</IonSelectOption>)}
             </IonSelect>
           </IonItem>
           <IonItem>
             <IonLabel>Cards to play</IonLabel>
             <IonSelect value={game.settings.gameType}
-                       onIonChange={(e: CustomEvent<SelectChangeEventDetail>) => updateGameType(e.detail.value)}>
+              onIonChange={(e: CustomEvent<SelectChangeEventDetail>) => updateGameType(e.detail.value)}>
               <IonSelectOption value={GameType.ALL}>All</IonSelectOption>
               <IonSelectOption value={GameType.EVEN}>Even</IonSelectOption>
               <IonSelectOption value={GameType.ODD}>Odd</IonSelectOption>
@@ -266,9 +266,9 @@ const NewGame: React.FC = () => {
         </IonList>
         <IonButton className="oh-hell__start-button" expand="block" onClick={() => showDealerPicker()}>
           Start Game
-          <IonRippleEffect type="unbounded"/>
+          <IonRippleEffect type="unbounded" />
         </IonButton>
-        <ReloadGameToast loadedGame={game} allowedRoute={'/newgame'}/>
+        <ReloadGameToast loadedGame={game} allowedRoute={'/newgame'} />
       </IonContent>
     </IonPage>
   );

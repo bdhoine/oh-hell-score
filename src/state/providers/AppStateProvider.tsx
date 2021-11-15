@@ -1,8 +1,8 @@
-import type {FunctionComponent, ReactNode} from 'react';
-import {createContext, useContext, useEffect, useReducer} from 'react'
+import type { FunctionComponent, ReactNode } from 'react';
+import { createContext, useContext, useEffect, useReducer } from 'react'
 
-import type {Game, GameContext} from '../../@types/state';
-import {GameType} from '../../models/GameType';
+import type { Game, GameContext } from '../../@types/state';
+import { GameType } from '../../models/GameType';
 import storage from '../../storage';
 import reducers from '../reducers';
 
@@ -30,7 +30,7 @@ type AppStateProviderProps = {
   children: ReactNode
 }
 
-export const AppStateProvider: FunctionComponent<AppStateProviderProps> = ({children}) => {
+export const AppStateProvider: FunctionComponent<AppStateProviderProps> = ({ children }) => {
 
   const [game, dispatch] = useReducer(reducers, initialGame);
 
@@ -46,7 +46,7 @@ export const AppStateProvider: FunctionComponent<AppStateProviderProps> = ({chil
   }, []);
 
   return (
-    <AppStateContext.Provider value={{game, dispatch}}>
+    <AppStateContext.Provider value={{ game, dispatch }}>
       {children}
     </AppStateContext.Provider>
   )
