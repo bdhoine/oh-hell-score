@@ -101,7 +101,7 @@ const TrickPage: React.FC = () => {
     }
   }
 
-  const penaliseTrick = (amount: number, player: string) => {
+  const penalise = (amount: number, player: string) => {
     dispatch({
       type: 'SET_PENALTY',
       player,
@@ -179,7 +179,7 @@ const TrickPage: React.FC = () => {
                     </IonItemOption>
                   </IonItemOptions>
                   <IonItemOptions side="end">
-                    <PenaltyItemOption player={bet.player} onPenalise={(amount: number) => penaliseTrick(amount, bet.player)} />
+                    <PenaltyItemOption player={bet.player} onPenalise={(amount: number) => penalise(amount, bet.player)} />
                   </IonItemOptions>
                 </IonItemSliding>
               );
