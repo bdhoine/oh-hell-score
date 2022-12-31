@@ -6,10 +6,17 @@ export const calculatePlayerScore = (rounds: Round[], player: string, maxRoundIn
   }
   const limitedRounds = maxRoundIndex < 0 ? [] : rounds.slice(0, maxRoundIndex + 1);
 
-  return limitedRounds.reduce((accumulator, current: Round) => {
+  const score = limitedRounds.reduce((accumulator, current: Round) => {
     const playerBet = current.playerBets.find(bet => bet.player === player);
     return accumulator + (playerBet?.score ?? 0);
   }, 0);
+
+  const penaltyPoints = rounds.reduce((accumulator, current: Round) => {
+    const playerBet = current.playerBets.find(bet => bet.player === player);
+    return accumulator + (playerBet?.penalty ?? 0);
+  }, 0);
+
+  return score + penaltyPoints
 }
 
 export const calculateFinalScore = (game: Game): PlayerScore[] => {

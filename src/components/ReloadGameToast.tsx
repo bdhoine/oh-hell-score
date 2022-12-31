@@ -1,9 +1,9 @@
-import {IonToast, NavContext} from "@ionic/react";
-import {arrowForward, close} from "ionicons/icons";
-import {useContext, useEffect, useState} from "react";
+import { IonToast, NavContext } from "@ionic/react";
+import { arrowForward, close } from "ionicons/icons";
+import { useContext, useEffect, useState } from "react";
 
-import type {Game} from "../@types/state";
-import {isUnfinished} from "../models/GameUtil";
+import type { Game } from "../@types/state";
+import { isUnfinished } from "../models/GameUtil";
 
 interface ReloadGameProps {
   loadedGame: Game;
@@ -11,7 +11,7 @@ interface ReloadGameProps {
 }
 
 export const ReloadGameToast: React.FC<ReloadGameProps> = (props) => {
-  const {navigate, routeInfo} = useContext(NavContext);
+  const { navigate, routeInfo } = useContext(NavContext);
   const [showReloadGame, setShowReloadGame] = useState(false);
   const [toastShown, setToastShown] = useState(false);
 

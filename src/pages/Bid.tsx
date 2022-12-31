@@ -1,4 +1,4 @@
-import type {AlertInput} from '@ionic/react';
+import type { AlertInput } from '@ionic/react';
 import {
   IonBadge,
   IonButton,
@@ -25,22 +25,23 @@ import {
   useIonAlert,
   useIonViewWillLeave
 } from '@ionic/react';
-import {arrowForwardOutline, chevronBack, handLeft, remove, trash} from 'ionicons/icons';
-import {useContext} from 'react';
+import { arrowForwardOutline, chevronBack, handLeft, remove, trash } from 'ionicons/icons';
+import { useContext } from 'react';
 
-import type {PlayerBet, Round} from '../@types/state';
-import {RestartButton} from "../components/RestartButton";
-import {useGameState} from '../state/providers/AppStateProvider';
+import type { PlayerBet, Round } from '../@types/state';
+import { PenaltyItemOption } from '../components/PenaltyButton';
+import { RestartButton } from "../components/RestartButton";
+import { useGameState } from '../state/providers/AppStateProvider';
 import storage from '../storage';
-import {calculatePlayerScore} from '../util/round.util';
+import { calculatePlayerScore } from '../util/round.util';
 
 import './BidTrick.scss';
 
 const BidPage: React.FC = () => {
-  const {game, dispatch} = useGameState();
+  const { game, dispatch } = useGameState();
   const round: Round = game.roundState.rounds[game.roundState.activeRound];
   const [showBidAlert, dismissBidAlert] = useIonAlert();
-  const {navigate} = useContext(NavContext)
+  const { navigate } = useContext(NavContext)
 
   const getTotalBid = () => {
     return round.playerBets.reduce((accumulator, current: PlayerBet) => {
@@ -111,6 +112,14 @@ const BidPage: React.FC = () => {
     }
   }
 
+  const penalise = (amount: number, player: string) => {
+    dispatch({
+      type: 'SET_PENALTY',
+      player,
+      amount,
+    })
+  }
+
   useIonViewWillLeave(() => {
     storage.set('gameState', game);
   }, [game]);
@@ -121,13 +130,13 @@ const BidPage: React.FC = () => {
         <IonToolbar>
           <IonButtons slot="start">
             <IonButton onClick={() => back()}>
-              <IonIcon icon={chevronBack}/>
+              <IonIcon icon={chevronBack} />
               Back
             </IonButton>
           </IonButtons>
           <IonTitle>Bid {round.cards}</IonTitle>
           <IonButtons slot="end">
-            <RestartButton/>
+            <RestartButton />
           </IonButtons>
         </IonToolbar>
       </IonHeader>
@@ -155,7 +164,7 @@ const BidPage: React.FC = () => {
                         <IonCol size="6" className="oh-hell__player">
                           <div>
                             {bet.player === round.dealer ?
-                              <IonIcon icon={handLeft}/> : null}
+                              <IonIcon icon={handLeft} /> : null}
                             <IonText>{bet.player}</IonText>
                           </div>
                           {bet.player === round.dealer && getBidNotOkay() >= 0 ?
@@ -165,21 +174,24 @@ const BidPage: React.FC = () => {
                           <IonText>{bet.bid}</IonText>
                         </IonCol>
                         <IonCol className="col-center" size="2">
-                          <IonText text-center color="medium">
-                            <IonIcon icon={remove}/>
-                          </IonText>
+                          <IonIcon color="medium" icon={remove} />
                         </IonCol>
                         <IonCol className="col-center" size="2">
                           <IonBadge text-center
-                                    color="light">{calculatePlayerScore(game.roundState.rounds, bet.player, game.roundState.activeRound - 1)}</IonBadge>
+                            color="see-through-black">
+                            {calculatePlayerScore(game.roundState.rounds, bet.player, game.roundState.activeRound - 1)}
+                          </IonBadge>
                         </IonCol>
                       </IonRow>
                     </IonGrid>
                   </IonItem>
                   <IonItemOptions side="start">
                     <IonItemOption color="danger">
-                      <IonIcon icon={trash}/>
+                      <IonIcon icon={trash} />
                     </IonItemOption>
+                  </IonItemOptions>
+                  <IonItemOptions side="end">
+                    <PenaltyItemOption player={bet.player} onPenalise={(amount: number) => penalise(amount, bet.player)} />
                   </IonItemOptions>
                 </IonItemSliding>
               );
@@ -188,8 +200,8 @@ const BidPage: React.FC = () => {
         </IonList>
         <IonFab vertical="bottom" horizontal="end" slot="fixed">
           <IonFabButton disabled={getTotalBid() === round.cards} mode="ios" className="floating-button"
-                        routerLink="/trick">
-            <IonIcon icon={arrowForwardOutline}/>
+            routerLink="/trick">
+            <IonIcon icon={arrowForwardOutline} />
           </IonFabButton>
         </IonFab>
       </IonContent>

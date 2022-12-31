@@ -1,6 +1,10 @@
 import type {RoundReducer} from "../../@types/reducers";
 import type {GameAction, Round, Rounds, Settings} from "../../@types/state";
 
+const clone = (obj: unknown) => {
+  return JSON.parse(JSON.stringify(obj));
+}
+
 const roundReducer: RoundReducer = (state: Rounds, action: GameAction) => {
   const {type} = action;
   switch (type) {
@@ -11,7 +15,7 @@ const roundReducer: RoundReducer = (state: Rounds, action: GameAction) => {
       }
     }
     case 'NEXT_ROUND': {
-      const rounds = [...state.rounds];
+      const rounds: Round[] = clone(state.rounds);
       updateScores(rounds, state.activeRound);
       return {
         ...state,
@@ -20,7 +24,7 @@ const roundReducer: RoundReducer = (state: Rounds, action: GameAction) => {
       }
     }
     case 'CALCULATE_ROUND_SCORE': {
-      const rounds = [...state.rounds];
+      const rounds: Round[] = clone(state.rounds);
       updateScores(rounds, state.activeRound);
       return {
         ...state,
@@ -46,7 +50,7 @@ const roundReducer: RoundReducer = (state: Rounds, action: GameAction) => {
       return state;
     }
     case 'SET_BID': {
-      const rounds = [...state.rounds];
+      const rounds: Round[] = clone(state.rounds);
       const activeRound = rounds[state.activeRound];
       const playerBet = activeRound.playerBets.find(bet => bet.player === action.player);
       if (playerBet) {
@@ -60,7 +64,7 @@ const roundReducer: RoundReducer = (state: Rounds, action: GameAction) => {
       }
     }
     case 'SET_TRICK': {
-      const rounds = [...state.rounds];
+      const rounds: Round[] = clone(state.rounds);
       const activeRound = rounds[state.activeRound];
       const playerBet = activeRound.playerBets.find(bet => bet.player === action.player);
       if (playerBet) {
@@ -72,9 +76,23 @@ const roundReducer: RoundReducer = (state: Rounds, action: GameAction) => {
         rounds,
       }
     }
+    case 'SET_PENALTY': {
+      const rounds: Round[] = clone(state.rounds);
+      const activeRound = rounds[state.activeRound];
+      const playerBet = activeRound.playerBets.find(bet => bet.player === action.player);
+      if (playerBet) {
+        playerBet.penalty = playerBet.penalty - action.amount;
+      }
+
+      return {
+        ...state,
+        rounds,
+      }
+    }
     default:
       return state
   }
+  
 }
 
 const updateScores = (rounds: Round[], roundIndex: number) => {
@@ -120,7 +138,8 @@ const generateRound = (cards: number, players: string[], dealer: string): Round 
       player: player,
       bid: 0,
       trick: 0,
-      score: 0
+      score: 0,
+      penalty: 0
     });
   });
 

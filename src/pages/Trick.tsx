@@ -1,4 +1,4 @@
-import type {AlertInput} from '@ionic/react';
+import type { AlertInput } from '@ionic/react';
 import {
   IonBadge,
   IonButton,
@@ -25,21 +25,22 @@ import {
   useIonAlert,
   useIonViewWillLeave
 } from '@ionic/react';
-import {arrowForwardOutline, chevronBack, handLeft, trash} from 'ionicons/icons';
-import {useContext} from "react";
+import { arrowForwardOutline, chevronBack, handLeft, thumbsDown, trash } from 'ionicons/icons';
+import { useContext } from "react";
 
-import type {PlayerBet, Round} from '../@types/state';
-import {RestartButton} from "../components/RestartButton";
-import {useGameState} from '../state/providers/AppStateProvider';
+import type { PlayerBet, Round } from '../@types/state';
+import { PenaltyItemOption } from '../components/PenaltyButton';
+import { RestartButton } from "../components/RestartButton";
+import { useGameState } from '../state/providers/AppStateProvider';
 import './BidTrick.scss';
 import storage from "../storage";
-import {calculatePlayerScore} from '../util/round.util';
+import { calculatePlayerScore } from '../util/round.util';
 
 const TrickPage: React.FC = () => {
-  const {game, dispatch} = useGameState();
+  const { game, dispatch } = useGameState();
   const round: Round = game.roundState.rounds[game.roundState.activeRound];
   const [showTrickAlert, dismissTrickAlert] = useIonAlert();
-  const {navigate, goBack} = useContext(NavContext)
+  const { navigate, goBack } = useContext(NavContext)
 
   const generateAlertInput = (name: string, trick: number, currentTrick: number, player: string): AlertInput => {
     return {
@@ -100,6 +101,14 @@ const TrickPage: React.FC = () => {
     }
   }
 
+  const penalise = (amount: number, player: string) => {
+    dispatch({
+      type: 'SET_PENALTY',
+      player,
+      amount,
+    })
+  }
+
   useIonViewWillLeave(() => {
     storage.set('gameState', game);
   }, [game]);
@@ -110,13 +119,13 @@ const TrickPage: React.FC = () => {
         <IonToolbar>
           <IonButtons slot="start">
             <IonButton onClick={() => goBack()}>
-              <IonIcon icon={chevronBack}/>
+              <IonIcon icon={chevronBack} />
               Back
             </IonButton>
           </IonButtons>
           <IonTitle>Trick {round.cards}</IonTitle>
           <IonButtons slot="end">
-            <RestartButton/>
+            <RestartButton />
           </IonButtons>
         </IonToolbar>
       </IonHeader>
@@ -144,7 +153,7 @@ const TrickPage: React.FC = () => {
                         <IonCol size="6" className="oh-hell__player">
                           <div>
                             {bet.player === round.dealer ?
-                              <IonIcon icon={handLeft}/> : null}
+                              <IonIcon icon={handLeft} /> : null}
                             <IonText>{bet.player}</IonText>
                           </div>
                         </IonCol>
@@ -156,15 +165,21 @@ const TrickPage: React.FC = () => {
                         </IonCol>
                         <IonCol className="col-center" size="2">
                           <IonBadge text-center
-                                    color="light">{calculatePlayerScore(game.roundState.rounds, bet.player, game.roundState.activeRound - 1)}</IonBadge>
+                            color="see-through-black"
+                          >
+                            {calculatePlayerScore(game.roundState.rounds, bet.player, game.roundState.activeRound - 1)}
+                          </IonBadge>
                         </IonCol>
                       </IonRow>
                     </IonGrid>
                   </IonItem>
                   <IonItemOptions side="start">
                     <IonItemOption color="danger">
-                      <IonIcon icon={trash}/>
+                      <IonIcon icon={trash} />
                     </IonItemOption>
+                  </IonItemOptions>
+                  <IonItemOptions side="end">
+                    <PenaltyItemOption player={bet.player} onPenalise={(amount: number) => penalise(amount, bet.player)} />
                   </IonItemOptions>
                 </IonItemSliding>
               );
@@ -174,13 +189,13 @@ const TrickPage: React.FC = () => {
             <IonItem>
               <IonGrid>
                 <IonRow>
-                  <IonCol size="6"/>
-                  <IonCol className="col-center" size="2"/>
+                  <IonCol size="6" />
+                  <IonCol className="col-center" size="2" />
                   <IonCol className="col-center" size="2">
                     <IonBadge
                       color={getTotalTrick() === round.cards ? "success" : "danger"}>{getTotalTrick()}</IonBadge>
                   </IonCol>
-                  <IonCol className="col-center" size="2"/>
+                  <IonCol className="col-center" size="2" />
                 </IonRow>
               </IonGrid>
             </IonItem>
@@ -188,8 +203,8 @@ const TrickPage: React.FC = () => {
         </IonList>
         <IonFab vertical="bottom" horizontal="end" slot="fixed">
           <IonFabButton disabled={getTotalTrick() !== round.cards} mode="ios" className="floating-button"
-                        onClick={() => nextRound()}>
-            <IonIcon icon={arrowForwardOutline}/>
+            onClick={() => nextRound()}>
+            <IonIcon icon={arrowForwardOutline} />
           </IonFabButton>
         </IonFab>
       </IonContent>
