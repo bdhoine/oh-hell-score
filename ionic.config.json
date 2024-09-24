@@ -1,8 +1,0 @@
-{
-  "name": "oh-hell",
-  "integrations": {
-    "capacitor": {}
-  },
-  "type": "react",
-  "root": "/Users/sanderlenaerts/Development/Other/oh-hell-score/build"
-}
