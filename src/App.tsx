@@ -1,6 +1,6 @@
 import { IonApp, IonRouterOutlet, } from '@ionic/react';
-import { IonReactHashRouter, IonReactRouter } from '@ionic/react-router';
-import { HashRouter, Redirect, Route } from 'react-router-dom';
+import { IonReactHashRouter } from '@ionic/react-router';
+import { Redirect, Route } from 'react-router-dom';
 
 import BidPage from './pages/Bid';
 import NewGame from './pages/NewGame';

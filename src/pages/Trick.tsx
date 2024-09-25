@@ -25,7 +25,7 @@ import {
   useIonAlert,
   useIonViewWillLeave
 } from '@ionic/react';
-import { arrowForwardOutline, chevronBack, handLeft, thumbsDown, trash } from 'ionicons/icons';
+import { arrowForwardOutline, chevronBack, handLeft, trash } from 'ionicons/icons';
 import { useContext } from "react";
 
 import type { PlayerBet, Round } from '../@types/state';
