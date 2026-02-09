@@ -112,6 +112,13 @@ const BidPage: React.FC = () => {
     }
   }
 
+  const deletePlayer = (name: string) => {
+    dispatch({
+      type: 'REMOVE_PLAYER',
+      name,
+    })
+  }
+
   const penalise = (amount: number, player: string) => {
     dispatch({
       type: 'SET_PENALTY',
@@ -186,7 +193,7 @@ const BidPage: React.FC = () => {
                     </IonGrid>
                   </IonItem>
                   <IonItemOptions side="start">
-                    <IonItemOption color="danger">
+                    <IonItemOption color="danger" onClick={() => deletePlayer(bet.player)}>
                       <IonIcon icon={trash} />
                     </IonItemOption>
                   </IonItemOptions>
