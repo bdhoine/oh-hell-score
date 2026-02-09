@@ -78,6 +78,16 @@ const roundReducer: RoundReducer = (state: Rounds, action: GameAction) => {
         rounds,
       }
     }
+    case 'REMOVE_PLAYER': {
+      const rounds: Round[] = clone(state.rounds);
+      for (const round of rounds) {
+        round.playerBets = round.playerBets.filter(bet => bet.player !== action.name);
+      }
+      return {
+        ...state,
+        rounds,
+      }
+    }
     case 'SET_PENALTY': {
       const rounds: Round[] = clone(state.rounds);
       const activeRound = rounds[state.activeRound];
