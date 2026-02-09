@@ -62,7 +62,7 @@ const getClosestMaxCards = (currentCardsAmount: number, maxCardsToPlay: number[]
 }
 
 const generateCards = (amount: number): number[] => {
-  return Array(amount - 1).fill(0).map((x, i) => i + 2)
+  return Array(amount).fill(0).map((x, i) => i + 1)
 }
 
 const getCardsConfiguration = (totalPlayers: number, currentMaxCards: number, gameType: GameType): CardsConfiguration => {
@@ -72,7 +72,7 @@ const getCardsConfiguration = (totalPlayers: number, currentMaxCards: number, ga
   if (gameType === GameType.ODD) {
     cards = generateCards(maxCards).filter((num) => isOdd(num))
   } else if (gameType === GameType.EVEN) {
-    cards = generateCards(maxCards - 1).filter((num) => !isOdd(num))
+    cards = generateCards(maxCards).filter((num) => !isOdd(num))
   } else {
     cards = Array(maxCards).fill(0).map((x, i) => i + 1);
   }
