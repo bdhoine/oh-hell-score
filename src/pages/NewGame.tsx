@@ -7,6 +7,7 @@ import {
   IonIcon,
   IonInput,
   IonItem,
+  IonItemOption,
   IonItemOptions,
   IonItemSliding,
   IonLabel,
@@ -222,9 +223,9 @@ const NewGame: React.FC = () => {
                     <IonReorder slot="end" />
                   </IonItem>
                   <IonItemOptions side="start" onIonSwipe={() => deletePlayer(player)}>
-                    <IonButton color="danger" onClick={() => deletePlayer(player)}>
+                    <IonItemOption color="danger" onClick={() => deletePlayer(player)}>
                       <IonIcon icon={trash} />
-                    </IonButton>
+                    </IonItemOption>
                   </IonItemOptions>
                 </IonItemSliding>
               )
