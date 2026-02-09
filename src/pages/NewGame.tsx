@@ -267,7 +267,9 @@ const NewGame: React.FC = () => {
           <IonItem>
             <IonLabel>Bonus</IonLabel>
             <IonInput
+              className="ion-text-right"
               type="number"
+              placeholder="10"
               value={game.settings.bonus}
               onIonChange={(e) => {
                 const value = Number(e.detail.value);
@@ -280,7 +282,9 @@ const NewGame: React.FC = () => {
           <IonItem>
             <IonLabel>Penalty per trick</IonLabel>
             <IonInput
+              className="ion-text-right"
               type="number"
+              placeholder="1"
               value={game.settings.penaltyPerTrick}
               onIonChange={(e) => {
                 const value = Number(e.detail.value);
