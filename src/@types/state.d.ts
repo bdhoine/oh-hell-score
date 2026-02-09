@@ -40,6 +40,8 @@ type Settings = {
   gameType: GameType;
   maxCards: number;
   possibleCardsToPlay: number[]
+  bonus: number;
+  penaltyPerTrick: number;
 }
 
 type RoundAction =
@@ -65,6 +67,8 @@ type SettingsAction =
   | { type: 'UPDATE_MAX_CARDS', totalPlayers: number }
   | { type: 'UPDATE_GAME_TYPE', gameType: GameType }
   | { type: 'SET_MAX_CARDS', maxCards: number }
+  | { type: 'SET_BONUS', bonus: number }
+  | { type: 'SET_PENALTY_PER_TRICK', penaltyPerTrick: number }
 
 type GameAction = PlayerAction | RoundAction | SettingsAction | SetGameAction;
 
@@ -80,6 +84,8 @@ type PlayerState = {
 type Rounds = {
   activeRound: number
   rounds: Round[]
+  bonus: number
+  penaltyPerTrick: number
 }
 
 type Game = {

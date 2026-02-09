@@ -11,12 +11,14 @@ const roundReducer: RoundReducer = (state: Rounds, action: GameAction) => {
     case 'GENERATE_ROUNDS': {
       return {
         ...state,
-        rounds: generateRounds(action.settings, action.players, action.dealer)
+        rounds: generateRounds(action.settings, action.players, action.dealer),
+        bonus: action.settings.bonus,
+        penaltyPerTrick: action.settings.penaltyPerTrick,
       }
     }
     case 'NEXT_ROUND': {
       const rounds: Round[] = clone(state.rounds);
-      updateScores(rounds, state.activeRound);
+      updateScores(rounds, state.activeRound, state.bonus, state.penaltyPerTrick);
       return {
         ...state,
         activeRound: state.activeRound + 1,
@@ -25,7 +27,7 @@ const roundReducer: RoundReducer = (state: Rounds, action: GameAction) => {
     }
     case 'CALCULATE_ROUND_SCORE': {
       const rounds: Round[] = clone(state.rounds);
-      updateScores(rounds, state.activeRound);
+      updateScores(rounds, state.activeRound, state.bonus, state.penaltyPerTrick);
       return {
         ...state,
         rounds,
@@ -95,13 +97,13 @@ const roundReducer: RoundReducer = (state: Rounds, action: GameAction) => {
   
 }
 
-const updateScores = (rounds: Round[], roundIndex: number) => {
+const updateScores = (rounds: Round[], roundIndex: number, bonus: number, penaltyPerTrick: number) => {
   const playerBets = rounds[roundIndex].playerBets;
   for (const playerBet of playerBets) {
     if (playerBet.bid === playerBet.trick) {
-      playerBet.score = 10 + playerBet.trick;
+      playerBet.score = bonus + playerBet.trick;
     } else {
-      playerBet.score = Math.abs(playerBet.bid - playerBet.trick) * -1;
+      playerBet.score = Math.abs(playerBet.bid - playerBet.trick) * -penaltyPerTrick;
     }
   }
 }

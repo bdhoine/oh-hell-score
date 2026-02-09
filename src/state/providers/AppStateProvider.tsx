@@ -9,7 +9,9 @@ import reducers from '../reducers';
 const initialGame: Game = {
   roundState: {
     activeRound: 0,
-    rounds: []
+    rounds: [],
+    bonus: 10,
+    penaltyPerTrick: 1,
   },
   playerState: {
     players: [],
@@ -17,7 +19,9 @@ const initialGame: Game = {
   settings: {
     maxCards: 7,
     gameType: GameType.ALL,
-    possibleCardsToPlay: Array(7).fill(0).map((_, i) => i + 2)
+    possibleCardsToPlay: Array(7).fill(0).map((_, i) => i + 2),
+    bonus: 10,
+    penaltyPerTrick: 1,
   }
 }
 

@@ -264,6 +264,32 @@ const NewGame: React.FC = () => {
               <IonSelectOption value={GameType.ODD}>Odd</IonSelectOption>
             </IonSelect>
           </IonItem>
+          <IonItem>
+            <IonLabel>Bonus</IonLabel>
+            <IonInput
+              type="number"
+              value={game.settings.bonus}
+              onIonChange={(e) => {
+                const value = Number(e.detail.value);
+                if (!isNaN(value)) {
+                  dispatch({ type: 'SET_BONUS', bonus: value });
+                }
+              }}
+            />
+          </IonItem>
+          <IonItem>
+            <IonLabel>Penalty per trick</IonLabel>
+            <IonInput
+              type="number"
+              value={game.settings.penaltyPerTrick}
+              onIonChange={(e) => {
+                const value = Number(e.detail.value);
+                if (!isNaN(value)) {
+                  dispatch({ type: 'SET_PENALTY_PER_TRICK', penaltyPerTrick: value });
+                }
+              }}
+            />
+          </IonItem>
         </IonList>
         <IonButton className="oh-hell__start-button" expand="block" onClick={() => showDealerPicker()}>
           Start Game

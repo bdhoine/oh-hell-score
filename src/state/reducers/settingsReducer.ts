@@ -23,6 +23,16 @@ const settingsReducer: SettingsReducer = (state: Settings, action: GameAction) =
         ...state,
         gameType: action.gameType
       }
+    case 'SET_BONUS':
+      return {
+        ...state,
+        bonus: action.bonus,
+      }
+    case 'SET_PENALTY_PER_TRICK':
+      return {
+        ...state,
+        penaltyPerTrick: action.penaltyPerTrick,
+      }
     case 'SET_GAME':
       if (action.game) {
         return action.game.settings;

@@ -8,7 +8,6 @@ interface PenaltyProps {
     player: string;
     penaltyPoints?: PenaltyPoints;
     onPenalise: (penaltyPoints: number) => void;
-    onClick?: () => void;
 }
 
 export const PenaltyItemOption: React.FC<PenaltyProps> = ({ player, penaltyPoints = 5, onPenalise }) => {
@@ -47,7 +46,11 @@ export const PenaltyItemOption: React.FC<PenaltyProps> = ({ player, penaltyPoint
     }
 
     return (
-        <IonItemOption color="danger" onClick={() => showPenaltyDialog(player)}>
+        <IonItemOption color="danger" onClick={(e) => {
+            const slidingEl = (e.target as HTMLElement).closest('ion-item-sliding') as HTMLIonItemSlidingElement | null;
+            slidingEl?.close();
+            showPenaltyDialog(player);
+        }}>
             <IonIcon icon={thumbsDown} />
         </IonItemOption>
     )
