@@ -245,7 +245,7 @@ const NewGame: React.FC = () => {
             </IonInput>
           </IonItem>
         </IonList>
-        <IonList class="outer-content">
+        <IonList>
           <IonListHeader>Configuration</IonListHeader>
           <IonItem>
             <IonLabel>Maximum Cards</IonLabel>
