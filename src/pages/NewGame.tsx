@@ -26,7 +26,7 @@ import {
   useIonViewWillLeave
 } from '@ionic/react';
 import { trash } from 'ionicons/icons';
-import { useCallback, useContext, useEffect, useState } from 'react';
+import { useCallback, useContext, useEffect, useRef, useState } from 'react';
 
 import './NewGame.scss'
 import { ReloadGameToast } from "../components/ReloadGameToast";
@@ -39,6 +39,8 @@ const NewGame: React.FC = () => {
   const [newPlayer, setNewPlayer] = useState<string>();
   const [showRenameAlert] = useIonAlert();
   const [showPickDealerAlert] = useIonAlert();
+
+  const contentRef = useRef<HTMLIonContentElement>(null);
 
   const players: string[] = game.playerState.players;
   const { navigate } = useContext(NavContext)
@@ -60,6 +62,21 @@ const NewGame: React.FC = () => {
   useEffect(() => {
     updateMaxCardsToPlay();
   }, [updateMaxCardsToPlay])
+
+  const scrollInputIntoView = (e: React.FocusEvent) => {
+    setTimeout(() => {
+      const el = (e.target as HTMLElement).closest('ion-item');
+      if (!el || !contentRef.current) return;
+
+      const itemRect = el.getBoundingClientRect();
+      const visibleHeight = window.visualViewport?.height ?? window.innerHeight;
+
+      if (itemRect.bottom > visibleHeight - 20) {
+        const scrollAmount = itemRect.bottom - visibleHeight + 60;
+        contentRef.current.scrollByPoint(0, scrollAmount, 300);
+      }
+    }, 350);
+  };
 
   const onEnter = (e: React.KeyboardEvent<HTMLIonInputElement>) => {
     if (e.key === "Enter") {
@@ -211,7 +228,7 @@ const NewGame: React.FC = () => {
           <IonTitle>New Game</IonTitle>
         </IonToolbar>
       </IonHeader>
-      <IonContent fullscreen>
+      <IonContent fullscreen ref={contentRef}>
         <IonList className="oh-hell__players">
           <IonListHeader>Players</IonListHeader>
           <IonReorderGroup disabled={false} onIonItemReorder={doReorder}>
@@ -271,6 +288,7 @@ const NewGame: React.FC = () => {
               type="number"
               placeholder="10"
               value={game.settings.bonus}
+              onFocus={scrollInputIntoView}
               onIonChange={(e) => {
                 const value = Number(e.detail.value);
                 if (!isNaN(value)) {
@@ -286,6 +304,7 @@ const NewGame: React.FC = () => {
               type="number"
               placeholder="1"
               value={game.settings.penaltyPerTrick}
+              onFocus={scrollInputIntoView}
               onIonChange={(e) => {
                 const value = Number(e.detail.value);
                 if (!isNaN(value)) {
