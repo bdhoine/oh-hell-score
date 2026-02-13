@@ -131,7 +131,7 @@ const NewGame: React.FC = () => {
         'Cancel',
         {
           text: 'Rename', handler: (data) => {
-            if (!data.name || !data.name.trim()) {
+            if (!data.name?.trim()) {
               return false;
             }
             dispatch({
