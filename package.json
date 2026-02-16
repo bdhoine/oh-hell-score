@@ -79,6 +79,9 @@
   "overrides": {
     "ajv-keywords": {
       "ajv": "^8.17.1"
+    },
+    "react-scripts": {
+      "typescript": "$typescript"
     }
   }
 }
