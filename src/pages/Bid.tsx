@@ -26,7 +26,7 @@ import {
   useIonViewWillLeave
 } from '@ionic/react';
 import { arrowForwardOutline, chevronBack, handLeft, remove, trash } from 'ionicons/icons';
-import { useContext } from 'react';
+import { useContext, useMemo } from 'react';
 
 import type { PlayerBet, Round } from '../@types/state';
 import { PenaltyItemOption } from '../components/PenaltyButton';
@@ -52,6 +52,11 @@ const BidPage: React.FC = () => {
   const getBidNotOkay = () => {
     return round.cards - getTotalBid();
   }
+
+  const isTrickPhaseDisabled = useMemo(() => {
+    const totalBids = getTotalBid();
+    return totalBids === round.cards;
+  }, [round.playerBets, round.cards]);
 
   useIonViewWillLeave(() => {
     storage.set('gameState', game);
@@ -206,8 +211,12 @@ const BidPage: React.FC = () => {
           </IonItemGroup>
         </IonList>
         <IonFab vertical="bottom" horizontal="end" slot="fixed">
-          <IonFabButton disabled={getTotalBid() === round.cards} mode="ios" className="floating-button"
-            routerLink="/trick">
+          <IonFabButton
+            disabled={isTrickPhaseDisabled}
+            mode="ios"
+            className="floating-button"
+            routerLink="/trick"
+            aria-label={isTrickPhaseDisabled ? "Total bids must not equal cards" : "Continue to trick phase"}>
             <IonIcon icon={arrowForwardOutline} />
           </IonFabButton>
         </IonFab>

@@ -26,7 +26,7 @@ import {
   useIonViewWillLeave
 } from '@ionic/react';
 import { arrowForwardOutline, chevronBack, handLeft, trash } from 'ionicons/icons';
-import { useContext } from "react";
+import { useContext, useMemo } from "react";
 
 import type { PlayerBet, Round } from '../@types/state';
 import { PenaltyItemOption } from '../components/PenaltyButton';
@@ -75,6 +75,11 @@ const TrickPage: React.FC = () => {
       return accumulator + current.trick
     }, 0);
   }
+
+  const isNextRoundDisabled = useMemo(() => {
+    const totalTricks = getTotalTrick();
+    return totalTricks !== round.cards;
+  }, [round.playerBets, round.cards]);
 
   const showTrickDialog = (player: string, cards: number, currentBid: number) => {
     showTrickAlert({
@@ -209,8 +214,12 @@ const TrickPage: React.FC = () => {
           </IonItemGroup>
         </IonList>
         <IonFab vertical="bottom" horizontal="end" slot="fixed">
-          <IonFabButton disabled={getTotalTrick() !== round.cards} mode="ios" className="floating-button"
-            onClick={() => nextRound()}>
+          <IonFabButton
+            disabled={isNextRoundDisabled}
+            mode="ios"
+            className="floating-button"
+            onClick={() => nextRound()}
+            aria-label={isNextRoundDisabled ? "Complete all tricks to continue" : "Continue to next round"}>
             <IonIcon icon={arrowForwardOutline} />
           </IonFabButton>
         </IonFab>

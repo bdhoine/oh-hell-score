@@ -47,12 +47,41 @@
     "build": "react-scripts build",
     "lint": "eslint src",
     "test": "react-scripts test",
+    "test:ci": "react-scripts test --watchAll=false --coverage",
+    "test:coverage": "react-scripts test --coverage --watchAll=false",
+    "test:unit": "react-scripts test --testPathPattern=__tests__ --watchAll=false",
+    "test:integration": "react-scripts test --testPathPattern='(pages|components)' --watchAll=false",
+    "e2e": "playwright test",
+    "e2e:headed": "playwright test --headed",
+    "e2e:debug": "playwright test --debug",
+    "e2e:ui": "playwright test --ui",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": [
       "react-app",
       "react-app/jest"
+    ]
+  },
+  "jest": {
+    "coverageThreshold": {
+      "global": {
+        "statements": 42,
+        "branches": 48,
+        "functions": 27,
+        "lines": 39
+      }
+    },
+    "collectCoverageFrom": [
+      "src/**/*.{ts,tsx}",
+      "!src/**/*.d.ts",
+      "!src/index.tsx",
+      "!src/reportWebVitals.ts",
+      "!src/service-worker.ts",
+      "!src/serviceWorkerRegistration.ts",
+      "!src/**/*.test.{ts,tsx}",
+      "!src/test/**",
+      "!src/__tests__/**"
     ]
   },
   "browserslist": {
@@ -70,6 +99,7 @@
   "devDependencies": {
     "@capacitor/cli": "3.2.5",
     "@ionic/eslint-config": "^0.3.0",
+    "@playwright/test": "^1.58.2",
     "@types/react-combine-reducers": "^1.0.0",
     "eslint": "^7.32.0",
     "sass": "^1.43.4"

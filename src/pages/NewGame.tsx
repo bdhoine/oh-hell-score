@@ -167,7 +167,10 @@ const NewGame: React.FC = () => {
       type: 'SET_ROUND',
       round: 0
     })
-    navigate(`/bid`);
+    // Dismiss dialog and wait before navigating to prevent focus management issues
+    setTimeout(() => {
+      navigate(`/bid`);
+    }, 100);
   }
 
   const generatePlayerRadios = (): AlertInput[] => {
