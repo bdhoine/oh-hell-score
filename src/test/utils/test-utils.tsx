@@ -11,17 +11,21 @@ import reducers from '../../state/reducers';
 
 // Mock navigate and goBack functions for tests
 export const mockNavContext = {
-  navigate: jest.fn(),
+  getIonRoute: jest.fn(),
+  getIonRedirect: jest.fn(),
+  getPageManager: jest.fn(),
+  getStackManager: jest.fn(),
   goBack: jest.fn(),
+  navigate: jest.fn(),
   hasIonicRouter: jest.fn(() => true),
-  registerIonPage: jest.fn(),
   routeInfo: {
+    id: 'test',
     pathname: '/test',
     search: '',
-    hash: '',
-    key: 'test',
-    state: undefined,
   },
+  setCurrentTab: jest.fn(),
+  changeTab: jest.fn(),
+  resetTab: jest.fn(),
 };
 
 const initialGame: Game = {
@@ -74,7 +78,7 @@ export const customRender = (
 ): ReturnType<typeof render> => {
   const { initialState = initialGame, ...renderOptions } = options || {};
 
-  const Wrapper = ({ children }: { children: React.ReactNode }) => (
+  const Wrapper: React.FC = ({ children }) => (
     <NavContext.Provider value={mockNavContext}>
       <TestAppStateProvider initialState={initialState}>
         {children}
