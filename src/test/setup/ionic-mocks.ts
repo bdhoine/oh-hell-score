@@ -4,11 +4,11 @@
  */
 
 // Mock useIonAlert
-export const mockIonAlert = jest.fn((_options?: any) => Promise.resolve());
+export const mockIonAlert = jest.fn(() => Promise.resolve());
 export const mockUseIonAlert = jest.fn(() => [mockIonAlert]);
 
 // Mock useIonToast
-export const mockIonToast = jest.fn((_options?: any) => Promise.resolve());
+export const mockIonToast = jest.fn(() => Promise.resolve());
 // eslint-disable-next-line @typescript-eslint/no-empty-function
 export const mockUseIonToast = jest.fn(() => [mockIonToast, () => {}]);
 

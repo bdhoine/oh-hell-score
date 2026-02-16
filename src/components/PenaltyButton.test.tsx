@@ -1,4 +1,4 @@
-import { render, screen, fireEvent } from '../test/utils/test-utils';
+import { render, fireEvent } from '../test/utils/test-utils';
 
 import { PenaltyItemOption } from './PenaltyButton';
 
@@ -8,6 +8,12 @@ jest.mock('@ionic/react', () => ({
   ...jest.requireActual('@ionic/react'),
   useIonAlert: () => [mockShowPenaltyAlert],
 }));
+
+function clickItemOption(container: HTMLElement) {
+  const el = container.querySelector('ion-item-option');
+  expect(el).toBeInTheDocument();
+  fireEvent.click(el as Element);
+}
 
 describe('PenaltyButton', () => {
   const mockOnPenalise = jest.fn();
@@ -43,8 +49,7 @@ describe('PenaltyButton', () => {
       <PenaltyItemOption player="Bob" onPenalise={mockOnPenalise} />
     );
 
-    const itemOption = container.querySelector('ion-item-option');
-    fireEvent.click(itemOption!);
+    clickItemOption(container);
 
     expect(mockShowPenaltyAlert).toHaveBeenCalledTimes(1);
   });
@@ -54,8 +59,7 @@ describe('PenaltyButton', () => {
       <PenaltyItemOption player="Carol" onPenalise={mockOnPenalise} />
     );
 
-    const itemOption = container.querySelector('ion-item-option');
-    fireEvent.click(itemOption!);
+    clickItemOption(container);
 
     expect(mockShowPenaltyAlert).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -69,8 +73,7 @@ describe('PenaltyButton', () => {
       <PenaltyItemOption player="Alice" onPenalise={mockOnPenalise} />
     );
 
-    const itemOption = container.querySelector('ion-item-option');
-    fireEvent.click(itemOption!);
+    clickItemOption(container);
 
     const callArgs = mockShowPenaltyAlert.mock.calls[0][0];
     expect(callArgs.inputs).toHaveLength(3);
@@ -84,8 +87,7 @@ describe('PenaltyButton', () => {
       <PenaltyItemOption player="Alice" onPenalise={mockOnPenalise} />
     );
 
-    const itemOption = container.querySelector('ion-item-option');
-    fireEvent.click(itemOption!);
+    clickItemOption(container);
 
     const callArgs = mockShowPenaltyAlert.mock.calls[0][0];
     expect(callArgs.inputs[0].label).toBe('-2');
@@ -98,8 +100,7 @@ describe('PenaltyButton', () => {
       <PenaltyItemOption player="Alice" penaltyPoints={5} onPenalise={mockOnPenalise} />
     );
 
-    const itemOption = container.querySelector('ion-item-option');
-    fireEvent.click(itemOption!);
+    clickItemOption(container);
 
     const callArgs = mockShowPenaltyAlert.mock.calls[0][0];
     expect(callArgs.inputs[2].checked).toBe(true); // 5 points
@@ -110,8 +111,7 @@ describe('PenaltyButton', () => {
       <PenaltyItemOption player="Alice" penaltyPoints={2} onPenalise={mockOnPenalise} />
     );
 
-    const itemOption = container.querySelector('ion-item-option');
-    fireEvent.click(itemOption!);
+    clickItemOption(container);
 
     const callArgs = mockShowPenaltyAlert.mock.calls[0][0];
     expect(callArgs.inputs[0].checked).toBe(true); // 2 points
@@ -122,8 +122,7 @@ describe('PenaltyButton', () => {
       <PenaltyItemOption player="Alice" onPenalise={mockOnPenalise} />
     );
 
-    const itemOption = container.querySelector('ion-item-option');
-    fireEvent.click(itemOption!);
+    clickItemOption(container);
 
     const callArgs = mockShowPenaltyAlert.mock.calls[0][0];
     expect(callArgs.buttons).toContainEqual('Cancel');
@@ -134,8 +133,7 @@ describe('PenaltyButton', () => {
       <PenaltyItemOption player="Alice" onPenalise={mockOnPenalise} />
     );
 
-    const itemOption = container.querySelector('ion-item-option');
-    fireEvent.click(itemOption!);
+    clickItemOption(container);
 
     const callArgs = mockShowPenaltyAlert.mock.calls[0][0];
     const penaliseButton = callArgs.buttons.find((b: any) => b.text === 'Penalise');
@@ -149,8 +147,7 @@ describe('PenaltyButton', () => {
       <PenaltyItemOption player="Alice" onPenalise={mockOnPenalise} />
     );
 
-    const itemOption = container.querySelector('ion-item-option');
-    fireEvent.click(itemOption!);
+    clickItemOption(container);
 
     const callArgs = mockShowPenaltyAlert.mock.calls[0][0];
     const penaliseButton = callArgs.buttons.find((b: any) => b.text === 'Penalise');
@@ -166,8 +163,7 @@ describe('PenaltyButton', () => {
       <PenaltyItemOption player="Bob" onPenalise={mockOnPenalise} />
     );
 
-    const itemOption = container.querySelector('ion-item-option');
-    fireEvent.click(itemOption!);
+    clickItemOption(container);
 
     const callArgs = mockShowPenaltyAlert.mock.calls[0][0];
     const penaliseButton = callArgs.buttons.find((b: any) => b.text === 'Penalise');
@@ -183,8 +179,7 @@ describe('PenaltyButton', () => {
       <PenaltyItemOption player="Alice" onPenalise={mockOnPenalise} />
     );
 
-    const itemOption = container.querySelector('ion-item-option');
-    fireEvent.click(itemOption!);
+    clickItemOption(container);
 
     const callArgs = mockShowPenaltyAlert.mock.calls[0][0];
     expect(callArgs.backdropDismiss).toBe(true);
@@ -195,8 +190,7 @@ describe('PenaltyButton', () => {
       <PenaltyItemOption player="Alice" onPenalise={mockOnPenalise} />
     );
 
-    const itemOption = container.querySelector('ion-item-option');
-    fireEvent.click(itemOption!);
+    clickItemOption(container);
 
     const callArgs = mockShowPenaltyAlert.mock.calls[0][0];
     expect(callArgs.mode).toBe('ios');
@@ -207,8 +201,7 @@ describe('PenaltyButton', () => {
       <PenaltyItemOption player="Alice" onPenalise={mockOnPenalise} />
     );
 
-    const itemOption = container.querySelector('ion-item-option');
-    fireEvent.click(itemOption!);
+    clickItemOption(container);
 
     const callArgs = mockShowPenaltyAlert.mock.calls[0][0];
     expect(callArgs.keyboardClose).toBe(false);
@@ -225,11 +218,8 @@ describe('PenaltyButton', () => {
       <PenaltyItemOption player="Player2" onPenalise={player2OnPenalise} />
     );
 
-    const itemOption1 = container1.querySelector('ion-item-option');
-    const itemOption2 = container2.querySelector('ion-item-option');
-
-    fireEvent.click(itemOption1!);
-    fireEvent.click(itemOption2!);
+    clickItemOption(container1);
+    clickItemOption(container2);
 
     expect(mockShowPenaltyAlert).toHaveBeenCalledTimes(2);
     expect(mockShowPenaltyAlert).toHaveBeenNthCalledWith(
