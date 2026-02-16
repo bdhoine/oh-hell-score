@@ -1,6 +1,6 @@
-import roundReducer from '../../../state/reducers/roundReducer';
 import type { Rounds, RoundAction } from '../../../@types/state';
 import { GameType } from '../../../models/GameType';
+import roundReducer from '../../../state/reducers/roundReducer';
 import { createMockSettings, createMockRounds, createMockRound, createMockGame } from '../../../test/utils/mock-data';
 
 describe('roundReducer', () => {

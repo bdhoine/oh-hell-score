@@ -25,7 +25,7 @@ const initialGame: Game = {
   }
 }
 
-const AppStateContext = createContext<GameContext>({
+export const AppStateContext = createContext<GameContext>({
   game: initialGame,
   dispatch: undefined
 });

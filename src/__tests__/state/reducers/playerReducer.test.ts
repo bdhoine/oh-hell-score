@@ -1,5 +1,5 @@
-import playerReducer from '../../../state/reducers/playerReducer';
 import type { PlayerState, PlayerAction } from '../../../@types/state';
+import playerReducer from '../../../state/reducers/playerReducer';
 import { createMockPlayerState, createMockGame } from '../../../test/utils/mock-data';
 
 describe('playerReducer', () => {

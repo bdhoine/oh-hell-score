@@ -1,10 +1,13 @@
-import { render, RenderOptions } from '@testing-library/react';
-import type { ReactElement } from 'react';
 import { NavContext } from '@ionic/react';
-import { createContext, useReducer } from 'react';
-import type { Game, GameContext } from '../../@types/state';
-import reducers from '../../state/reducers';
+import type { RenderOptions } from '@testing-library/react';
+import { render } from '@testing-library/react';
+import type { ReactElement } from 'react';
+import { useReducer } from 'react';
+
+import type { Game } from '../../@types/state';
 import { GameType } from '../../models/GameType';
+import { AppStateContext } from '../../state/providers/AppStateProvider';
+import reducers from '../../state/reducers';
 
 // Mock navigate and goBack functions for tests
 export const mockNavContext = {
@@ -40,11 +43,6 @@ const initialGame: Game = {
   }
 };
 
-const AppStateContext = createContext<GameContext>({
-  game: initialGame,
-  dispatch: () => {}
-});
-
 interface TestProviderProps {
   children: React.ReactNode;
   initialState: Game;
@@ -73,7 +71,7 @@ interface CustomRenderOptions extends Omit<RenderOptions, 'wrapper'> {
 export const customRender = (
   ui: ReactElement,
   options?: CustomRenderOptions
-) => {
+): ReturnType<typeof render> => {
   const { initialState = initialGame, ...renderOptions } = options || {};
 
   const Wrapper = ({ children }: { children: React.ReactNode }) => (

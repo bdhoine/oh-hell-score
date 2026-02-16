@@ -44,19 +44,22 @@ const BidPage: React.FC = () => {
   const { navigate } = useContext(NavContext)
 
   const getTotalBid = () => {
+    if (!round) return 0;
     return round.playerBets.reduce((accumulator, current: PlayerBet) => {
       return accumulator + current.bid
     }, 0);
   }
 
   const getBidNotOkay = () => {
+    if (!round) return 0;
     return round.cards - getTotalBid();
   }
 
   const isTrickPhaseDisabled = useMemo(() => {
+    if (!round) return true;
     const totalBids = getTotalBid();
     return totalBids === round.cards;
-  }, [round.playerBets, round.cards]);
+  }, [round?.playerBets, round?.cards]);
 
   useIonViewWillLeave(() => {
     storage.set('gameState', game);

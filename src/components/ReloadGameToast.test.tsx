@@ -1,8 +1,8 @@
-import { render } from '../test/utils/test-utils';
-import { ReloadGameToast } from './ReloadGameToast';
-import { createMockGame, createMockGameWithRounds } from '../test/utils/mock-data';
-import { mockNavContext } from '../test/utils/test-utils';
 import { GameType } from '../models/GameType';
+import { createMockGame, createMockGameWithRounds } from '../test/utils/mock-data';
+import { render, mockNavContext } from '../test/utils/test-utils';
+
+import { ReloadGameToast } from './ReloadGameToast';
 
 /**
  * ReloadGameToast Integration Tests

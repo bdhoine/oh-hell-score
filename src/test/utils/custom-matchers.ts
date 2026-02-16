@@ -5,6 +5,7 @@ import type { Round, PlayerBet } from '../../@types/state';
  */
 
 declare global {
+  // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace jest {
     interface Matchers<R> {
       toHaveValidRoundStructure(): R;

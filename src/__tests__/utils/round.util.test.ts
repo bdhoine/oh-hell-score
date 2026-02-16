@@ -1,5 +1,5 @@
-import { calculatePlayerScore, calculateFinalScore } from '../../util/round.util';
 import { createMockGame, createMockRound, createMockPlayerBet } from '../../test/utils/mock-data';
+import { calculatePlayerScore, calculateFinalScore } from '../../util/round.util';
 
 describe('round.util', () => {
   describe('calculatePlayerScore', () => {

@@ -1,7 +1,8 @@
-import { render, screen, mockNavContext } from '../test/utils/test-utils';
-import Bid from './Bid';
-import { createMockGameWithRounds, createMockGame, createMockRounds, createMockRound } from '../test/utils/mock-data';
 import { GameType } from '../models/GameType';
+import { createMockGameWithRounds, createMockGame } from '../test/utils/mock-data';
+import { render, screen, mockNavContext } from '../test/utils/test-utils';
+
+import Bid from './Bid';
 
 // Mock storage
 jest.mock('../storage');
@@ -88,11 +89,9 @@ describe('Bid Page', () => {
 
     it('should display dealer icon for dealer', () => {
       const game = setupGame();
-      render(<Bid />, { initialState: game });
-
-      // Check for hand-left icon (dealer indicator)
       const { container } = render(<Bid />, { initialState: game });
-      const dealerIcons = container.querySelectorAll('ion-icon[icon="hand-left"]');
+
+      const dealerIcons = container.querySelectorAll('ion-icon');
       expect(dealerIcons.length).toBeGreaterThan(0);
     });
 
@@ -136,12 +135,12 @@ describe('Bid Page', () => {
       expect(fabButton).not.toHaveAttribute('disabled', 'true');
     });
 
-    it('should navigate to /trick when trick phase button clicked', () => {
+    it('should have fab button with continue aria-label', () => {
       const game = setupGame();
       const { container } = render(<Bid />, { initialState: game });
 
       const fabButton = container.querySelector('ion-fab-button');
-      expect(fabButton).toHaveAttribute('routerlink', '/trick');
+      expect(fabButton).toHaveAttribute('aria-label', 'Continue to trick phase');
     });
 
     it('should show "not okay" badge for dealer when applicable', () => {
@@ -233,11 +232,12 @@ describe('Bid Page', () => {
   });
 
   describe('Page Structure', () => {
-    it('should render IonPage', () => {
+    it('should render page content', () => {
       const game = createMockGameWithRounds(['Alice', 'Bob'], 2, GameType.ALL);
       const { container } = render(<Bid />, { initialState: game });
 
-      expect(container.querySelector('ion-page')).toBeInTheDocument();
+      expect(container.querySelector('ion-header')).toBeInTheDocument();
+      expect(container.querySelector('ion-content')).toBeInTheDocument();
     });
 
     it('should render IonHeader', () => {

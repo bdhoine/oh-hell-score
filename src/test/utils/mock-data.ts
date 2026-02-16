@@ -73,7 +73,7 @@ export const createMockGame = (
  */
 export const createMockGameWithRounds = (
   players: string[] = ['Alice', 'Bob', 'Carol'],
-  maxCards: number = 3,
+  maxCards = 3,
   gameType: GameType = GameType.ALL
 ): Game => {
   const settings = createMockSettings({ maxCards, gameType });

@@ -1,6 +1,6 @@
-import { render, fireEvent } from '../test/utils/test-utils';
+import { render, fireEvent, mockNavContext } from '../test/utils/test-utils';
+
 import { RestartButton } from './RestartButton';
-import { mockNavContext } from '../test/utils/test-utils';
 
 // Mock Ionic hooks
 const mockShowRestartAlert = jest.fn();

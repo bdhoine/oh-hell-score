@@ -4,11 +4,12 @@
  */
 
 // Mock useIonAlert
-export const mockIonAlert = jest.fn((options?: any) => Promise.resolve());
+export const mockIonAlert = jest.fn((_options?: any) => Promise.resolve());
 export const mockUseIonAlert = jest.fn(() => [mockIonAlert]);
 
 // Mock useIonToast
-export const mockIonToast = jest.fn((options?: any) => Promise.resolve());
+export const mockIonToast = jest.fn((_options?: any) => Promise.resolve());
+// eslint-disable-next-line @typescript-eslint/no-empty-function
 export const mockUseIonToast = jest.fn(() => [mockIonToast, () => {}]);
 
 // Mock useIonRouter
@@ -43,22 +44,22 @@ export const mockIonicStorage = {
 };
 
 // Helper to clear storage between tests
-export const clearMockStorage = () => {
+export const clearMockStorage = (): void => {
   mockStorage.clear();
 };
 
 // Helper to preset storage values for tests
-export const setMockStorageValue = (key: string, value: any) => {
+export const setMockStorageValue = (key: string, value: any): void => {
   mockStorage.set(key, value);
 };
 
 // Helper to get storage values in tests
-export const getMockStorageValue = (key: string) => {
+export const getMockStorageValue = (key: string): any => {
   return mockStorage.get(key);
 };
 
 // Clear all mock function calls
-export const clearAllIonicMocks = () => {
+export const clearAllIonicMocks = (): void => {
   mockIonAlert.mockClear();
   mockUseIonAlert.mockClear();
   mockIonToast.mockClear();

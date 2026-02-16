@@ -1,6 +1,6 @@
-import settingsReducer from '../../../state/reducers/settingsReducer';
 import type { Settings, SettingsAction } from '../../../@types/state';
 import { GameType } from '../../../models/GameType';
+import settingsReducer from '../../../state/reducers/settingsReducer';
 import { createMockSettings, createMockGame } from '../../../test/utils/mock-data';
 
 describe('settingsReducer', () => {
