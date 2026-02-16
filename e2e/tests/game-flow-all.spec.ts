@@ -16,8 +16,16 @@ async function setMaxCards(page: Page, value: number) {
  * Helper to add a player and wait for it to appear
  */
 async function addPlayer(page: Page, name: string) {
+  const ionInput = page.locator('ion-input[placeholder="New player..."]');
+  // Wait for input to be cleared from previous add
+  await expect(async () => {
+    const value = await ionInput.evaluate((el: any) => el.value);
+    expect(value === '' || value === undefined || value === null).toBe(true);
+  }).toPass({ timeout: 3000 });
   const playerInput = page.locator('ion-input[placeholder="New player..."] input');
   await playerInput.fill(name);
+  // Force browser round-trip to let React 18 flush the batched state update
+  await page.evaluate(() => {});
   await page.keyboard.press('Enter');
   await expect(page.locator('ion-item-sliding').filter({ hasText: name })).toBeVisible();
 }
