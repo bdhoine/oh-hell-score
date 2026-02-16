@@ -25,24 +25,62 @@ async function addPlayer(page: Page, name: string) {
 }
 
 /**
- * Helper to start a game with a dealer.
- * Ionic alerts render radio inputs as button[role="radio"] elements,
- * not as <ion-radio> elements.
+ * Helper to click a radio option inside an Ionic alert dialog.
+ * Ionic alerts render content in shadow DOM. We use evaluate to
+ * reliably find and click the radio button by its label text.
  */
-async function startGameWithDealer(page: Page, dealer: string) {
-  await page.locator('ion-button:has-text("Start Game")').click();
-  await expect(page.getByRole('heading', { name: 'Pick Dealer' })).toBeVisible();
-  await page.getByRole('radio', { name: dealer }).click();
-  await page.getByRole('button', { name: 'Pick dealer' }).click();
+async function clickAlertRadio(page: Page, labelText: string) {
+  await page.locator('ion-alert').waitFor({ state: 'visible' });
+  await page.waitForTimeout(200);
+  await page.evaluate((text) => {
+    // Search both light DOM and shadow DOM for alert radio labels
+    const alerts = document.querySelectorAll('ion-alert');
+    for (const alert of alerts) {
+      const root = alert.shadowRoot || alert;
+      const labels = root.querySelectorAll('.alert-radio-label');
+      for (const label of labels) {
+        if (label.textContent?.trim() === text) {
+          const button = label.closest('button');
+          if (button) {
+            button.click();
+            return;
+          }
+        }
+      }
+    }
+  }, labelText);
+  await page.waitForTimeout(150);
 }
 
 /**
- * Helper to select a bid/trick value from Ionic alert dialog.
- * The alert auto-dismisses on selection via the handler.
+ * Helper to click a button inside an Ionic alert dialog.
  */
-async function selectAlertRadio(page: Page, value: string) {
-  await page.getByRole('radio', { name: value, exact: true }).click();
+async function clickAlertButton(page: Page, buttonText: string) {
+  await page.evaluate((text) => {
+    const alerts = document.querySelectorAll('ion-alert');
+    for (const alert of alerts) {
+      const root = alert.shadowRoot || alert;
+      const buttons = root.querySelectorAll('button.alert-button');
+      for (const button of buttons) {
+        if (button.textContent?.trim().toLowerCase() === text.toLowerCase()) {
+          button.click();
+          return;
+        }
+      }
+    }
+  }, buttonText);
   await page.waitForTimeout(150);
+}
+
+/**
+ * Helper to start a game with a dealer.
+ */
+async function startGameWithDealer(page: Page, dealer: string) {
+  await page.locator('ion-button:has-text("Start Game")').click();
+  await page.locator('ion-alert').waitFor({ state: 'visible' });
+  await page.waitForTimeout(300);
+  await clickAlertRadio(page, dealer);
+  await clickAlertButton(page, 'Pick dealer');
 }
 
 /**
@@ -50,7 +88,7 @@ async function selectAlertRadio(page: Page, value: string) {
  */
 async function setBid(page: Page, player: string, bid: number) {
   await page.locator(`ion-item:has-text("${player}")`).locator('ion-col').nth(1).click();
-  await selectAlertRadio(page, String(bid));
+  await clickAlertRadio(page, String(bid));
 }
 
 /**
@@ -58,7 +96,7 @@ async function setBid(page: Page, player: string, bid: number) {
  */
 async function setTrick(page: Page, player: string, trick: number) {
   await page.locator(`ion-item:has-text("${player}")`).locator('ion-col').nth(2).click();
-  await selectAlertRadio(page, String(trick));
+  await clickAlertRadio(page, String(trick));
 }
 
 /**
@@ -180,12 +218,25 @@ test.describe('Complete game flow - ALL cards', () => {
 
     // Alice should not be able to select bid of 1
     await page.locator('ion-item:has-text("Alice")').locator('ion-col').nth(1).click();
-    // The radio for value="1" should not be present in the dialog for the dealer
-    const radio1 = page.getByRole('radio', { name: '1', exact: true });
-    await expect(radio1).toHaveCount(0);
+    await page.locator('ion-alert').waitFor({ state: 'visible' });
+    await page.waitForTimeout(200);
+
+    // The radio for "1" should not be present in the dialog for the dealer
+    const hasRadio1 = await page.evaluate(() => {
+      const alerts = document.querySelectorAll('ion-alert');
+      for (const alert of alerts) {
+        const root = alert.shadowRoot || alert;
+        const labels = root.querySelectorAll('.alert-radio-label');
+        for (const label of labels) {
+          if (label.textContent?.trim() === '1') return true;
+        }
+      }
+      return false;
+    });
+    expect(hasRadio1).toBe(false);
 
     // Alice can only bid 0
-    await selectAlertRadio(page, '0');
+    await clickAlertRadio(page, '0');
   });
 
   test('should persist game state and allow reload', async ({ page }) => {
