@@ -40,3 +40,6 @@ UserInterfaceState.xcuserstate
 
 # Playwright
 playwright-report/
+
+# Worktrees
+.worktrees/
