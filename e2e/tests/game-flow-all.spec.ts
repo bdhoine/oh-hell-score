@@ -106,7 +106,7 @@ async function setTrick(page: Page, player: string, trick: number) {
 test.describe('Complete game flow - ALL cards', () => {
   test('should play a full game with 3 players and 3 max cards', async ({ page }) => {
     await page.goto('/');
-    await expect(page.locator('ion-title')).toContainText('New Game');
+    await expect(page.locator('ion-title').last()).toContainText('New Game');
 
     // Add three players
     await addPlayer(page, 'Alice');
@@ -121,7 +121,7 @@ test.describe('Complete game flow - ALL cards', () => {
 
     // Should navigate to Bid page for Round 1 (1 card)
     await expect(page).toHaveURL(/.*bid/);
-    await expect(page.locator('ion-title')).toContainText('Bid 1');
+    await expect(page.locator('ion-title').last()).toContainText('Bid 1');
 
     // --- Round 1: 1 card, dealer: Alice ---
     await expect(page.locator('ion-item:has-text("Bob")')).toBeVisible();
@@ -141,7 +141,7 @@ test.describe('Complete game flow - ALL cards', () => {
     await expect(fabButton).not.toBeDisabled();
     await fabButton.click();
     await expect(page).toHaveURL(/.*trick/);
-    await expect(page.locator('ion-title')).toContainText('Trick 1');
+    await expect(page.locator('ion-title').last()).toContainText('Trick 1');
 
     // Enter tricks: Bob=1, Carol=0, Alice=0
     await setTrick(page, 'Bob', 1);
@@ -152,7 +152,7 @@ test.describe('Complete game flow - ALL cards', () => {
     await expect(fabButton).not.toBeDisabled();
     await fabButton.click();
     await expect(page).toHaveURL(/.*bid/);
-    await expect(page.locator('ion-title')).toContainText('Bid 2');
+    await expect(page.locator('ion-title').last()).toContainText('Bid 2');
 
     // --- Round 2: 2 cards, dealer: Bob ---
     const dealerIcon = page.locator('ion-item:has-text("Bob")').locator('ion-icon[icon="hand-left"]');
@@ -174,7 +174,7 @@ test.describe('Complete game flow - ALL cards', () => {
 
     // Move to Round 3
     await fabButton.click();
-    await expect(page.locator('ion-title')).toContainText('Bid 3');
+    await expect(page.locator('ion-title').last()).toContainText('Bid 3');
 
     // --- Round 3: 3 cards, dealer: Carol ---
     await setBid(page, 'Alice', 1);
@@ -207,7 +207,7 @@ test.describe('Complete game flow - ALL cards', () => {
     await setMaxCards(page, 1);
     await startGameWithDealer(page, 'Alice');
 
-    await expect(page.locator('ion-title')).toContainText('Bid 1');
+    await expect(page.locator('ion-title').last()).toContainText('Bid 1');
 
     // Bob bids 0
     await setBid(page, 'Bob', 0);
@@ -259,7 +259,7 @@ test.describe('Complete game flow - ALL cards', () => {
 
     // After dismissing toast, should still be on the same round
     await page.waitForTimeout(2000);
-    await expect(page.locator('ion-title')).toContainText('Bid');
+    await expect(page.locator('ion-title').last()).toContainText('Bid');
   });
 
   test('should calculate scores correctly', async ({ page }) => {
@@ -286,6 +286,6 @@ test.describe('Complete game flow - ALL cards', () => {
 
     // Should be on score page
     await expect(page).toHaveURL(/.*score/);
-    await expect(page.locator('ion-title')).toContainText('Final');
+    await expect(page.locator('ion-title').last()).toContainText('Final');
   });
 });
