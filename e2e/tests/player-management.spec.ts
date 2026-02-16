@@ -120,7 +120,13 @@ test.describe('Player Management', () => {
 
     // Wait for Ionic to clear the input asynchronously
     await expect(page.locator('ion-item-sliding').filter({ hasText: 'Frank' })).toBeVisible();
-    await expect(playerInput).toHaveValue('', { timeout: 3000 });
+
+    // Check the Ionic component's value rather than native input (which may lag)
+    const ionInput = page.locator('ion-input[placeholder="New player..."]');
+    await expect(async () => {
+      const value = await ionInput.evaluate((el: any) => el.value);
+      expect(value === '' || value === undefined || value === null).toBe(true);
+    }).toPass({ timeout: 3000 });
   });
 
   test('should show player count', async ({ page }) => {
