@@ -252,7 +252,7 @@ const NewGame: React.FC = () => {
           <IonListHeader>Configuration</IonListHeader>
           <IonItem>
             <IonLabel>Maximum Cards</IonLabel>
-            <IonSelect value={game.settings.maxCards}
+            <IonSelect slot="end" value={game.settings.maxCards}
               onIonChange={(e: CustomEvent<SelectChangeEventDetail>) => setMaxCards(e.detail.value)}>
               {game.settings.possibleCardsToPlay.map((num: number) => <IonSelectOption key={num}
                 value={num}>{num}</IonSelectOption>)}
@@ -260,7 +260,7 @@ const NewGame: React.FC = () => {
           </IonItem>
           <IonItem>
             <IonLabel>Cards to play</IonLabel>
-            <IonSelect value={game.settings.gameType}
+            <IonSelect slot="end" value={game.settings.gameType}
               onIonChange={(e: CustomEvent<SelectChangeEventDetail>) => updateGameType(e.detail.value)}>
               <IonSelectOption value={GameType.ALL}>All</IonSelectOption>
               <IonSelectOption value={GameType.EVEN}>Even</IonSelectOption>

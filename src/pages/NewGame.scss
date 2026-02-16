@@ -2,6 +2,10 @@
   margin: 24px var(--padding-start) 0;
 }
 
+.outer-content ion-input[type="number"] {
+  max-width: 80px;
+}
+
 .oh-hell__players {
   margin-bottom: 24px;
 }
