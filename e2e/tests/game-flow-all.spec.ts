@@ -13,7 +13,7 @@ test.describe('Complete game flow - ALL cards', () => {
     await expect(page.locator('ion-title')).toContainText('New Game');
 
     // Add three players
-    const playerInput = page.locator('ion-input[placeholder="New player..."]');
+    const playerInput = page.locator('ion-input[placeholder="New player..."] input');
 
     await playerInput.fill('Alice');
     await page.keyboard.press('Enter');
@@ -193,7 +193,7 @@ test.describe('Complete game flow - ALL cards', () => {
     await page.goto('/');
 
     // Quick setup: Add 2 players
-    const playerInput = page.locator('ion-input[placeholder="New player..."]');
+    const playerInput = page.locator('ion-input[placeholder="New player..."] input');
     await playerInput.fill('Alice');
     await page.keyboard.press('Enter');
     await playerInput.fill('Bob');
@@ -235,7 +235,7 @@ test.describe('Complete game flow - ALL cards', () => {
     await page.goto('/');
 
     // Setup game
-    const playerInput = page.locator('ion-input[placeholder="New player..."]');
+    const playerInput = page.locator('ion-input[placeholder="New player..."] input');
     await playerInput.fill('Alice');
     await page.keyboard.press('Enter');
     await playerInput.fill('Bob');
@@ -269,7 +269,7 @@ test.describe('Complete game flow - ALL cards', () => {
     await page.goto('/');
 
     // Setup simple 2-player game
-    const playerInput = page.locator('ion-input[placeholder="New player..."]');
+    const playerInput = page.locator('ion-input[placeholder="New player..."] input');
     await playerInput.fill('Alice');
     await page.keyboard.press('Enter');
     await playerInput.fill('Bob');

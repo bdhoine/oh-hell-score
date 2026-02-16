@@ -11,7 +11,7 @@ test.describe('Player Management', () => {
   });
 
   test('should add players via Enter key', async ({ page }) => {
-    const playerInput = page.locator('ion-input[placeholder="New player..."]');
+    const playerInput = page.locator('ion-input[placeholder="New player..."] input');
 
     await playerInput.fill('Alice');
     await page.keyboard.press('Enter');
@@ -33,7 +33,7 @@ test.describe('Player Management', () => {
   });
 
   test('should add players via blur', async ({ page }) => {
-    const playerInput = page.locator('ion-input[placeholder="New player..."]');
+    const playerInput = page.locator('ion-input[placeholder="New player..."] input');
 
     await playerInput.fill('Dave');
     await playerInput.blur();
@@ -43,7 +43,7 @@ test.describe('Player Management', () => {
   });
 
   test('should not add empty player names', async ({ page }) => {
-    const playerInput = page.locator('ion-input[placeholder="New player..."]');
+    const playerInput = page.locator('ion-input[placeholder="New player..."] input');
 
     await playerInput.fill('');
     await page.keyboard.press('Enter');
@@ -54,7 +54,7 @@ test.describe('Player Management', () => {
   });
 
   test('should not add whitespace-only names', async ({ page }) => {
-    const playerInput = page.locator('ion-input[placeholder="New player..."]');
+    const playerInput = page.locator('ion-input[placeholder="New player..."] input');
 
     await playerInput.fill('   ');
     await playerInput.blur();
@@ -65,7 +65,7 @@ test.describe('Player Management', () => {
   });
 
   test('should trim player names', async ({ page }) => {
-    const playerInput = page.locator('ion-input[placeholder="New player..."]');
+    const playerInput = page.locator('ion-input[placeholder="New player..."] input');
 
     await playerInput.fill('  Eve  ');
     await page.keyboard.press('Enter');
@@ -76,7 +76,7 @@ test.describe('Player Management', () => {
 
   test('should delete player via swipe', async ({ page }) => {
     // Add players first
-    const playerInput = page.locator('ion-input[placeholder="New player..."]');
+    const playerInput = page.locator('ion-input[placeholder="New player..."] input');
     await playerInput.fill('Alice');
     await page.keyboard.press('Enter');
     await playerInput.fill('Bob');
@@ -95,7 +95,7 @@ test.describe('Player Management', () => {
   });
 
   test('should allow adding multiple players', async ({ page }) => {
-    const playerInput = page.locator('ion-input[placeholder="New player..."]');
+    const playerInput = page.locator('ion-input[placeholder="New player..."] input');
 
     const players = ['Alice', 'Bob', 'Carol', 'Dave', 'Eve'];
 
@@ -115,7 +115,7 @@ test.describe('Player Management', () => {
   });
 
   test('should clear input after adding player', async ({ page }) => {
-    const playerInput = page.locator('ion-input[placeholder="New player..."]');
+    const playerInput = page.locator('ion-input[placeholder="New player..."] input');
 
     await playerInput.fill('Frank');
     await page.keyboard.press('Enter');
@@ -126,7 +126,7 @@ test.describe('Player Management', () => {
   });
 
   test('should show player count', async ({ page }) => {
-    const playerInput = page.locator('ion-input[placeholder="New player..."]');
+    const playerInput = page.locator('ion-input[placeholder="New player..."] input');
 
     // Add 3 players
     await playerInput.fill('Alice');
@@ -142,7 +142,7 @@ test.describe('Player Management', () => {
   });
 
   test('should display players in order added', async ({ page }) => {
-    const playerInput = page.locator('ion-input[placeholder="New player..."]');
+    const playerInput = page.locator('ion-input[placeholder="New player..."] input');
 
     await playerInput.fill('Alice');
     await page.keyboard.press('Enter');
@@ -160,7 +160,7 @@ test.describe('Player Management', () => {
   });
 
   test('should handle rapid player additions', async ({ page }) => {
-    const playerInput = page.locator('ion-input[placeholder="New player..."]');
+    const playerInput = page.locator('ion-input[placeholder="New player..."] input');
 
     // Rapidly add players
     await playerInput.fill('Player1');
@@ -178,7 +178,7 @@ test.describe('Player Management', () => {
   });
 
   test('should show reorder handles for players', async ({ page }) => {
-    const playerInput = page.locator('ion-input[placeholder="New player..."]');
+    const playerInput = page.locator('ion-input[placeholder="New player..."] input');
 
     await playerInput.fill('Alice');
     await page.keyboard.press('Enter');
@@ -194,7 +194,7 @@ test.describe('Player Management', () => {
   });
 
   test('should allow deleting all players', async ({ page }) => {
-    const playerInput = page.locator('ion-input[placeholder="New player..."]');
+    const playerInput = page.locator('ion-input[placeholder="New player..."] input');
 
     // Add players
     await playerInput.fill('Alice');
