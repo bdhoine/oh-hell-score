@@ -34,3 +34,13 @@ build/
 .DS_Store
 Thumbs.db
 UserInterfaceState.xcuserstate
+
+# Screenshots (debug/test artifacts)
+*.png
+
+# Playwright
+playwright-report/
+
+# Worktrees
+.worktrees/
+test-results/
