@@ -78,7 +78,7 @@ export const customRender = (
 ): ReturnType<typeof render> => {
   const { initialState = initialGame, ...renderOptions } = options || {};
 
-  const Wrapper: React.FC = ({ children }) => (
+  const Wrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => (
     <NavContext.Provider value={mockNavContext}>
       <TestAppStateProvider initialState={initialState}>
         {children}

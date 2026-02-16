@@ -14,10 +14,11 @@ jest.mock('@ionic/react', () => ({
   useIonViewWillLeave: jest.fn(),
 }));
 
-// Helper to fire Ionic ionChange custom event
-const ionChange = (element: Element, value: string | null) => {
-  fireEvent(element, new CustomEvent('ionChange', { detail: { value } }));
+// Helper to fire Ionic ionInput custom event (Ionic 8 uses ionInput for real-time input)
+const ionInput = (element: Element, value: string | null) => {
+  fireEvent(element, new CustomEvent('ionInput', { detail: { value } }));
 };
+
 
 describe('NewGame', () => {
   beforeEach(() => {
@@ -40,7 +41,7 @@ describe('NewGame', () => {
       render(<NewGame />);
       const input = screen.getByPlaceholderText('New player...');
 
-      ionChange(input, 'Alice');
+      ionInput(input, 'Alice');
       fireEvent.keyDown(input, { key: 'Enter', code: 'Enter' });
 
       await waitFor(() => {
@@ -52,7 +53,7 @@ describe('NewGame', () => {
       render(<NewGame />);
       const input = screen.getByPlaceholderText('New player...');
 
-      ionChange(input, 'Bob');
+      ionInput(input, 'Bob');
       fireEvent.blur(input);
 
       await waitFor(() => {
@@ -64,7 +65,7 @@ describe('NewGame', () => {
       render(<NewGame />);
       const input = screen.getByPlaceholderText('New player...');
 
-      ionChange(input, '');
+      ionInput(input, '');
       fireEvent.keyDown(input, { key: 'Enter' });
 
       await waitFor(() => {
@@ -78,7 +79,7 @@ describe('NewGame', () => {
       render(<NewGame />);
       const input = screen.getByPlaceholderText('New player...');
 
-      ionChange(input, '   ');
+      ionInput(input, '   ');
       fireEvent.blur(input);
 
       await waitFor(() => {
@@ -90,7 +91,7 @@ describe('NewGame', () => {
       render(<NewGame />);
       const input = screen.getByPlaceholderText('New player...');
 
-      ionChange(input, '  Carol  ');
+      ionInput(input, '  Carol  ');
       fireEvent.keyDown(input, { key: 'Enter' });
 
       await waitFor(() => {
@@ -101,9 +102,9 @@ describe('NewGame', () => {
 
     it('should clear input after adding player', async () => {
       render(<NewGame />);
-      const input = screen.getByPlaceholderText('New player...') as HTMLIonInputElement;
+      const input = screen.getByPlaceholderText('New player...') as unknown as HTMLIonInputElement;
 
-      ionChange(input, 'Dave');
+      ionInput(input, 'Dave');
       fireEvent.keyDown(input, { key: 'Enter' });
 
       await waitFor(() => {
@@ -119,7 +120,7 @@ describe('NewGame', () => {
       const players = ['Alice', 'Bob', 'Carol'];
 
       for (const player of players) {
-        ionChange(input, player);
+        ionInput(input, player);
         fireEvent.keyDown(input, { key: 'Enter' });
       }
 
@@ -171,9 +172,9 @@ describe('NewGame', () => {
 
     it('should update bonus value', async () => {
       render(<NewGame />);
-      const bonusInput = screen.getByPlaceholderText('10') as HTMLIonInputElement;
+      const bonusInput = screen.getByPlaceholderText('10') as unknown as HTMLIonInputElement;
 
-      ionChange(bonusInput, '15');
+      ionInput(bonusInput, '15');
 
       await waitFor(() => {
         expect(bonusInput.value).toBe(15);
@@ -182,9 +183,9 @@ describe('NewGame', () => {
 
     it('should update penalty value', async () => {
       render(<NewGame />);
-      const penaltyInput = screen.getByPlaceholderText('1') as HTMLIonInputElement;
+      const penaltyInput = screen.getByPlaceholderText('1') as unknown as HTMLIonInputElement;
 
-      ionChange(penaltyInput, '2');
+      ionInput(penaltyInput, '2');
 
       await waitFor(() => {
         expect(penaltyInput.value).toBe(2);
@@ -193,10 +194,10 @@ describe('NewGame', () => {
 
     it('should not update bonus with invalid number', async () => {
       render(<NewGame />);
-      const bonusInput = screen.getByPlaceholderText('10') as HTMLIonInputElement;
+      const bonusInput = screen.getByPlaceholderText('10') as unknown as HTMLIonInputElement;
       const originalValue = bonusInput.value;
 
-      ionChange(bonusInput, 'abc');
+      ionInput(bonusInput, 'abc');
 
       // Should keep original value when NaN
       expect(bonusInput.value).toBe(originalValue);
@@ -204,10 +205,10 @@ describe('NewGame', () => {
 
     it('should not update penalty with invalid number', async () => {
       render(<NewGame />);
-      const penaltyInput = screen.getByPlaceholderText('1') as HTMLIonInputElement;
+      const penaltyInput = screen.getByPlaceholderText('1') as unknown as HTMLIonInputElement;
       const originalValue = penaltyInput.value;
 
-      ionChange(penaltyInput, 'xyz');
+      ionInput(penaltyInput, 'xyz');
 
       // Should keep original value when NaN
       expect(penaltyInput.value).toBe(originalValue);
@@ -215,9 +216,9 @@ describe('NewGame', () => {
 
     it('should allow zero bonus', async () => {
       render(<NewGame />);
-      const bonusInput = screen.getByPlaceholderText('10') as HTMLIonInputElement;
+      const bonusInput = screen.getByPlaceholderText('10') as unknown as HTMLIonInputElement;
 
-      ionChange(bonusInput, '0');
+      ionInput(bonusInput, '0');
 
       await waitFor(() => {
         expect(bonusInput.value).toBe(0);
@@ -226,9 +227,9 @@ describe('NewGame', () => {
 
     it('should allow negative bonus', async () => {
       render(<NewGame />);
-      const bonusInput = screen.getByPlaceholderText('10') as HTMLIonInputElement;
+      const bonusInput = screen.getByPlaceholderText('10') as unknown as HTMLIonInputElement;
 
-      ionChange(bonusInput, '-5');
+      ionInput(bonusInput, '-5');
 
       await waitFor(() => {
         expect(bonusInput.value).toBe(-5);
@@ -283,7 +284,7 @@ describe('NewGame', () => {
       render(<NewGame />);
       const input = screen.getByPlaceholderText('New player...');
 
-      ionChange(input, 'Alice');
+      ionInput(input, 'Alice');
       fireEvent.keyDown(input, { key: 'Enter' });
       fireEvent.keyDown(input, { key: 'Enter' });
       fireEvent.keyDown(input, { key: 'Enter' });
@@ -299,7 +300,7 @@ describe('NewGame', () => {
       render(<NewGame />);
       const input = screen.getByPlaceholderText('New player...');
 
-      ionChange(input, 'Bob');
+      ionInput(input, 'Bob');
       fireEvent.keyDown(input, { key: 'Tab' });
 
       // Should not add player on Tab
@@ -312,7 +313,7 @@ describe('NewGame', () => {
 
       // Should not throw error
       expect(() => {
-        ionChange(input, null);
+        ionInput(input, null);
       }).not.toThrow();
     });
 
@@ -321,7 +322,7 @@ describe('NewGame', () => {
       const input = screen.getByPlaceholderText('New player...');
 
       // Add a player
-      ionChange(input, 'Alice');
+      ionInput(input, 'Alice');
       fireEvent.keyDown(input, { key: 'Enter' });
 
       await waitFor(() => {

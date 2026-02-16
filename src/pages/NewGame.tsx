@@ -238,7 +238,7 @@ const NewGame: React.FC = () => {
             <IonInput
               value={newPlayer}
               placeholder="New player..."
-              onIonChange={(e) => e.detail.value != null && setNewPlayer(e.detail.value)}
+              onIonInput={(e) => e.detail.value != null && setNewPlayer(e.detail.value)}
               onKeyDown={e => onEnter(e)}
               onBlur={() => saveNewPlayer()}
               autocapitalize="on"
@@ -274,7 +274,7 @@ const NewGame: React.FC = () => {
               type="number"
               placeholder="10"
               value={game.settings.bonus}
-              onIonChange={(e) => {
+              onIonInput={(e) => {
                 const value = Number(e.detail.value);
                 if (!isNaN(value)) {
                   dispatch({ type: 'SET_BONUS', bonus: value });
@@ -289,7 +289,7 @@ const NewGame: React.FC = () => {
               type="number"
               placeholder="1"
               value={game.settings.penaltyPerTrick}
-              onIonChange={(e) => {
+              onIonInput={(e) => {
                 const value = Number(e.detail.value);
                 if (!isNaN(value)) {
                   dispatch({ type: 'SET_PENALTY_PER_TRICK', penaltyPerTrick: value });

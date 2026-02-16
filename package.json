@@ -65,6 +65,9 @@
     ]
   },
   "jest": {
+    "transformIgnorePatterns": [
+      "node_modules/(?!(@ionic|@stencil|ionicons)/)"
+    ],
     "coverageThreshold": {
       "global": {
         "statements": 42,
