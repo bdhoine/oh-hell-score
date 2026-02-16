@@ -1,4 +1,24 @@
-import { test, expect } from '@playwright/test';
+import { test, expect, Page } from '@playwright/test';
+
+/**
+ * Helper to add a player reliably. Waits for the Ionic input to be
+ * ready (cleared) before filling, then waits for the player to appear.
+ */
+async function addPlayer(page: Page, name: string) {
+  const ionInput = page.locator('ion-input[placeholder="New player..."]');
+  // Wait for the Ionic input value to be empty before filling
+  await expect(async () => {
+    const value = await ionInput.evaluate((el: any) => el.value);
+    expect(value === '' || value === undefined || value === null).toBe(true);
+  }).toPass({ timeout: 3000 });
+  const playerInput = page.locator('ion-input[placeholder="New player..."] input');
+  await playerInput.fill(name);
+  // Force browser round-trip to let React 18 flush the batched state update
+  // from ionChange before pressing Enter (otherwise saveNewPlayer reads stale state)
+  await page.evaluate(() => {});
+  await page.keyboard.press('Enter');
+  await expect(page.locator('ion-item-sliding').filter({ hasText: name })).toBeVisible();
+}
 
 /**
  * E2E Test: Player Management
@@ -11,19 +31,9 @@ test.describe('Player Management', () => {
   });
 
   test('should add players via Enter key', async ({ page }) => {
-    const playerInput = page.locator('ion-input[placeholder="New player..."] input');
-
-    await playerInput.fill('Alice');
-    await page.keyboard.press('Enter');
-    await expect(page.locator('ion-item-sliding').filter({ hasText: 'Alice' })).toBeVisible();
-
-    await playerInput.fill('Bob');
-    await page.keyboard.press('Enter');
-    await expect(page.locator('ion-item-sliding').filter({ hasText: 'Bob' })).toBeVisible();
-
-    await playerInput.fill('Carol');
-    await page.keyboard.press('Enter');
-    await expect(page.locator('ion-item-sliding').filter({ hasText: 'Carol' })).toBeVisible();
+    await addPlayer(page, 'Alice');
+    await addPlayer(page, 'Bob');
+    await addPlayer(page, 'Carol');
 
     // Verify all players are shown
     const playerCount = await page.locator('ion-item-sliding').count();
@@ -71,15 +81,8 @@ test.describe('Player Management', () => {
   });
 
   test('should delete player via swipe', async ({ page }) => {
-    // Add players first
-    const playerInput = page.locator('ion-input[placeholder="New player..."] input');
-    await playerInput.fill('Alice');
-    await page.keyboard.press('Enter');
-    await expect(page.locator('ion-item-sliding').filter({ hasText: 'Alice' })).toBeVisible();
-
-    await playerInput.fill('Bob');
-    await page.keyboard.press('Enter');
-    await expect(page.locator('ion-item-sliding').filter({ hasText: 'Bob' })).toBeVisible();
+    await addPlayer(page, 'Alice');
+    await addPlayer(page, 'Bob');
 
     // Programmatically open the sliding item to reveal delete option
     const bobItem = page.locator('ion-item-sliding').filter({ hasText: 'Bob' });
@@ -96,15 +99,10 @@ test.describe('Player Management', () => {
   });
 
   test('should allow adding multiple players', async ({ page }) => {
-    const playerInput = page.locator('ion-input[placeholder="New player..."] input');
-
     const players = ['Alice', 'Bob', 'Carol', 'Dave', 'Frank'];
 
     for (const player of players) {
-      await playerInput.fill(player);
-      await page.keyboard.press('Enter');
-      // Wait for each player to appear before adding next
-      await expect(page.locator('ion-item-sliding').filter({ hasText: player })).toBeVisible();
+      await addPlayer(page, player);
     }
 
     // Count player items
@@ -130,20 +128,9 @@ test.describe('Player Management', () => {
   });
 
   test('should show player count', async ({ page }) => {
-    const playerInput = page.locator('ion-input[placeholder="New player..."] input');
-
-    // Add 3 players with waits between each
-    await playerInput.fill('Alice');
-    await page.keyboard.press('Enter');
-    await expect(page.locator('ion-item-sliding').filter({ hasText: 'Alice' })).toBeVisible();
-
-    await playerInput.fill('Bob');
-    await page.keyboard.press('Enter');
-    await expect(page.locator('ion-item-sliding').filter({ hasText: 'Bob' })).toBeVisible();
-
-    await playerInput.fill('Carol');
-    await page.keyboard.press('Enter');
-    await expect(page.locator('ion-item-sliding').filter({ hasText: 'Carol' })).toBeVisible();
+    await addPlayer(page, 'Alice');
+    await addPlayer(page, 'Bob');
+    await addPlayer(page, 'Carol');
 
     // Count visible player items
     const playerCount = await page.locator('ion-item-sliding').count();
@@ -151,19 +138,9 @@ test.describe('Player Management', () => {
   });
 
   test('should display players in order added', async ({ page }) => {
-    const playerInput = page.locator('ion-input[placeholder="New player..."] input');
-
-    await playerInput.fill('Alice');
-    await page.keyboard.press('Enter');
-    await expect(page.locator('ion-item-sliding').filter({ hasText: 'Alice' })).toBeVisible();
-
-    await playerInput.fill('Bob');
-    await page.keyboard.press('Enter');
-    await expect(page.locator('ion-item-sliding').filter({ hasText: 'Bob' })).toBeVisible();
-
-    await playerInput.fill('Carol');
-    await page.keyboard.press('Enter');
-    await expect(page.locator('ion-item-sliding').filter({ hasText: 'Carol' })).toBeVisible();
+    await addPlayer(page, 'Alice');
+    await addPlayer(page, 'Bob');
+    await addPlayer(page, 'Carol');
 
     // Get all player labels in order
     const playerLabels = await page.locator('ion-item-sliding ion-label').allTextContents();
@@ -174,35 +151,17 @@ test.describe('Player Management', () => {
   });
 
   test('should handle rapid player additions', async ({ page }) => {
-    const playerInput = page.locator('ion-input[placeholder="New player..."] input');
-
-    // Add players with waits
-    await playerInput.fill('Player1');
-    await page.keyboard.press('Enter');
-    await expect(page.locator('ion-item-sliding').filter({ hasText: 'Player1' })).toBeVisible();
-
-    await playerInput.fill('Player2');
-    await page.keyboard.press('Enter');
-    await expect(page.locator('ion-item-sliding').filter({ hasText: 'Player2' })).toBeVisible();
-
-    await playerInput.fill('Player3');
-    await page.keyboard.press('Enter');
-    await expect(page.locator('ion-item-sliding').filter({ hasText: 'Player3' })).toBeVisible();
+    await addPlayer(page, 'Player1');
+    await addPlayer(page, 'Player2');
+    await addPlayer(page, 'Player3');
 
     const playerCount = await page.locator('ion-item-sliding').count();
     expect(playerCount).toBe(3);
   });
 
   test('should show reorder handles for players', async ({ page }) => {
-    const playerInput = page.locator('ion-input[placeholder="New player..."] input');
-
-    await playerInput.fill('Alice');
-    await page.keyboard.press('Enter');
-    await expect(page.locator('ion-item-sliding').filter({ hasText: 'Alice' })).toBeVisible();
-
-    await playerInput.fill('Bob');
-    await page.keyboard.press('Enter');
-    await expect(page.locator('ion-item-sliding').filter({ hasText: 'Bob' })).toBeVisible();
+    await addPlayer(page, 'Alice');
+    await addPlayer(page, 'Bob');
 
     // Verify reorder icons are present
     const reorderIcons = page.locator('ion-reorder');
@@ -213,16 +172,8 @@ test.describe('Player Management', () => {
   });
 
   test('should allow deleting all players', async ({ page }) => {
-    const playerInput = page.locator('ion-input[placeholder="New player..."] input');
-
-    // Add players
-    await playerInput.fill('Alice');
-    await page.keyboard.press('Enter');
-    await expect(page.locator('ion-item-sliding').filter({ hasText: 'Alice' })).toBeVisible();
-
-    await playerInput.fill('Bob');
-    await page.keyboard.press('Enter');
-    await expect(page.locator('ion-item-sliding').filter({ hasText: 'Bob' })).toBeVisible();
+    await addPlayer(page, 'Alice');
+    await addPlayer(page, 'Bob');
 
     // Delete first player by opening sliding item programmatically
     const firstItem = page.locator('ion-item-sliding').first();
