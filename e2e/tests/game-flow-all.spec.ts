@@ -30,9 +30,10 @@ async function addPlayer(page: Page, name: string) {
  */
 async function startGameWithDealer(page: Page, dealer: string) {
   await page.locator('ion-button:has-text("Start Game")').click();
-  await expect(page.locator('text=Pick Dealer')).toBeVisible();
+  // Wait for alert to appear using the heading specifically
+  await expect(page.getByRole('heading', { name: 'Pick Dealer' })).toBeVisible();
   await page.locator(`ion-radio[value="${dealer}"]`).check();
-  await page.locator('button:has-text("Pick dealer")').click();
+  await page.getByRole('button', { name: 'Pick dealer' }).click();
 }
 
 /**
